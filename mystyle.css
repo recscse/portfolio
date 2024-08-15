@@ -64,24 +64,27 @@ header {
 
 header::after {
     content: '';
-    background-color: #000;
+    background-color: rgba(0, 0, 0, 0.5); /* Adjusted opacity for better contrast */
     position: absolute;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-    opacity: 0.6;
+    z-index: 0; /* Ensure the overlay is below text */
 }
 
 header h1 {
-    font-size: 4rem; /* Adjusted font size for responsiveness */
+    font-size: 4rem;
     margin: 0;
+    z-index: 1; /* Ensure text is above the overlay */
 }
 
 header p {
-    font-size: 1.5rem; /* Adjusted font size for readability */
+    font-size: 1.5rem;
     margin: 5px 0;
+    z-index: 1; /* Ensure text is above the overlay */
 }
+
 
 section {
     padding: 40px;
