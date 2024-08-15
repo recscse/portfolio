@@ -60,11 +60,13 @@ header {
     justify-content: center;
     height: 100vh;
     position: relative;
+    padding: 20px; /* Add padding for spacing */
+    text-align: center; /* Center align text */
 }
 
 header::after {
     content: '';
-    background-color: rgba(0, 0, 0, 0.5); /* Adjusted opacity for better contrast */
+    background-color: rgba(0, 0, 0, 0.7); /* Increased opacity for better contrast */
     position: absolute;
     top: 0;
     left: 0;
@@ -73,16 +75,19 @@ header::after {
     z-index: 0; /* Ensure the overlay is below text */
 }
 
+header h1, header p {
+    color: #ffffff; /* White color for high contrast */
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7); /* Black shadow for better text contrast */
+}
+
 header h1 {
-    font-size: 4rem;
+    font-size: 4rem; /* Increased size for better readability */
     margin: 0;
-    z-index: 1; /* Ensure text is above the overlay */
 }
 
 header p {
-    font-size: 1.5rem;
+    font-size: 1.5rem; /* Increased size for better readability */
     margin: 5px 0;
-    z-index: 1; /* Ensure text is above the overlay */
 }
 
 
