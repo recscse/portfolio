@@ -1,111 +1,381 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Brijesh Yadav · Backend Developer (Java, Spring Boot, AWS)</title>
-  <meta name="description" content="Portfolio of Brijesh Yadav — Backend Engineer with 3+ years experience in Java, Spring Boot, PostgreSQL/MySQL, AWS, Docker, and microservices.">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="mystyle.css">
-  <link rel="icon" href="assets/banner.svg" type="image/svg+xml">
-</head>
-<body>
-  <a class="skip-link" href="#main">Skip to content</a>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Brijesh Yadav · Backend Developer (Java, Spring Boot, AWS)</title>
+    <meta
+      name="description"
+      content="Portfolio of Brijesh Yadav — Backend Engineer with 3+ years experience in Java, Spring Boot, PostgreSQL/MySQL, AWS, Docker, and microservices."
+    />
+    <meta
+      name="keywords"
+      content="Backend Developer, Java Developer, Spring Boot, AWS, Microservices, Full Stack"
+    />
+    <meta name="author" content="Brijesh Yadav" />
+    <meta name="theme-color" content="#0b1220" />
 
-  <nav id="navbar" class="nav">
-    <div class="nav__brand">
-      <span class="logo-dot" aria-hidden="true"></span>
-      <a href="#welcome-section" class="brand">Brijesh</a>
-    </div>
-    <button class="nav__toggle" aria-expanded="false" aria-controls="navmenu" aria-label="Toggle menu">☰</button>
-    <div id="navmenu" class="nav__links">
-      <a href="#welcome-section">About</a>
-      <a href="#projects">Projects</a>
-      <a href="skills.html#skills">Skills</a>
-      <a href="blog/index.html">Blog</a>
-      <a href="#contact">Contact</a>
-    </div>
-  </nav>
+    <!-- Open Graph / Social Media Meta Tags -->
+    <meta property="og:title" content="Brijesh Yadav · Backend Developer" />
+    <meta
+      property="og:description"
+      content="Backend Engineer with 3+ years experience in Java, Spring Boot, AWS, and microservices."
+    />
+    <meta property="og:image" content="assets/banner.svg" />
+    <meta property="og:url" content="https://recscse.github.io/portfolio/" />
 
-  <header id="welcome-section" class="hero">
-    <img src="assets/banner.svg" alt="Banner: Brijesh Yadav — Backend Developer" class="hero__banner">
-    <div class="hero__content">
-      <h1>Backend Developer</h1>
-      <p class="subtitle">3+ years building reliable microservices with <strong>Java</strong>, <strong>Spring Boot</strong>, <strong>PostgreSQL/MySQL</strong>, and <strong>AWS</strong>.</p>
-      <p class="muted">Currently building <strong>Growth Quantix</strong> — a real-time trading & analytics platform (FastAPI/Java, WebSockets, Redis, React).</p>
-      <div class="cta">
-        <a class="btn primary" href="blog/index.html">Read my Blog</a>
-        <a class="btn" href="#projects">See Projects</a>
+    <!-- Preload Critical Resources -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="mystyle.css" />
+
+    <!-- Icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css"
+    />
+
+    <!-- Favicon Support -->
+    <link rel="icon" href="assets/banner.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/banner.svg" />
+    <link rel="manifest" href="site.webmanifest" />
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+
+    <nav id="navbar" class="nav">
+      <div class="nav__brand">
+        <span class="logo-dot" aria-hidden="true"></span>
+        <a href="#welcome-section" class="brand">Brijesh</a>
       </div>
-    </div>
-  </header>
-
-  <main id="main">
-    <section id="projects" class="section container">
-      <h2 class="section__title">Featured Projects</h2>
-      <div class="grid">
-        <article class="card">
-          <h3>Document Sharing & Printing</h3>
-          <p>Secure, QR-based document handoffs with real-time receiver updates. Role-based access, immutable logs, and S3/EC2 optimized paths.</p>
-          <p class="tags"><span>Java</span><span>Spring Boot</span><span>PostgreSQL</span><span>AWS</span></p>
-          <a class="btn link" href="https://github.com/recscse/project-repo" target="_blank" rel="noopener">Source</a>
-        </article>
-        <article class="card">
-          <h3>PDF Data Extraction Service</h3>
-          <p>Extract dynamic fields from PDFs with customizable mapping rules. Pluggable for validation and enrichment microservices.</p>
-          <p class="tags"><span>Python</span><span>AI/ML</span><span>Java</span><span>Spring Boot</span></p>
-          <a class="btn link" href="https://github.com/recscse/project-repo" target="_blank" rel="noopener">Source</a>
-        </article>
-        <article class="card">
-          <h3>Growth Quantix (WIP)</h3>
-          <p>Real-time market data ingestion, modular signal engine, and trading candidates with WebSockets dashboards.</p>
-          <p class="tags"><span>FastAPI</span><span>Redis</span><span>WebSockets</span><span>React</span></p>
-          <a class="btn link" href="#" aria-disabled="true">Private</a>
-        </article>
+      <div class="nav__controls">
+        <button
+          id="theme-toggle"
+          class="theme-toggle"
+          aria-label="Toggle theme"
+        >
+          <svg
+            class="sun-icon"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <circle cx="12" cy="12" r="5" />
+            <line x1="12" y1="1" x2="12" y2="3" />
+            <line x1="12" y1="21" x2="12" y2="23" />
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
+            <line x1="1" y1="12" x2="3" y2="12" />
+            <line x1="21" y1="12" x2="23" y2="12" />
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
+          </svg>
+          <svg
+            class="moon-icon"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+          </svg>
+        </button>
+        <button
+          class="nav__toggle"
+          aria-expanded="false"
+          aria-controls="navmenu"
+          aria-label="Toggle menu"
+        >
+          ☰
+        </button>
       </div>
-    </section>
-
-    <section id="about" class="section container">
-      <h2 class="section__title">About</h2>
-      <p>I’m Brijesh Yadav, a Backend Engineer focused on designing clean APIs and production-ready microservices. I enjoy event-driven design, low-latency data, and automation that makes systems observable and reliable.</p>
-      <ul class="bullets">
-        <li>Software Engineer @ <strong>ArisGlobal</strong> (Oct 2021 — Present)</li>
-        <li>Deployed on <strong>AWS</strong> with <strong>Jenkins</strong> CI/CD</li>
-        <li>Languages: Java, JavaScript, C/C++ · DB: PostgreSQL, MySQL · Infra: Docker</li>
-      </ul>
-    </section>
-
-    <section id="contact" class="section container">
-      <h2 class="section__title">Contact</h2>
-      <div class="contact__grid">
-        <a class="contact__item" href="mailto:brijeshyadav30599@gmail.com">brijeshyadav30599@gmail.com</a>
-        <a class="contact__item" target="_blank" rel="noopener" href="https://www.linkedin.com/in/brijesh-yadav-">LinkedIn</a>
-        <a class="contact__item" target="_blank" rel="noopener" href="https://recscse.github.io/portfolio/index.html">Portfolio</a>
-        <a class="contact__item" target="_blank" rel="noopener" href="https://github.com/recscse">GitHub</a>
+      <div id="navmenu" class="nav__links">
+        <a href="#welcome-section">About</a>
+        <a href="#projects">Projects</a>
+        <a href="skills.html#skills">Skills</a>
+        <a href="blog/index.html">Blog</a>
+        <a href="#contact">Contact</a>
       </div>
-    </section>
-  </main>
+    </nav>
 
-  <footer class="footer">
-    <div class="container footer__inner">
-      <span>© <span id="year"></span> Brijesh Yadav</span>
-      <a href="blog/index.html">Blog</a>
-      <a href="skills.html#skills">Skills</a>
-    </div>
-  </footer>
+    <header id="welcome-section" class="hero">
+      <img
+        src="assets/banner.svg"
+        alt="Banner: Brijesh Yadav — Backend Developer"
+        class="hero__banner"
+      />
+      <div class="hero__content">
+        <h1>Backend Developer</h1>
+        <p class="subtitle">
+          3+ years building reliable microservices with <strong>Java</strong>,
+          <strong>Spring Boot</strong>, <strong>PostgreSQL/MySQL</strong>, and
+          <strong>AWS</strong>.
+        </p>
+        <p class="muted">
+          Currently building <strong>Growth Quantix</strong> — a real-time
+          trading & analytics platform (FastAPI/Java, WebSockets, Redis, React).
+        </p>
+        <div class="cta">
+          <a class="btn primary" href="blog/index.html">Read my Blog</a>
+          <a class="btn" href="#projects">See Projects</a>
+        </div>
+      </div>
+    </header>
 
-  <script>
-    // Mobile menu toggle
-    const toggle = document.querySelector('.nav__toggle');
-    const menu = document.getElementById('navmenu');
-    toggle && toggle.addEventListener('click', () => {
-      const open = toggle.getAttribute('aria-expanded') === 'true';
-      toggle.setAttribute('aria-expanded', String(!open));
-      menu.classList.toggle('open');
-    });
-    document.getElementById('year').textContent = new Date().getFullYear();
-  </script>
-</body>
+    <main id="main">
+      <section id="projects" class="section container">
+        <h2 class="section__title">
+          <i class="bx bxs-briefcase-alt-2"></i> Featured Projects
+        </h2>
+        <div class="grid">
+          <article class="card project-card">
+            <div class="project-header">
+              <i class="bx bx-file project-icon"></i>
+              <h3>Document Sharing & Printing</h3>
+            </div>
+            <p class="project-description">
+              Secure, QR-based document handoffs with real-time receiver
+              updates. Built with microservices architecture for scalability.
+            </p>
+            <div class="project-features">
+              <ul>
+                <li><i class="bx bx-check"></i> Role-based access control</li>
+                <li><i class="bx bx-check"></i> Immutable audit logs</li>
+                <li><i class="bx bx-check"></i> S3/EC2 optimized paths</li>
+                <li><i class="bx bx-check"></i> Real-time notifications</li>
+              </ul>
+            </div>
+            <p class="tags">
+              <span><i class="bx bxl-java"></i> Java</span>
+              <span><i class="bx bxl-spring-boot"></i> Spring Boot</span>
+              <span><i class="bx bxs-data"></i> PostgreSQL</span>
+              <span><i class="bx bxl-aws"></i> AWS</span>
+            </p>
+            <div class="project-links">
+              <a
+                class="btn link"
+                href="https://github.com/recscse/project-repo"
+                target="_blank"
+                rel="noopener"
+              >
+                <i class="bx bxl-github"></i> Source Code
+              </a>
+              <a class="btn link" href="#" target="_blank" rel="noopener">
+                <i class="bx bx-link-external"></i> Live Demo
+              </a>
+            </div>
+          </article>
+
+          <article class="card project-card">
+            <div class="project-header">
+              <i class="bx bxs-file-pdf project-icon"></i>
+              <h3>PDF Data Extraction Service</h3>
+            </div>
+            <p class="project-description">
+              AI-powered PDF data extraction system with customizable mapping
+              rules and microservices architecture for validation and
+              enrichment.
+            </p>
+            <div class="project-features">
+              <ul>
+                <li><i class="bx bx-check"></i> Custom mapping engine</li>
+                <li><i class="bx bx-check"></i> ML-based field detection</li>
+                <li><i class="bx bx-check"></i> Validation pipelines</li>
+                <li><i class="bx bx-check"></i> REST API integration</li>
+              </ul>
+            </div>
+            <p class="tags">
+              <span><i class="bx bxl-python"></i> Python</span>
+              <span><i class="bx bx-brain"></i> AI/ML</span>
+              <span><i class="bx bxl-java"></i> Java</span>
+              <span><i class="bx bxl-spring-boot"></i> Spring Boot</span>
+            </p>
+            <div class="project-links">
+              <a
+                class="btn link"
+                href="https://github.com/recscse/project-repo"
+                target="_blank"
+                rel="noopener"
+              >
+                <i class="bx bxl-github"></i> Source Code
+              </a>
+              <a class="btn link" href="#" target="_blank" rel="noopener">
+                <i class="bx bx-link-external"></i> Live Demo
+              </a>
+            </div>
+          </article>
+
+          <article class="card project-card">
+            <div class="project-header">
+              <i class="bx bx-line-chart project-icon"></i>
+              <h3>Growth Quantix (WIP)</h3>
+            </div>
+            <p class="project-description">
+              Real-time trading & analytics platform with high-performance data
+              processing and interactive dashboards for market analysis.
+            </p>
+            <div class="project-features">
+              <ul>
+                <li><i class="bx bx-check"></i> Real-time data ingestion</li>
+                <li><i class="bx bx-check"></i> Signal processing engine</li>
+                <li><i class="bx bx-check"></i> WebSocket streams</li>
+                <li><i class="bx bx-check"></i> Interactive charts</li>
+              </ul>
+            </div>
+            <p class="tags">
+              <span><i class="bx bxl-python"></i> FastAPI</span>
+              <span><i class="bx bxs-data"></i> Redis</span>
+              <span><i class="bx bx-broadcast"></i> WebSockets</span>
+              <span><i class="bx bxl-react"></i> React</span>
+            </p>
+            <div class="project-links">
+              <a class="btn link" href="#" aria-disabled="true">
+                <i class="bx bx-lock-alt"></i> Private Project
+              </a>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section id="about" class="section container">
+        <h2 class="section__title">About</h2>
+        <p>
+          I’m Brijesh Yadav, a Backend Engineer focused on designing clean APIs
+          and production-ready microservices. I enjoy event-driven design,
+          low-latency data, and automation that makes systems observable and
+          reliable.
+        </p>
+        <ul class="bullets">
+          <li>
+            Software Engineer @ <strong>ArisGlobal</strong> (Oct 2021 — Present)
+          </li>
+          <li>
+            Deployed on <strong>AWS</strong> with <strong>Jenkins</strong> CI/CD
+          </li>
+          <li>
+            Languages: Java, JavaScript, C/C++ · DB: PostgreSQL, MySQL · Infra:
+            Docker
+          </li>
+        </ul>
+      </section>
+
+      <section id="contact" class="section container">
+        <h2 class="section__title">Contact</h2>
+        <div class="contact__grid">
+          <a class="contact__item" href="mailto:brijeshyadav30599@gmail.com"
+            >brijeshyadav30599@gmail.com</a
+          >
+          <a
+            class="contact__item"
+            target="_blank"
+            rel="noopener"
+            href="https://www.linkedin.com/in/brijesh-yadav-"
+            >LinkedIn</a
+          >
+          <a
+            class="contact__item"
+            target="_blank"
+            rel="noopener"
+            href="https://recscse.github.io/portfolio/index.html"
+            >Portfolio</a
+          >
+          <a
+            class="contact__item"
+            target="_blank"
+            rel="noopener"
+            href="https://github.com/recscse"
+            >GitHub</a
+          >
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="container footer__inner">
+        <span>© <span id="year"></span> Brijesh Yadav</span>
+        <a href="blog/index.html">Blog</a>
+        <a href="skills.html#skills">Skills</a>
+      </div>
+    </footer>
+
+    <script>
+      // Theme management
+      const themeToggle = document.getElementById("theme-toggle");
+      const prefersDark = window.matchMedia("(prefers-color-scheme: dark)");
+
+      function setTheme(theme) {
+        document.documentElement.setAttribute("data-theme", theme);
+        localStorage.setItem("theme", theme);
+      }
+
+      // Initialize theme
+      const savedTheme = localStorage.getItem("theme");
+      if (savedTheme) {
+        setTheme(savedTheme);
+      } else {
+        setTheme(prefersDark.matches ? "dark" : "light");
+      }
+
+      // Theme toggle handler
+      themeToggle.addEventListener("click", () => {
+        const currentTheme =
+          document.documentElement.getAttribute("data-theme");
+        setTheme(currentTheme === "dark" ? "light" : "dark");
+      });
+
+      // Mobile menu toggle
+      const toggle = document.querySelector(".nav__toggle");
+      const menu = document.getElementById("navmenu");
+      toggle?.addEventListener("click", () => {
+        const open = toggle.getAttribute("aria-expanded") === "true";
+        toggle.setAttribute("aria-expanded", String(!open));
+        menu.classList.toggle("open");
+      });
+
+      // Smooth scroll for navigation links
+      document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+        anchor.addEventListener("click", function (e) {
+          e.preventDefault();
+          const target = document.querySelector(this.getAttribute("href"));
+          if (target) {
+            target.scrollIntoView({
+              behavior: "smooth",
+              block: "start",
+            });
+            // Close mobile menu if open
+            menu.classList.remove("open");
+            toggle.setAttribute("aria-expanded", "false");
+          }
+        });
+      });
+
+      // Update copyright year
+      document.getElementById("year").textContent = new Date().getFullYear();
+
+      // Intersection Observer for fade-in animations
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add("visible");
+            }
+          });
+        },
+        {
+          threshold: 0.1,
+        }
+      );
+
+      // Observe all cards and sections
+      document.querySelectorAll(".card, .section").forEach((el) => {
+        el.classList.add("fade-in");
+        observer.observe(el);
+      });
+    </script>
+  </body>
 </html>
