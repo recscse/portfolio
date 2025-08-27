@@ -1,108 +1,111 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <link rel="stylesheet" href="mystyle.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Personal Portfolio Webpage</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Brijesh Yadav · Backend Developer (Java, Spring Boot, AWS)</title>
+  <meta name="description" content="Portfolio of Brijesh Yadav — Backend Engineer with 3+ years experience in Java, Spring Boot, PostgreSQL/MySQL, AWS, Docker, and microservices.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="mystyle.css">
+  <link rel="icon" href="assets/banner.svg" type="image/svg+xml">
 </head>
 <body>
-    <nav id="navbar">
-        <a href="#welcome-section">About</a>
-        <a href="#projects">Projects</a>
-        <a href="#social">Social</a>
-        <a href="skills.html#skills">Skills</a>
-    </nav>
-    <header id="welcome-section">
-        
-            <h1>Hello 👋</h1>
-<!--         <p>My Name is Brijesh Yadav</p> -->
-          <p>My Name is <strong>Brijesh Yadav</strong></p>
-        <p>I have <strong>three years of software development experience</strong></p>
-        <p>Specializing in <strong>Java, PostgreSQL, Spring Boot, Microservices, AWS, and S3</strong></p>
-<!--         <p>       using       </p/> -->
-<!--         <p>Java PostgreSQL Soring Boot Microservice ASW S3  </p> -->
-        <p>Currently working as a <strong>Software Engineer at ArisGlobal</strong></p>
-        <p>Graduated from <strong>Rajkiya Engineering College, Sonbhadra</strong></p>
-        <p>Degree: <strong>Computer Science & Engineering</strong></p>
-<!--         <p>Graduated from Rajkiya Engineering College, </p> -->
-<!--            <p>        Sonbhadra     </p> -->
-<!--        <p>  Computer Science &amp; Engineering</p>  -->
-    </header>
-    <section id="skills">
-        <p>
-              <h2>Skills</h2> 
-            <h1>Full Stack Developement</h1>
-            <ul>
-                <h3>Spring Boot</h3>
-                <h3>Node js</h3>
-                <h3>React</h3>
-                <h3>Java Script </h3>
-                <h3>Sql</h3>
-                <h3>PostgreSQL</h3>
-            </ul>
-            <h1>Programming languages</h1>
-            <ul>
-                <h3>Java</h3>
-                <h3>C</h3>
-                <h3>C++</h3>
-                
-    
-            </ul>
-    
-        </p>
-        </section>
+  <a class="skip-link" href="#main">Skip to content</a>
 
+  <nav id="navbar" class="nav">
+    <div class="nav__brand">
+      <span class="logo-dot" aria-hidden="true"></span>
+      <a href="#welcome-section" class="brand">Brijesh</a>
+    </div>
+    <button class="nav__toggle" aria-expanded="false" aria-controls="navmenu" aria-label="Toggle menu">☰</button>
+    <div id="navmenu" class="nav__links">
+      <a href="#welcome-section">About</a>
+      <a href="#projects">Projects</a>
+      <a href="skills.html#skills">Skills</a>
+      <a href="blog/index.html">Blog</a>
+      <a href="#contact">Contact</a>
+    </div>
+  </nav>
 
-    <section id="projects">
-        <h2>Projects</h2>
-        <div class="projects-container">
-            <a href="https://recscse.github.io/survey-form/" target="_blank" class="project-tile"><img src="https://raw.githubusercontent.com/recscse/survey-form/master/survey-form.jpeg"  alt="survey form">
-                <p>Survey Form</p>
-                </a>
-              
-              <a href="https://recscse.github.io/Dr.A.P.J.-Abdul-Kalam-Tribute-Page/" target="_blank" class="project-tile"><img src="https://github.com/recscse/Dr.A.P.J.-Abdul-Kalam-Tribute-Page/blob/master/apj_abdul_kalam.jpg?raw=true"   alt="ttribute page">
-                <p>Tribute Page </p>
-              </a>
-              <a  href="https://recscse.github.io/Build-a-Technical-Documentation-Page/"
-                     target="_blank" class="project-tile">
-                     <img src="https://github.com/recscse/Build-a-Technical-Documentation-Page/blob/master/technical%20document%20page.jpeg?raw=true"  alt="technical documentation page">
-                    <p>Technical Documentation Page</p>
-              </a>
-              <a href="https://blog-full-stack.netlify.app/" 
-                target="_blank" class="project-tile"> 
-                <img src="blog image.png" alt="Blog">
-                    <p>Blog Full Stack Web Application</p>
-              </a>
-              <a href="https://jobboardportal.netlify.app/" target="_blank" class="project-tile"><img src="jobboardportal.png" alt="job board poltal">
-                <p>Job Board Portal</p>
-            </a>
-            
-                
+  <header id="welcome-section" class="hero">
+    <img src="assets/banner.svg" alt="Banner: Brijesh Yadav — Backend Developer" class="hero__banner">
+    <div class="hero__content">
+      <h1>Backend Developer</h1>
+      <p class="subtitle">3+ years building reliable microservices with <strong>Java</strong>, <strong>Spring Boot</strong>, <strong>PostgreSQL/MySQL</strong>, and <strong>AWS</strong>.</p>
+      <p class="muted">Currently building <strong>Growth Quantix</strong> — a real-time trading & analytics platform (FastAPI/Java, WebSockets, Redis, React).</p>
+      <div class="cta">
+        <a class="btn primary" href="blog/index.html">Read my Blog</a>
+        <a class="btn" href="#projects">See Projects</a>
+      </div>
+    </div>
+  </header>
 
-        </div>
-        
-             
+  <main id="main">
+    <section id="projects" class="section container">
+      <h2 class="section__title">Featured Projects</h2>
+      <div class="grid">
+        <article class="card">
+          <h3>Document Sharing & Printing</h3>
+          <p>Secure, QR-based document handoffs with real-time receiver updates. Role-based access, immutable logs, and S3/EC2 optimized paths.</p>
+          <p class="tags"><span>Java</span><span>Spring Boot</span><span>PostgreSQL</span><span>AWS</span></p>
+          <a class="btn link" href="https://github.com/recscse/project-repo" target="_blank" rel="noopener">Source</a>
+        </article>
+        <article class="card">
+          <h3>PDF Data Extraction Service</h3>
+          <p>Extract dynamic fields from PDFs with customizable mapping rules. Pluggable for validation and enrichment microservices.</p>
+          <p class="tags"><span>Python</span><span>AI/ML</span><span>Java</span><span>Spring Boot</span></p>
+          <a class="btn link" href="https://github.com/recscse/project-repo" target="_blank" rel="noopener">Source</a>
+        </article>
+        <article class="card">
+          <h3>Growth Quantix (WIP)</h3>
+          <p>Real-time market data ingestion, modular signal engine, and trading candidates with WebSockets dashboards.</p>
+          <p class="tags"><span>FastAPI</span><span>Redis</span><span>WebSockets</span><span>React</span></p>
+          <a class="btn link" href="#" aria-disabled="true">Private</a>
+        </article>
+      </div>
     </section>
-    <section id="social" class="bg-pinkish">
-        <h2>Social</h2>
-        <p>You can find me on</p>
-        <ul class="social-ul">
-            <li><a href="https://twitter.com/_brijeshyadav" target="_blank"><i class="fa fa-twitter"></i></a></li>
-            <li><a href="https://linkedin.com/in/brijesh-yadav-" target="_blank"><i class="fa fa-linkedin"></i></a></li>
-            <li><a id="profile-link" href="https://github.com/recscse" target="_blank"><i class="fa fa-github"></i></a></li>
-            <li><a href="https://facebook.com/brijeshyadav03" target="_blank"><i class="fa fa-facebook"></i></a></li>
-            <script type="text/javascript" src="https://platform.linkedin.com/badges/js/profile.js" async defer></script>
-            <li><a href="mailto:brijeshyadav30599@gmail.com" target="_blank"><i class="fa fa-envelope"></i></a></li>
-           
-            
-        </ul>
+
+    <section id="about" class="section container">
+      <h2 class="section__title">About</h2>
+      <p>I’m Brijesh Yadav, a Backend Engineer focused on designing clean APIs and production-ready microservices. I enjoy event-driven design, low-latency data, and automation that makes systems observable and reliable.</p>
+      <ul class="bullets">
+        <li>Software Engineer @ <strong>ArisGlobal</strong> (Oct 2021 — Present)</li>
+        <li>Deployed on <strong>AWS</strong> with <strong>Jenkins</strong> CI/CD</li>
+        <li>Languages: Java, JavaScript, C/C++ · DB: PostgreSQL, MySQL · Infra: Docker</li>
+      </ul>
     </section>
-    <footer>Made with <i class="fa fa-heart">
-         </i> by Brijesh Yadav
-    </footer>
-    <!-- <figure><embed src="https://wakatime.com/share/@brijesh/25cf79b1-1a06-4384-8e78-7ec3c4895755.svg"></embed></figure> -->
-    <!-- <figure><embed src="https://wakatime.com/share/@brijesh/3d2cb27e-29b8-4421-909f-16c78e2fe92a.svg"></embed></figure> -->
+
+    <section id="contact" class="section container">
+      <h2 class="section__title">Contact</h2>
+      <div class="contact__grid">
+        <a class="contact__item" href="mailto:brijeshyadav30599@gmail.com">brijeshyadav30599@gmail.com</a>
+        <a class="contact__item" target="_blank" rel="noopener" href="https://www.linkedin.com/in/brijesh-yadav-">LinkedIn</a>
+        <a class="contact__item" target="_blank" rel="noopener" href="https://recscse.github.io/portfolio/index.html">Portfolio</a>
+        <a class="contact__item" target="_blank" rel="noopener" href="https://github.com/recscse">GitHub</a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer__inner">
+      <span>© <span id="year"></span> Brijesh Yadav</span>
+      <a href="blog/index.html">Blog</a>
+      <a href="skills.html#skills">Skills</a>
+    </div>
+  </footer>
+
+  <script>
+    // Mobile menu toggle
+    const toggle = document.querySelector('.nav__toggle');
+    const menu = document.getElementById('navmenu');
+    toggle && toggle.addEventListener('click', () => {
+      const open = toggle.getAttribute('aria-expanded') === 'true';
+      toggle.setAttribute('aria-expanded', String(!open));
+      menu.classList.toggle('open');
+    });
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
 </body>
 </html>
