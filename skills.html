@@ -1,85 +1,51 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="skills.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <title>Skills</title> 
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Skills — Brijesh Yadav</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="skills.css">
+  <link rel="icon" href="assets/banner.svg" type="image/svg+xml">
 </head>
 <body>
-    <nav id="navbar">
-        <a href="index.html#welcome-section">About</a>
-        <a href="index.html#projects">Projects</a>
-        <a href="index.html#social">Social</a>
-        <a href="skills.html#skills">Skills</a>
-    </nav>
-    <header id="welcome-section">
-            <h1>Hello 👋</h1>
-        <p>My Name is Brijesh Yadav</p>
-        <p>and I am a Web Developer</p>
-    
-        
-    </header>
-   <section id="skills">
-    <p>
-         <h2>Skills</h2>
-        <h3>Full Stack Developement</h3>
-        <ul>
-            <h4>Node js</h4>
-            <h4>React</h4>
-            <h4>Java Script </h4>
-        </ul>
-        <h3>Programming languages</h3>
-        <ul>
-            <h3>C</h3>
-            <h3>C++</h3>
-            <h3>Java</h3>
+  <nav class="nav">
+    <a class="brand" href="index.html">← Back</a>
+    <div class="title">Skills</div>
+    <a class="blog" href="blog/index.html">Blog</a>
+  </nav>
 
-        </ul>
-
-    </p>
+  <main class="container">
+    <section id="skills">
+      <h1>Tech Stack</h1>
+      <div class="chips">
+        <span>Java</span><span>Spring Boot</span><span>Hibernate</span>
+        <span>JUnit</span><span>JavaScript</span><span>C/C++</span>
+        <span>Python</span><span>PostgreSQL</span><span>MySQL</span>
+        <span>Redis</span><span>Docker</span><span>AWS (EC2, S3, Lambda)</span>
+        <span>Jenkins</span><span>REST APIs</span><span>WebSockets</span>
+      </div>
     </section>
-    <section id="projects">
-        <h2>Projects</h2>
-        <div class="projects-container">
-            <a href="https://recscse.github.io/survey-form/" target="_blank" class="project-tile"><img src="https://raw.githubusercontent.com/recscse/survey-form/master/survey-form.jpeg"  alt="survey form">
-                <p>Survey Form</p>
-              
-              <a href="https://recscse.github.io/Dr.A.P.J.-Abdul-Kalam-Tribute-Page/" target="_blank" class="project-tile"><img src="https://github.com/recscse/Dr.A.P.J.-Abdul-Kalam-Tribute-Page/blob/master/apj_abdul_kalam.jpg?raw=true"   alt="ttribute page">
-                <p>Tribute Page </p>
-              </a>
-              <a  href="https://recscse.github.io/Build-a-Technical-Documentation-Page/" target="_blank" class="project-tile"><img src="https://github.com/recscse/Build-a-Technical-Documentation-Page/blob/master/technical%20document%20page.jpeg?raw=true"  alt="technical documentation page">
-                    <p>Technical Documentation Page</p>
-              </a>
-              <a href="https://brave-bardeen-957581.netlify.app/" target="_blank" class="project-tile"> <img src="blog image.png" alt="Blog">
-                    <p>Blog Full Stack Web Application</p>
 
-              </a>
-                
-
-        </div>
-        
-             
+    <section>
+      <h2>Experience</h2>
+      <ul class="timeline">
+        <li>
+          <div class="dot"></div>
+          <div class="content">
+            <h3>Software Engineer — ArisGlobal</h3>
+            <p class="muted">Oct 2021 — Present · Mysore, India</p>
+            <ul>
+              <li>Microservices for email processing & secure document sharing (Spring Boot + PostgreSQL)</li>
+              <li>QR-code document transfer with auditability & access control</li>
+              <li>AWS (EC2, S3) deployments with Jenkins CI/CD & monitoring</li>
+            </ul>
+          </div>
+        </li>
+      </ul>
     </section>
+  </main>
 </body>
-<section id="social" class="bg-pinkish">
-    <h2>Social</h2>
-    <p>You can find me on</p>
-    <ul class="social-ul">
-        <li><a href="https://twitter.com/_brijeshyadav" target="_blank"><i class="fa fa-twitter"></i></a></li>
-        <li><a href="https://linkedin.com/in/brijesh-yadav-" target="_blank"><i class="fa fa-linkedin"></i></a></li>
-        <li><a id="profile-link" href="https://github.com/recscse" target="_blank"><i class="fa fa-github"></i></a></li>
-        <li><a href="https://facebook.com/brijeshyadav03" target="_blank"><i class="fa fa-facebook"></i></a></li>
-        <script type="text/javascript" src="https://platform.linkedin.com/badges/js/profile.js" async defer></script>
-       
-        
-    </ul>
-</section>
-<footer>Made with <i class="fa fa-heart">
-    
-
-</i> by Brijesh Yadav</footer>
-<!-- <figure><embed src="https://wakatime.com/share/@brijesh/25cf79b1-1a06-4384-8e78-7ec3c4895755.svg"></embed></figure> -->
-<!-- <figure><embed src="https://wakatime.com/share/@brijesh/3d2cb27e-29b8-4421-909f-16c78e2fe92a.svg"></embed></figure> -->
 </html>
