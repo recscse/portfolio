@@ -1,93 +1,126 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Brijesh Yadav — Blog</title>
-  <link rel="stylesheet" href="blog.css">
-  <meta name="description" content="Engineering notes by Brijesh Yadav: Java, Spring Boot, AWS, FastAPI, real-time systems.">
-</head>
-<body>
-  <div class="container">
-    <img class="banner" src="../assets/banner.svg" alt="Brijesh Yadav">
-    <div class="header">
-      <div class="title">Blog</div>
-      <div class="controls">
-        <input id="q" type="search" placeholder="Search posts... (e.g., Spring, WebSockets)">
-        <select id="tag">
-          <option value="">All topics</option>
-        </select>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Brijesh Yadav — Blog</title>
+    <link rel="stylesheet" href="blog.css" />
+    <meta
+      name="description"
+      content="Engineering notes by Brijesh Yadav: Java, Spring Boot, AWS, FastAPI, real-time systems."
+    />
+  </head>
+  <body>
+    <div class="container">
+      <img class="banner" src="../assets/banner.svg" alt="Brijesh Yadav" />
+      <div class="header">
+        <div class="title">Blog</div>
+        <div class="controls">
+          <input
+            id="q"
+            type="search"
+            placeholder="Search posts... (e.g., Spring, WebSockets)"
+          />
+          <select id="tag">
+            <option value="">All topics</option>
+          </select>
+        </div>
+      </div>
+      <div id="grid" class="grid"></div>
+      <div class="footer">
+        © <span id="y"></span> Brijesh Yadav ·
+        <a href="../index.html">Back to Portfolio</a>
       </div>
     </div>
-    <div id="grid" class="grid"></div>
-    <div class="footer">© <span id="y"></span> Brijesh Yadav · <a href="../index.html">Back to Portfolio</a></div>
-  </div>
-  <script>
-  const posts=[
-    {
-      title:"Growth Quantix — Live Data to Signals",
-      date:"2025-08-20",
-      summary:"How I wired a low-latency live market feed into a modular signal engine using FastAPI, Redis, and WebSockets.",
-      tags:["FastAPI","WebSockets","Redis","Trading"],
-      url:"#"
-    },
-    {
-      title:"Spring Boot Email Pipeline: From Queue to Delivery",
-      date:"2025-06-04",
-      summary:"Designing a resilient email processing microservice with idempotent APIs, retries, and observability.",
-      tags:["Java","Spring Boot","Microservices","Observability"],
-      url:"#"
-    },
-    {
-      title:"S3 + CloudFront for Low-Cost Static Hosting",
-      date:"2025-03-18",
-      summary:"Step-by-step notes on deploying a static portfolio with caching, invalidations, and HTTPS.",
-      tags:["AWS","S3","CloudFront","DevOps"],
-      url:"#"
-    },
-    {
-      title:"QR-based Document Handoffs with Audit Trails",
-      date:"2024-11-10",
-      summary:"Security and UX considerations for a QR-driven document sharing flow backed by PostgreSQL.",
-      tags:["Security","PostgreSQL","Spring Boot"],
-      url:"#"
-    }
-  ];
+    <script>
+      const posts = [
+        {
+          title: "Growth Quantix — Live Data to Signals",
+          date: "2025-08-20",
+          summary:
+            "How I wired a low-latency live market feed into a modular signal engine using FastAPI, Redis, and WebSockets.",
+          tags: ["FastAPI", "WebSockets", "Redis", "Trading"],
+          url: "#",
+        },
+        {
+          title: "Spring Boot Email Pipeline: From Queue to Delivery",
+          date: "2025-06-04",
+          summary:
+            "Designing a resilient email processing microservice with idempotent APIs, retries, and observability.",
+          tags: ["Java", "Spring Boot", "Microservices", "Observability"],
+          url: "#",
+        },
+        {
+          title: "S3 + CloudFront for Low-Cost Static Hosting",
+          date: "2025-03-18",
+          summary:
+            "Step-by-step notes on deploying a static portfolio with caching, invalidations, and HTTPS.",
+          tags: ["AWS", "S3", "CloudFront", "DevOps"],
+          url: "#",
+        },
+        {
+          title: "QR-based Document Handoffs with Audit Trails",
+          date: "2024-11-10",
+          summary:
+            "Security and UX considerations for a QR-driven document sharing flow backed by PostgreSQL.",
+          tags: ["Security", "PostgreSQL", "Spring Boot"],
+          url: "#",
+        },
+        {
+          title: "Building a Real-Time Market Data Generator",
+          date: "2025-10-17",
+          summary:
+            "How I simulated live stock market ticks to test algo trading systems with deterministic replay and burst handling.",
+          tags: ["Trading", "Simulation", "FastAPI", "Redis"],
+          url: "market-data-generator.html",
+        },
+      ];
 
-  const grid=document.getElementById('grid');
-  const q=document.getElementById('q');
-  const tag=document.getElementById('tag');
+      const grid = document.getElementById("grid");
+      const q = document.getElementById("q");
+      const tag = document.getElementById("tag");
 
-  const allTags=[...new Set(posts.flatMap(p=>p.tags))].sort();
-  for(const t of allTags){
-    const opt=document.createElement('option');
-    opt.value=t; opt.textContent=t; tag.appendChild(opt);
-  }
+      const allTags = [...new Set(posts.flatMap((p) => p.tags))].sort();
+      for (const t of allTags) {
+        const opt = document.createElement("option");
+        opt.value = t;
+        opt.textContent = t;
+        tag.appendChild(opt);
+      }
 
-  function render(){
-    const qq=(q.value||'').toLowerCase();
-    const tt=tag.value;
-    grid.innerHTML='';
-    posts
-      .slice()
-      .sort((a,b)=>b.date.localeCompare(a.date))
-      .filter(p=>(!tt||p.tags.includes(tt)) && (!qq||(p.title+ ' ' + p.summary + ' ' + p.tags.join(' ')).toLowerCase().includes(qq)))
-      .forEach(p=>{
-        const card=document.createElement('a');
-        card.className='card';
-        card.href=p.url||'#';
-        card.innerHTML=`<h3>${p.title}</h3>
+      function render() {
+        const qq = (q.value || "").toLowerCase();
+        const tt = tag.value;
+        grid.innerHTML = "";
+        posts
+          .slice()
+          .sort((a, b) => b.date.localeCompare(a.date))
+          .filter(
+            (p) =>
+              (!tt || p.tags.includes(tt)) &&
+              (!qq ||
+                (p.title + " " + p.summary + " " + p.tags.join(" "))
+                  .toLowerCase()
+                  .includes(qq))
+          )
+          .forEach((p) => {
+            const card = document.createElement("a");
+            card.className = "card";
+            card.href = p.url || "#";
+            card.innerHTML = `<h3>${p.title}</h3>
                         <p>${new Date(p.date).toLocaleDateString()}</p>
                         <p>${p.summary}</p>
-                        <div>${p.tags.map(t=>`<span class='tag'>${t}</span>`).join('')}</div>`;
-        grid.appendChild(card);
-      });
-  }
+                        <div>${p.tags
+                          .map((t) => `<span class='tag'>${t}</span>`)
+                          .join("")}</div>`;
+            grid.appendChild(card);
+          });
+      }
 
-  q.addEventListener('input',render);
-  tag.addEventListener('change',render);
-  render();
-  document.getElementById('y').textContent=new Date().getFullYear();
-  </script>
-</body>
+      q.addEventListener("input", render);
+      tag.addEventListener("change", render);
+      render();
+      document.getElementById("y").textContent = new Date().getFullYear();
+    </script>
+  </body>
 </html>
