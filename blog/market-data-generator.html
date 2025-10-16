@@ -18,8 +18,249 @@
         Systems
       </h1>
       <p><em>Published on October 17, 2025 · by Brijesh Yadav</em></p>
-      <p>When building algorithmic trading systems, the hardest part ...</p>
-      <!-- paste the full blog body here -->
+
+      <p>
+        When building algorithmic trading systems, the hardest part to test
+        reliably is the
+        <strong>real-time market feed</strong>. Live markets are unpredictable,
+        noisy, and expensive to test against. A lightweight, deterministic
+        <strong>market data generator</strong> that simulates realistic
+        tick-level patterns lets you validate strategies, risk controls, and
+        order routing without paying exchange fees or risking real money.
+      </p>
+
+      <h2>Why Build a Market Data Generator?</h2>
+      <ul>
+        <li>
+          <strong>Deterministic testing</strong> — replayable market scenarios
+          for consistent regression testing.
+        </li>
+        <li>
+          <strong>Edge case simulation</strong> — bursts, gaps, halts, and
+          illiquid periods.
+        </li>
+        <li>
+          <strong>Rapid iteration</strong> — run thousands of “market minutes”
+          in seconds.
+        </li>
+        <li>
+          <strong>Offline CI integration</strong> — validate trading logic in
+          automation pipelines.
+        </li>
+      </ul>
+
+      <h2>Core Design Requirements</h2>
+      <ol>
+        <li>
+          Generate <strong>tick-level</strong> events: price, size, symbol,
+          timestamp.
+        </li>
+        <li>
+          Support <strong>multiple instruments</strong>: equities, options,
+          indices.
+        </li>
+        <li>
+          Inject <strong>scenarios</strong>: volatility spikes, news shocks,
+          gaps.
+        </li>
+        <li>
+          Produce <strong>realistic microstructure</strong>: bid/ask, trade
+          sizes, spreads.
+        </li>
+        <li>
+          Adjustable <strong>time scale</strong>: real-time or accelerated
+          playback.
+        </li>
+      </ol>
+
+      <h2>System Architecture</h2>
+      <p>The generator consists of five lightweight components:</p>
+      <ul>
+        <li>
+          <strong>Instrument Catalog</strong> — a JSON list defining symbols,
+          strikes, expiries, and lot sizes.
+        </li>
+        <li>
+          <strong>Market Clock</strong> — drives the tick loop in real-time or
+          accelerated mode.
+        </li>
+        <li>
+          <strong>Tick Generator</strong> — produces stochastic price updates
+          per instrument.
+        </li>
+        <li>
+          <strong>Scenario Engine</strong> — injects external events such as
+          volatility spikes or news.
+        </li>
+        <li>
+          <strong>Publisher</strong> — streams events to subscribers via
+          <code>WebSocket</code> or <code>Server-Sent Events (SSE)</code>.
+        </li>
+      </ul>
+
+      <h2>Tick Generation Model</h2>
+      <p>
+        A simple yet realistic price evolution model is a stochastic random walk
+        with drift and volatility. Each tick is computed as:
+      </p>
+
+      <pre><code>p_next = p_prev * (1 + drift*dt + sigma * sqrt(dt) * N(0,1) + jump)
+</code></pre>
+
+      <ul>
+        <li>
+          <code>drift</code> — directional bias representing market sentiment.
+        </li>
+        <li><code>sigma</code> — volatility factor controlling randomness.</li>
+        <li>
+          <code>jump</code> — a sudden change drawn from a Poisson process (for
+          “news” events).
+        </li>
+      </ul>
+
+      <p>
+        You can further enhance realism by rounding prices to tick size,
+        generating heavy-tailed trade volumes, and simulating spreads between
+        bid and ask quotes.
+      </p>
+
+      <h2>Implementation Example (Python)</h2>
+
+      <pre><code class="language-python">
+import asyncio, random, math, json, datetime
+
+async def tick_generator(symbol, base_price=100.0, drift=0.0001, sigma=0.001):
+    p = base_price
+    while True:
+        dt = 1/100  # seconds between ticks
+        jump = 0
+        if random.random() < 0.0005:  # rare news event
+            jump = random.uniform(-0.03, 0.05)
+        p *= (1 + drift*dt + sigma*math.sqrt(dt)*random.gauss(0,1) + jump)
+        yield {
+            "symbol": symbol,
+            "price": round(p, 2),
+            "volume": random.randint(10, 1000),
+            "timestamp": datetime.datetime.utcnow().isoformat() + "Z"
+        }
+        await asyncio.sleep(dt)
+</code></pre>
+
+      <p>
+        This coroutine continuously yields ticks that you can broadcast via
+        <code>FastAPI</code> using <code>WebSockets</code> or
+        <code>Server-Sent Events</code>.
+      </p>
+
+      <h2>Publishing with FastAPI + SSE</h2>
+
+      <pre><code class="language-python">
+from fastapi import FastAPI
+from fastapi.responses import StreamingResponse
+import asyncio, json
+
+app = FastAPI()
+
+async def event_stream():
+    gen = tick_generator("RELIANCE")
+    async for tick in gen:
+        yield f"data: {json.dumps(tick)}\n\n"
+
+@app.get("/stream")
+async def stream():
+    return StreamingResponse(event_stream(), media_type="text/event-stream")
+</code></pre>
+
+      <p>
+        Your frontend can connect using JavaScript’s <code>EventSource</code>:
+      </p>
+
+      <pre><code class="language-javascript">
+const es = new EventSource("/stream");
+es.onmessage = (e) => {
+  const tick = JSON.parse(e.data);
+  console.log("Tick:", tick.symbol, tick.price);
+};
+</code></pre>
+
+      <h2>Scenario Engine</h2>
+      <p>
+        To make simulations meaningful, add a “scenario engine” that manipulates
+        volatility and drift. For instance:
+      </p>
+      <ul>
+        <li>
+          <strong>Volatility Spike</strong> — increase <code>sigma</code> by 5×
+          for 2 minutes.
+        </li>
+        <li>
+          <strong>Market Crash</strong> — apply negative drift and trigger price
+          gaps.
+        </li>
+        <li>
+          <strong>News Event</strong> — random positive/negative jump with
+          increased volume.
+        </li>
+      </ul>
+
+      <h2>Integrating into CI/CD</h2>
+      <p>You can embed the generator into automated test pipelines:</p>
+      <ul>
+        <li>Run replay tests with stored random seeds.</li>
+        <li>
+          Assert P&L invariants: no negative quantities, logical fills,
+          stop-loss execution.
+        </li>
+        <li>
+          Collect metrics from simulated runs to track strategy performance
+          trends.
+        </li>
+      </ul>
+
+      <h2>Possible Extensions</h2>
+      <ul>
+        <li>Order book simulator with limit orders and matching logic.</li>
+        <li>Option chain pricing using Black-Scholes greeks per tick.</li>
+        <li>Streaming to Redis Pub/Sub or Kafka for distributed consumers.</li>
+        <li>Dockerized generator for isolated testing environments.</li>
+      </ul>
+
+      <h2>Example Architecture Overview</h2>
+      <p>Here’s a simplified flow of the generator setup:</p>
+
+      <pre><code>
+[Generator] → [FastAPI / Redis Stream] → [Trading Engine] → [Frontend Dashboard]
+</code></pre>
+
+      <p>
+        Each stage consumes real-time data just like a production setup, but
+        under full developer control.
+      </p>
+
+      <h2>Closing Thoughts</h2>
+      <p>
+        A reliable <strong>market data generator</strong> is an indispensable
+        tool for any algorithmic trading system. It bridges the gap between
+        theory and production by providing controlled realism. Start with a
+        single-symbol generator and incrementally add features — volatility
+        modeling, bursts, option greeks, or multi-exchange feeds.
+      </p>
+
+      <p>
+        For <strong>Growth Quantix</strong>, my goal is to use this generator to
+        validate latency, signal accuracy, and trade execution logic before
+        connecting to the real Upstox live feed. The same system can even run on
+        weekends for regression testing or strategy dry-runs.
+      </p>
+
+      <p><em>— Brijesh Yadav</em></p>
+
+      <div class="footer">
+        <hr />
+        <p>
+          © 2025 Brijesh Yadav · <a href="../index.html">Back to Portfolio</a>
+        </p>
+      </div>
     </div>
   </body>
 </html>
