@@ -425,6 +425,49 @@ a { text-decoration: none; color: inherit; transition: all 0.2s ease; }
   gap: 16px;
 }
 
+/* 6.1 Certifications */
+.cert-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+.cert-card {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  background: var(--bg-card);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  transition: all 0.3s ease;
+}
+
+.cert-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--primary);
+  background: var(--bg-card-hover);
+  box-shadow: var(--glass-shadow);
+}
+
+.cert-icon {
+  font-size: 3rem;
+  color: var(--primary);
+}
+
+.cert-info h3 {
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin: 0 0 4px 0;
+  color: var(--text-main);
+}
+
+.cert-info p {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  margin: 0;
+}
+
 .skill-item {
   background: var(--bg-card);
   border: 1px solid var(--glass-border);
