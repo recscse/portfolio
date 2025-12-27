@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Post Title | Brijesh Yadav</title>
+    <link rel="stylesheet" href="blog.css" />
+    <meta name="description" content="Brief summary of the post for SEO." />
+    <script>
+        // Inline script to prevent flash of unstyled content
+        const savedTheme = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+        document.documentElement.setAttribute('data-theme', savedTheme);
+    </script>
+  </head>
+  <body>
+    <!-- Navbar -->
+    <nav class="nav-bar">
+      <div class="nav-left">
+        <a href="../index.html" class="nav-brand">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+            </svg>
+            Brijesh Yadav
+        </a>
+      </div>
+      <div style="display: flex; gap: 12px; align-items: center;">
+          <a href="index.html" class="nav-link">← All Posts</a>
+          <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme">
+            <!-- Sun Icon -->
+            <svg class="sun-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display: none;">
+                <circle cx="12" cy="12" r="5"></circle>
+                <line x1="12" y1="1" x2="12" y2="3"></line>
+                <line x1="12" y1="21" x2="12" y2="23"></line>
+                <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                <line x1="1" y1="12" x2="3" y2="12"></line>
+                <line x1="21" y1="12" x2="23" y2="12"></line>
+                <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+            </svg>
+            <!-- Moon Icon -->
+            <svg class="moon-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+            </svg>
+          </button>
+      </div>
+    </nav>
+
+    <div class="layout">
+      <!-- Main Article -->
+      <article class="prose">
+        <header class="post-header">
+          <div class="post-meta">
+            <span>Dec 27, 2025</span>
+            <span>·</span>
+            <span>5 min read</span>
+          </div>
+          <h1 class="post-title">Your Blog Post Title Goes Here</h1>
+          <div class="tags-container">
+            <span class="tag">Tag 1</span>
+            <span class="tag">Tag 2</span>
+          </div>
+        </header>
+
+        <!-- INTRO -->
+        <p class="lead">
+          Write a compelling introduction here. Use <strong>strong tags</strong> for emphasis.
+        </p>
+
+        <!-- SECTION 1 -->
+        <h2 id="section-1">1. Section Heading</h2>
+        <p>
+          Standard paragraph text. You can mention code like <code>api_key</code> inline.
+        </p>
+        
+        <!-- DIAGRAM EXAMPLE -->
+        <div class="diagram-box">
+          <div class="diagram-header">
+            <div class="window-controls">
+              <div class="control red"></div>
+              <div class="control yellow"></div>
+              <div class="control green"></div>
+            </div>
+            <div class="diagram-title">System Architecture</div>
+          </div>
+          <pre class="diagram-content">
+  ┌─────────────┐      ┌─────────────┐
+  │   Client    │─────▶│     API     │
+  └─────────────┘      └─────────────┘
+                              │
+                              ▼
+                       ┌─────────────┐
+                       │     DB      │
+                       └─────────────┘
+          </pre>
+        </div>
+
+        <!-- CODE BLOCK EXAMPLE -->
+        <pre><code class="language-python">
+def hello_world():
+    print("This is a standard code block")
+    return True
+        </code></pre>
+
+        <!-- QUOTE EXAMPLE -->
+        <blockquote>
+          "This is a blockquote for important takeaways or quotes."
+        </blockquote>
+
+        <h2 id="conclusion">Conclusion</h2>
+        <p>Wrap up your thoughts here.</p>
+      </article>
+
+      <!-- Sidebar Table of Contents -->
+      <aside class="toc">
+        <div class="toc-header">On this page</div>
+        <div class="toc-links">
+          <a href="#section-1" class="toc-link">1. Section Heading</a>
+          <a href="#conclusion" class="toc-link">Conclusion</a>
+        </div>
+      </aside>
+    </div>
+
+    <footer class="footer">
+      <p>© <span id="year"></span> Brijesh Yadav</p>
+    </footer>
+
+    <script>
+      // Year Update
+      document.getElementById('year').textContent = new Date().getFullYear();
+
+      // Theme Logic
+      const themeBtn = document.getElementById('theme-toggle');
+      const sunIcon = themeBtn.querySelector('.sun-icon');
+      const moonIcon = themeBtn.querySelector('.moon-icon');
+
+      function updateIcons(theme) {
+          if (theme === 'light') {
+              sunIcon.style.display = 'none';
+              moonIcon.style.display = 'block';
+          } else {
+              sunIcon.style.display = 'block';
+              moonIcon.style.display = 'none';
+          }
+      }
+
+      // Init Icons
+      const currentTheme = document.documentElement.getAttribute('data-theme');
+      updateIcons(currentTheme);
+
+      themeBtn.addEventListener('click', () => {
+          const current = document.documentElement.getAttribute('data-theme');
+          const next = current === 'light' ? 'dark' : 'light';
+          
+          document.documentElement.setAttribute('data-theme', next);
+          localStorage.setItem('theme', next);
+          updateIcons(next);
+      });
+    </script>
+  </body>
+</html>

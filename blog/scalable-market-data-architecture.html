@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Designing a Scalable Market Data Streaming Architecture | Brijesh Yadav</title>
+    <link rel="stylesheet" href="blog.css" />
+    <meta
+      name="description"
+      content="Architecture of a scalable market data streaming system using Python FastAPI, Redis, and Socket.IO."
+    />
+    <script>
+        const savedTheme = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+        document.documentElement.setAttribute('data-theme', savedTheme);
+    </script>
+  </head>
+  <body>
+    <!-- Navbar -->
+    <nav class="nav-bar">
+      <div class="nav-left">
+        <a href="../index.html" class="nav-brand">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+            </svg>
+            Brijesh Yadav
+        </a>
+      </div>
+      <div style="display: flex; gap: 12px; align-items: center;">
+          <a href="index.html" class="nav-link">← All Posts</a>
+          <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme">
+            <svg class="sun-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display: none;">
+                <circle cx="12" cy="12" r="5"></circle>
+                <line x1="12" y1="1" x2="12" y2="3"></line>
+                <line x1="12" y1="21" x2="12" y2="23"></line>
+                <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                <line x1="1" y1="12" x2="3" y2="12"></line>
+                <line x1="21" y1="12" x2="23" y2="12"></line>
+                <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+            </svg>
+            <svg class="moon-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+            </svg>
+          </button>
+      </div>
+    </nav>
+
+    <div class="layout">
+      <!-- Main Content -->
+      <article class="prose">
+        <header class="post-header">
+          <div class="post-meta">
+            <span>Dec 27, 2025</span>
+            <span>·</span>
+            <span>8 min read</span>
+          </div>
+          <h1 class="post-title">Designing a Scalable Market Data Streaming Architecture</h1>
+          <div class="tags-container">
+            <span class="tag">System Design</span>
+            <span class="tag">FastAPI</span>
+            <span class="tag">Redis</span>
+            <span class="tag">WebSockets</span>
+          </div>
+        </header>
+
+        <p>
+          In my algo trading project, <strong>Growth Quantix</strong>, handling real-time market data efficiently is critical. 
+          This post details the architecture I designed to process live ticks, minimize latency, and serve data to both trading strategies and a frontend dashboard.
+        </p>
+
+        <h2 id="stack">🛠️ Stack Used</h2>
+        <p>This architecture is implemented using a modern, high-performance stack:</p>
+        <ul>
+          <li><strong>Python FastAPI</strong> — Backend services and API layer</li>
+          <li><strong>Upstox WebSocket</strong> — Live market feed source</li>
+          <li><strong>Redis</strong> — In-memory cache + Pub/Sub messaging bus</li>
+          <li><strong>Background Workers</strong> — Data parsing and strategy execution</li>
+          <li><strong>Socket.IO</strong> — Real-time UI streaming to the client</li>
+          <li><strong>React Dashboard</strong> — Frontend consumer</li>
+        </ul>
+
+        <h2 id="high-level-arch">🧩 High-Level System Architecture</h2>
+        <p>
+          The system adheres to a strict separation of concerns: <strong>Ingest → Process → Store → Stream → Consume</strong>.
+        </p>
+
+        <!-- Premium Diagram Box -->
+        <div class="diagram-box">
+          <div class="diagram-header">
+            <div class="window-controls">
+              <div class="control red"></div>
+              <div class="control yellow"></div>
+              <div class="control green"></div>
+            </div>
+            <div class="diagram-title">System Overview</div>
+          </div>
+          <pre class="diagram-content">
+              ┌──────────────────────────┐
+              │        Upstox API        │
+              │     (Market WebSocket)   │
+              └────────────┬─────────────┘
+                           │  Live Ticks
+                           ▼
+              ┌──────────────────────────┐
+              │  Ingestion Service       │
+              │ (Background FastAPI Job) │
+              └────────────┬─────────────┘
+                           │  Raw Tokens
+                           ▼
+              ┌──────────────────────────┐
+              │ Processing & Mapping     │
+              │ Token → Symbol mapping   │
+              │ OHLC / %Change / LTP     │
+              └────────────┬─────────────┘
+                           │  Normalized ticks
+                           ▼
+         ┌──────────────────────────────────────┐
+         │             Redis Layer              │
+         │   • In-memory cache                  │
+         │   • Pub/Sub channels                 │
+         └────────────┬─────────────┬───────────┘
+                      │             │
+                      │             │
+                      ▼             ▼
+      ┌──────────────────────┐   ┌───────────────────────┐
+      │  Trading Engine      │   │   Real-Time Dashboard │
+      │  (Strategies)        │   │   (React + Socket.IO) │
+      └──────────────────────┘   └───────────────────────┘
+          </pre>
+        </div>
+
+        <p>This pipeline ensures that:</p>
+        <ul>
+          <li><strong>Ingestion</strong> is decoupled from consumption.</li>
+          <li><strong>Processing</strong> normalizes data before it hits the bus.</li>
+          <li><strong>Redis</strong> acts as the single source of truth for live state.</li>
+        </ul>
+
+        <h2 id="data-flow">🔍 Detailed Data Flow Architecture</h2>
+        <p>Below is a deeper view of the backend services interacting via the Redis bus.</p>
+
+        <div class="diagram-box">
+          <div class="diagram-header">
+            <div class="window-controls">
+              <div class="control red"></div>
+              <div class="control yellow"></div>
+              <div class="control green"></div>
+            </div>
+            <div class="diagram-title">Data Flow Pipeline</div>
+          </div>
+          <pre class="diagram-content">
+┌────────────────────────────────────────────────────────────┐
+│                    BACKEND SERVICES                        │
+└────────────────────────────────────────────────────────────┘
+
+ Upstox WebSocket Feed
+──────────────────────────────────────────────────────────────
+             │ ticks with instrument_token
+             ▼
+     ┌───────────────────────────────┐
+     │  WebSocket Ingestion Worker   │
+     │  (running in background)      │
+     └───────────────────────────────┘
+             │
+             │ validate / reconnect / heartbeat
+             ▼
+     ┌───────────────────────────────┐
+     │  Parsing + Mapping Layer      │
+     │  token → symbol               │
+     │  add OHLC/LTP/change%         │
+     └───────────────────────────────┘
+             │
+             │ normalized structured tick
+             ▼
+     ┌───────────────────────────────┐
+     │   Redis Cache + Pub/Sub       │
+     └───────────────────────────────┘
+        │                  │
+        │                  │
+        ▼                  ▼
+┌────────────────┐   ┌─────────────────────────────┐
+│  Trading Logic │   │  Socket.IO Broadcast Layer  │
+│  (strategies)  │   │  push to connected clients  │
+└────────────────┘   └─────────────────────────────┘
+                          │
+                          ▼
+                 React Frontend Dashboard
+          </pre>
+        </div>
+
+        <p>
+          In this setup:
+        </p>
+        <ul>
+          <li><strong>Upstox</strong> feeds the background service.</li>
+          <li><strong>Redis</strong> acts as the central nervous system.</li>
+          <li><strong>Socket.IO</strong> bridges the gap to the frontend.</li>
+          <li>The <strong>Trading Engine</strong> consumes the same data bus as the UI, ensuring consistency.</li>
+        </ul>
+
+        <h2 id="design-decisions">🏗️ Why I Designed It This Way</h2>
+        <p>This design evolved from real constraints in my project:</p>
+        <blockquote>
+          "Instead of each consumer connecting to the broker, everything connects to the Redis live stream layer."
+        </blockquote>
+        <ul>
+          <li><strong>Connection Limits:</strong> Upstox limits connection counts, so I use a single admin WebSocket.</li>
+          <li><strong>High Throughput:</strong> Handling thousands of ticks/sec means avoiding direct DB writes for every tick.</li>
+          <li><strong>Unified Data:</strong> Strategies and UI need the exact same data, making a Pub/Sub bus ideal.</li>
+          <li><strong>Decoupling:</strong> Independent services prevent a UI crash from stopping the trading engine.</li>
+        </ul>
+
+        <h2 id="components">🧠 Key Components Explained</h2>
+
+        <h3>1️⃣ Upstox Ingestion Worker</h3>
+        <p>
+          Runs independently, connects with the admin token, and handles resubscriptions and exponential backoff strategies for robustness.
+        </p>
+
+        <h3>2️⃣ Token–Symbol Mapping</h3>
+        <p>
+          Raw feeds often send tokens (integers) instead of symbols to save bandwidth. My instrument service loads a CSV/instrument dump on startup, builds a <code>token → symbol</code> dictionary, and keeps it in Redis for fast O(1) lookups during ingestion.
+        </p>
+
+        <h3>3️⃣ Redis Cache + Pub/Sub</h3>
+        <p>Acts as:</p>
+        <ul>
+          <li><strong>Hot Cache:</strong> Stores the latest price (LTP) for immediate access.</li>
+          <li><strong>Pub/Sub Bus:</strong> Distributes ticks to multiple subscribers (Strategy Engine, Dashboard).</li>
+          <li><strong>Buffer:</strong> Handles burst traffic without blocking.</li>
+        </ul>
+
+        <h3>4️⃣ Strategy Engine</h3>
+        <p>Consumes the live feed to generate buy/sell signals, track P&L, and manage risk.</p>
+
+        <h3>5️⃣ Frontend Dashboard</h3>
+        <p>Built with React and Socket.IO, it receives live tick cards, scanner updates, top gainers/losers, and open position updates in real-time.</p>
+
+        <h2 id="future">🚀 Future Improvements</h2>
+        <p>I’m considering adding:</p>
+        <ul>
+          <li><strong>Kafka</strong> for long-term scaling and log replay.</li>
+          <li><strong>Candlestick Aggregation Service</strong> for generating 1m, 5m bars from ticks.</li>
+          <li><strong>Persistence Layer</strong> (TimescaleDB) for historical analysis.</li>
+          <li><strong>Anomaly Detection</strong> alerts for data feed issues.</li>
+        </ul>
+
+        <h2 id="conclusion">🏁 Conclusion</h2>
+        <p>
+          This architecture now powers my algo trading experiments, live dashboard, and real-time streaming UI. It is built with <strong>FastAPI, Redis, Socket.IO, React, and Upstox WebSocket</strong>. The design is modular, fault-tolerant, and scalable — and most importantly, I built it step by step while working full-time.
+        </p>
+      </article>
+
+      <!-- Sidebar TOC -->
+      <aside class="toc">
+        <div class="toc-header">On this page</div>
+        <div class="toc-links">
+          <a href="#stack" class="toc-link">Stack Used</a>
+          <a href="#high-level-arch" class="toc-link">High-Level Architecture</a>
+          <a href="#data-flow" class="toc-link">Data Flow Architecture</a>
+          <a href="#design-decisions" class="toc-link">Design Decisions</a>
+          <a href="#components" class="toc-link">Key Components</a>
+          <a href="#future" class="toc-link">Future Improvements</a>
+          <a href="#conclusion" class="toc-link">Conclusion</a>
+        </div>
+      </aside>
+    </div>
+
+    <footer class="footer">
+      <p>© 2025 Brijesh Yadav</p>
+    </footer>
+
+    <script>
+      // Theme Logic
+      const themeBtn = document.getElementById('theme-toggle');
+      const sunIcon = themeBtn.querySelector('.sun-icon');
+      const moonIcon = themeBtn.querySelector('.moon-icon');
+
+      function updateIcons(theme) {
+          if (theme === 'light') {
+              sunIcon.style.display = 'none';
+              moonIcon.style.display = 'block';
+          } else {
+              sunIcon.style.display = 'block';
+              moonIcon.style.display = 'none';
+          }
+      }
+
+      // Init Icons
+      const currentTheme = document.documentElement.getAttribute('data-theme');
+      updateIcons(currentTheme);
+
+      themeBtn.addEventListener('click', () => {
+          const current = document.documentElement.getAttribute('data-theme');
+          const next = current === 'light' ? 'dark' : 'light';
+          
+          document.documentElement.setAttribute('data-theme', next);
+          localStorage.setItem('theme', next);
+          updateIcons(next);
+      });
+    </script>
+  </body>
+</html>
