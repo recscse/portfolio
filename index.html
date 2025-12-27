@@ -8,327 +8,337 @@
       name="description"
       content="Portfolio of Brijesh Yadav — Backend Engineer with 3+ years experience in Java, Spring Boot, PostgreSQL/MySQL, AWS, Docker, and microservices."
     />
-    <meta
-      name="keywords"
-      content="Backend Developer, Java Developer, Spring Boot, AWS, Microservices, Full Stack"
-    />
-    <meta name="author" content="Brijesh Yadav" />
-    <meta name="theme-color" content="#0b1220" />
+    <meta name="theme-color" content="#0a0c10" />
 
     <!-- Open Graph / Social Media Meta Tags -->
     <meta property="og:title" content="Brijesh Yadav · Backend Developer" />
-    <meta
-      property="og:description"
-      content="Backend Engineer with 3+ years experience in Java, Spring Boot, AWS, and microservices."
-    />
+    <meta property="og:description" content="Backend Engineer with 3+ years experience in Java, Spring Boot, AWS, and microservices." />
     <meta property="og:image" content="assets/banner.svg" />
-    <meta property="og:url" content="https://recscse.github.io/portfolio/" />
 
-    <!-- Preload Critical Resources -->
+    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&family=Outfit:wght@400;500;700;800&display=swap"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="mystyle.css" />
 
-    <!-- Icons -->
+    <!-- Icons (Boxicons) -->
     <link
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css"
     />
 
-    <!-- Favicon Support -->
     <link rel="icon" href="assets/banner.svg" type="image/svg+xml" />
-    <link rel="apple-touch-icon" sizes="180x180" href="assets/banner.svg" />
     <link rel="manifest" href="site.webmanifest" />
+    
+    <script>
+        const savedTheme = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+        document.documentElement.setAttribute('data-theme', savedTheme);
+    </script>
   </head>
   <body>
-    <a class="skip-link" href="#main">Skip to content</a>
-
     <nav id="navbar" class="nav">
       <div class="nav__brand">
         <span class="logo-dot" aria-hidden="true"></span>
-        <a href="#welcome-section" class="brand">Brijesh</a>
+        <a href="#welcome-section" class="brand">Brijesh Yadav</a>
       </div>
+      
       <div class="nav__controls">
-        <button
-          id="theme-toggle"
-          class="theme-toggle"
-          aria-label="Toggle theme"
-        >
-          <svg
-            class="sun-icon"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-          >
-            <circle cx="12" cy="12" r="5" />
-            <line x1="12" y1="1" x2="12" y2="3" />
-            <line x1="12" y1="21" x2="12" y2="23" />
-            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
-            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
-            <line x1="1" y1="12" x2="3" y2="12" />
-            <line x1="21" y1="12" x2="23" y2="12" />
-            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
-            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
-          </svg>
-          <svg
-            class="moon-icon"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-          >
-            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
-          </svg>
-        </button>
-        <button
-          class="nav__toggle"
-          aria-expanded="false"
-          aria-controls="navmenu"
-          aria-label="Toggle menu"
-        >
-          ☰
-        </button>
-      </div>
-      <div id="navmenu" class="nav__links">
-        <a href="#welcome-section">About</a>
-        <a href="#projects">Projects</a>
-        <a href="skills.html#skills">Skills</a>
-        <a href="blog/index.html">Blog</a>
-        <a href="#contact">Contact</a>
+          <button class="nav__toggle" aria-expanded="false" aria-label="Toggle menu">
+            <i class='bx bx-menu'></i>
+          </button>
+
+          <div id="navmenu" class="nav__links">
+            <a href="#skills">Skills</a>
+            <a href="projects.html">Projects</a>
+            <a href="#experience">Experience</a>
+            <a href="#blog">Blog</a>
+            <a href="#contact">Contact</a>
+          </div>
+
+          <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme">
+            <svg class="sun-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display: none;">
+                <circle cx="12" cy="12" r="5"></circle>
+                <line x1="12" y1="1" x2="12" y2="3"></line>
+                <line x1="12" y1="21" x2="12" y2="23"></line>
+                <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                <line x1="1" y1="12" x2="3" y2="12"></line>
+                <line x1="21" y1="12" x2="23" y2="12"></line>
+                <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+            </svg>
+            <svg class="moon-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+            </svg>
+          </button>
       </div>
     </nav>
 
-    <header id="welcome-section" class="hero">
-      <img
-        src="assets/banner.svg"
-        alt="Banner: Brijesh Yadav — Backend Developer"
-        class="hero__banner"
-      />
-      <div class="hero__content">
-        <h1>Backend Developer</h1>
+    <header id="welcome-section" class="hero container">
+      <div class="hero__content fade-in">
+        <span class="muted">Software Engineer @ ArisGlobal</span>
+        <h1>Backend Engineer &<br>System Architect</h1>
         <p class="subtitle">
-          3+ years building reliable microservices with <strong>Java</strong>,
-          <strong>Spring Boot</strong>, <strong>PostgreSQL/MySQL</strong>, and
-          <strong>AWS</strong>.
-        </p>
-        <p class="muted">
-          Currently building <strong>Growth Quantix</strong> — a real-time
-          trading & analytics platform (FastAPI/Java, WebSockets, Redis, React).
+          Building reliable, scalable microservices with <strong>Java, Spring Boot, & AWS</strong>. 
+          Obsessed with low-latency systems and clean architecture.
         </p>
         <div class="cta">
-          <a class="btn primary" href="blog/index.html">Read my Blog</a>
-          <a class="btn" href="#projects">See Projects</a>
+          <a class="btn primary" href="projects.html">
+            <i class='bx bx-code-alt'></i> View Projects
+          </a>
+          <a class="btn" href="#contact">
+            <i class='bx bx-envelope'></i> Contact Me
+          </a>
         </div>
       </div>
+      <img src="assets/banner.svg" alt="Architecture" class="hero__banner fade-in" />
     </header>
 
     <main id="main">
+      
+      <!-- SKILLS SECTION -->
+      <section id="skills" class="section container">
+        <h2 class="section__title fade-in">
+          <i class='bx bx-chip'></i> Technical Stack
+        </h2>
+        <div class="skills-grid fade-in">
+          <div class="skill-item">
+            <i class='bx bxl-java skill-icon'></i>
+            <span class="skill-name">Java</span>
+          </div>
+          <div class="skill-item">
+            <i class='bx bxl-spring-boot skill-icon'></i>
+            <span class="skill-name">Spring Boot</span>
+          </div>
+          <div class="skill-item">
+            <i class='bx bxl-aws skill-icon'></i>
+            <span class="skill-name">AWS</span>
+          </div>
+          <div class="skill-item">
+            <i class='bx bxl-postgresql skill-icon'></i>
+            <span class="skill-name">PostgreSQL</span>
+          </div>
+          <div class="skill-item">
+            <i class='bx bxl-docker skill-icon'></i>
+            <span class="skill-name">Docker</span>
+          </div>
+          <div class="skill-item">
+            <i class='bx bxl-python skill-icon'></i>
+            <span class="skill-name">Python</span>
+          </div>
+          <div class="skill-item">
+            <i class='bx bxs-data skill-icon'></i>
+            <span class="skill-name">Redis</span>
+          </div>
+          <div class="skill-item">
+            <i class='bx bx-server skill-icon'></i>
+            <span class="skill-name">Microservices</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- PROJECTS SECTION -->
       <section id="projects" class="section container">
-        <h2 class="section__title">
+        <h2 class="section__title fade-in">
           <i class="bx bxs-briefcase-alt-2"></i> Featured Projects
         </h2>
         <div class="grid">
-          <article class="card project-card">
+          
+          <article class="card project-card fade-in">
             <div class="project-header">
               <i class="bx bx-file project-icon"></i>
-              <h3>Document Sharing & Printing</h3>
+              <h3>Document Sharing System</h3>
             </div>
             <p class="project-description">
-              Secure, QR-based document handoffs with real-time receiver
-              updates. Built with microservices architecture for scalability.
+              Secure, QR-based document handoffs with real-time receiver updates.
             </p>
             <div class="project-features">
               <ul>
                 <li><i class="bx bx-check"></i> Role-based access control</li>
                 <li><i class="bx bx-check"></i> Immutable audit logs</li>
-                <li><i class="bx bx-check"></i> S3/EC2 optimized paths</li>
-                <li><i class="bx bx-check"></i> Real-time notifications</li>
               </ul>
             </div>
-            <p class="tags">
-              <span><i class="bx bxl-java"></i> Java</span>
-              <span><i class="bx bxl-spring-boot"></i> Spring Boot</span>
-              <span><i class="bx bxs-data"></i> PostgreSQL</span>
-              <span><i class="bx bxl-aws"></i> AWS</span>
-            </p>
+            <div class="tags">
+              <span>Java</span><span>Spring Boot</span><span>AWS</span>
+            </div>
             <div class="project-links">
-              <a
-                class="btn link"
-                href="https://github.com/recscse/project-repo"
-                target="_blank"
-                rel="noopener"
-              >
-                <i class="bx bxl-github"></i> Source Code
-              </a>
-              <a class="btn link" href="#" target="_blank" rel="noopener">
-                <i class="bx bx-link-external"></i> Live Demo
-              </a>
+              <a class="btn" href="#" target="_blank"><i class="bx bxl-github"></i> Source</a>
             </div>
           </article>
 
-          <article class="card project-card">
+          <article class="card project-card fade-in">
             <div class="project-header">
               <i class="bx bxs-file-pdf project-icon"></i>
-              <h3>PDF Data Extraction Service</h3>
+              <h3>PDF Extraction Service</h3>
             </div>
             <p class="project-description">
-              AI-powered PDF data extraction system with customizable mapping
-              rules and microservices architecture for validation and
-              enrichment.
+              AI-powered PDF data extraction with customizable mapping rules.
             </p>
             <div class="project-features">
               <ul>
-                <li><i class="bx bx-check"></i> Custom mapping engine</li>
                 <li><i class="bx bx-check"></i> ML-based field detection</li>
                 <li><i class="bx bx-check"></i> Validation pipelines</li>
-                <li><i class="bx bx-check"></i> REST API integration</li>
               </ul>
             </div>
-            <p class="tags">
-              <span><i class="bx bxl-python"></i> Python</span>
-              <span><i class="bx bx-brain"></i> AI/ML</span>
-              <span><i class="bx bxl-java"></i> Java</span>
-              <span><i class="bx bxl-spring-boot"></i> Spring Boot</span>
-            </p>
+            <div class="tags">
+              <span>Python</span><span>AI/ML</span><span>Java</span>
+            </div>
             <div class="project-links">
-              <a
-                class="btn link"
-                href="https://github.com/recscse/project-repo"
-                target="_blank"
-                rel="noopener"
-              >
-                <i class="bx bxl-github"></i> Source Code
-              </a>
-              <a class="btn link" href="#" target="_blank" rel="noopener">
-                <i class="bx bx-link-external"></i> Live Demo
-              </a>
+              <a class="btn" href="#" target="_blank"><i class="bx bxl-github"></i> Source</a>
             </div>
           </article>
 
-          <article class="card project-card">
+          <article class="card project-card fade-in">
             <div class="project-header">
               <i class="bx bx-line-chart project-icon"></i>
-              <h3>Growth Quantix (WIP)</h3>
+              <h3>Growth Quantix</h3>
             </div>
             <p class="project-description">
-              Real-time trading & analytics platform with high-performance data
-              processing and interactive dashboards for market analysis.
+              Real-time trading & analytics platform with high-performance data processing.
             </p>
             <div class="project-features">
               <ul>
-                <li><i class="bx bx-check"></i> Real-time data ingestion</li>
-                <li><i class="bx bx-check"></i> Signal processing engine</li>
-                <li><i class="bx bx-check"></i> WebSocket streams</li>
-                <li><i class="bx bx-check"></i> Interactive charts</li>
+                <li><i class="bx bx-check"></i> Real-time ingestion</li>
+                <li><i class="bx bx-check"></i> Redis Pub/Sub</li>
               </ul>
             </div>
-            <p class="tags">
-              <span><i class="bx bxl-python"></i> FastAPI</span>
-              <span><i class="bx bxs-data"></i> Redis</span>
-              <span><i class="bx bx-broadcast"></i> WebSockets</span>
-              <span><i class="bx bxl-react"></i> React</span>
-            </p>
+            <div class="tags">
+              <span>FastAPI</span><span>Redis</span><span>React</span>
+            </div>
             <div class="project-links">
-              <a class="btn link" href="#" aria-disabled="true">
-                <i class="bx bx-lock-alt"></i> Private Project
-              </a>
+              <a class="btn" href="blog/scalable-market-data-architecture.html"><i class="bx bx-book-content"></i> Read Case Study</a>
             </div>
           </article>
+
+          <!-- View All Button -->
+          <div class="card fade-in" style="display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.02); min-height: 200px;">
+            <a href="projects.html" class="btn primary">View All Projects →</a>
+          </div>
         </div>
       </section>
 
-      <section id="about" class="section container">
-        <h2 class="section__title">About</h2>
-        <p>
-          I’m Brijesh Yadav, a Backend Engineer focused on designing clean APIs
-          and production-ready microservices. I enjoy event-driven design,
-          low-latency data, and automation that makes systems observable and
-          reliable.
-        </p>
-        <ul class="bullets">
-          <li>
-            Software Engineer @ <strong>ArisGlobal</strong> (Oct 2021 — Present)
-          </li>
-          <li>
-            Deployed on <strong>AWS</strong> with <strong>Jenkins</strong> CI/CD
-          </li>
-          <li>
-            Languages: Java, JavaScript, C/C++ · DB: PostgreSQL, MySQL · Infra:
-            Docker
-          </li>
-        </ul>
+      <!-- EXPERIENCE SECTION -->
+      <section id="experience" class="section container">
+        <h2 class="section__title fade-in">
+          <i class='bx bx-time-five'></i> Experience
+        </h2>
+        <div class="timeline fade-in">
+          <div class="timeline-item">
+            <div class="timeline-dot"></div>
+            <div class="timeline-date">Oct 2021 — Present</div>
+            <div class="timeline-content">
+              <h3>Software Engineer @ ArisGlobal</h3>
+              <p>Mysore, India</p>
+              <ul class="bullets">
+                <li>Designed and implemented scalable microservices for email processing and secure document sharing using <strong>Spring Boot</strong> and <strong>PostgreSQL</strong>.</li>
+                <li>Developed a QR-code based document transfer system with full auditability and role-based access control.</li>
+                <li>Managed cloud deployments on <strong>AWS (EC2, S3)</strong> using Jenkins CI/CD pipelines.</li>
+              </ul>
+              <div class="timeline-tags">
+                <span class="tag">Java</span>
+                <span class="tag">Spring Boot</span>
+                <span class="tag">AWS</span>
+              </div>
+            </div>
+          </div>
+        </div>
       </section>
 
+      <!-- LATEST ARTICLES SECTION -->
+      <section id="blog" class="section container">
+        <h2 class="section__title fade-in">
+          <i class='bx bx-pen'></i> Latest Engineering Notes
+        </h2>
+        <div class="grid">
+          
+          <a href="blog/scalable-market-data-architecture.html" class="card fade-in" style="text-decoration: none;">
+            <span class="timeline-date">Dec 27, 2025</span>
+            <h3>Scalable Market Data Architecture</h3>
+            <p class="project-description">
+              A deep dive into building a high-frequency trading data pipeline using FastAPI, Redis, and WebSockets.
+            </p>
+            <div class="tags">
+              <span>System Design</span><span>Redis</span>
+            </div>
+          </a>
+
+          <a href="blog/market-data-generator.html" class="card fade-in" style="text-decoration: none;">
+            <span class="timeline-date">Oct 17, 2025</span>
+            <h3>Real-Time Market Data Generator</h3>
+            <p class="project-description">
+              Simulating live stock market ticks to test algo trading systems with deterministic replay.
+            </p>
+            <div class="tags">
+              <span>Python</span><span>Simulation</span>
+            </div>
+          </a>
+
+          <div class="card fade-in" style="display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.02);">
+            <a href="blog/index.html" class="btn">View All Posts →</a>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- CONTACT SECTION -->
       <section id="contact" class="section container">
-        <h2 class="section__title">Contact</h2>
-        <div class="contact__grid">
-          <a class="contact__item" href="mailto:brijeshyadav30599@gmail.com"
-            >brijeshyadav30599@gmail.com</a
-          >
-          <a
-            class="contact__item"
-            target="_blank"
-            rel="noopener"
-            href="https://www.linkedin.com/in/brijesh-yadav-"
-            >LinkedIn</a
-          >
-          <a
-            class="contact__item"
-            target="_blank"
-            rel="noopener"
-            href="https://recscse.github.io/portfolio/index.html"
-            >Portfolio</a
-          >
-          <a
-            class="contact__item"
-            target="_blank"
-            rel="noopener"
-            href="https://github.com/recscse"
-            >GitHub</a
-          >
+        <h2 class="section__title fade-in">Get In Touch</h2>
+        <div class="contact__grid fade-in">
+          <a class="contact__item" href="mailto:brijeshyadav30599@gmail.com">
+             <i class='bx bx-envelope'></i> Email Me
+          </a>
+          <a class="contact__item" href="https://www.linkedin.com/in/brijesh-yadav-" target="_blank">
+            <i class='bx bxl-linkedin'></i> LinkedIn
+          </a>
+          <a class="contact__item" href="https://github.com/recscse" target="_blank">
+            <i class='bx bxl-github'></i> GitHub
+          </a>
         </div>
       </section>
+
     </main>
 
     <footer class="footer">
       <div class="container footer__inner">
         <span>© <span id="year"></span> Brijesh Yadav</span>
-        <a href="blog/index.html">Blog</a>
-        <a href="skills.html#skills">Skills</a>
+        <div style="display: flex; gap: 16px;">
+            <a href="#skills">Skills</a>
+            <a href="blog/index.html">Blog</a>
+        </div>
       </div>
     </footer>
 
     <script>
-      // Theme management
-      const themeToggle = document.getElementById("theme-toggle");
-      const prefersDark = window.matchMedia("(prefers-color-scheme: dark)");
+      // Theme Logic
+      const themeBtn = document.getElementById('theme-toggle');
+      const sunIcon = themeBtn.querySelector('.sun-icon');
+      const moonIcon = themeBtn.querySelector('.moon-icon');
 
-      function setTheme(theme) {
-        document.documentElement.setAttribute("data-theme", theme);
-        localStorage.setItem("theme", theme);
+      function updateIcons(theme) {
+          if (theme === 'light') {
+              sunIcon.style.display = 'none';
+              moonIcon.style.display = 'block';
+          } else {
+              sunIcon.style.display = 'block';
+              moonIcon.style.display = 'none';
+          }
       }
+      
+      const currentTheme = document.documentElement.getAttribute('data-theme');
+      updateIcons(currentTheme);
 
-      // Initialize theme
-      const savedTheme = localStorage.getItem("theme");
-      if (savedTheme) {
-        setTheme(savedTheme);
-      } else {
-        setTheme(prefersDark.matches ? "dark" : "light");
-      }
-
-      // Theme toggle handler
-      themeToggle.addEventListener("click", () => {
-        const currentTheme =
-          document.documentElement.getAttribute("data-theme");
-        setTheme(currentTheme === "dark" ? "light" : "dark");
+      themeBtn.addEventListener('click', () => {
+          const current = document.documentElement.getAttribute('data-theme');
+          const next = current === 'light' ? 'dark' : 'light';
+          document.documentElement.setAttribute('data-theme', next);
+          localStorage.setItem('theme', next);
+          updateIcons(next);
       });
 
-      // Mobile menu toggle
+      // Mobile Menu
       const toggle = document.querySelector(".nav__toggle");
       const menu = document.getElementById("navmenu");
       toggle?.addEventListener("click", () => {
@@ -337,27 +347,23 @@
         menu.classList.toggle("open");
       });
 
-      // Smooth scroll for navigation links
+      // Smooth Scroll
       document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
         anchor.addEventListener("click", function (e) {
           e.preventDefault();
           const target = document.querySelector(this.getAttribute("href"));
           if (target) {
-            target.scrollIntoView({
-              behavior: "smooth",
-              block: "start",
-            });
-            // Close mobile menu if open
+            target.scrollIntoView({ behavior: "smooth", block: "start" });
             menu.classList.remove("open");
             toggle.setAttribute("aria-expanded", "false");
           }
         });
       });
 
-      // Update copyright year
+      // Year
       document.getElementById("year").textContent = new Date().getFullYear();
 
-      // Intersection Observer for fade-in animations
+      // Intersection Observer for Fade In
       const observer = new IntersectionObserver(
         (entries) => {
           entries.forEach((entry) => {
@@ -366,14 +372,10 @@
             }
           });
         },
-        {
-          threshold: 0.1,
-        }
+        { threshold: 0.1 }
       );
 
-      // Observe all cards and sections
-      document.querySelectorAll(".card, .section").forEach((el) => {
-        el.classList.add("fade-in");
+      document.querySelectorAll(".fade-in").forEach((el) => {
         observer.observe(el);
       });
     </script>

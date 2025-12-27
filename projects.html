@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Projects — Brijesh Yadav</title>
+    <meta name="description" content="Showcase of backend engineering projects, microservices, and system designs by Brijesh Yadav." />
+    <meta name="theme-color" content="#0a0c10" />
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&family=Outfit:wght@400;500;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="mystyle.css" />
+
+    <!-- Icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css"
+    />
+
+    <link rel="icon" href="assets/banner.svg" type="image/svg+xml" />
+    
+    <script>
+        const savedTheme = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+        document.documentElement.setAttribute('data-theme', savedTheme);
+    </script>
+    
+    <style>
+        .filter-container {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-bottom: 40px;
+            justify-content: center;
+        }
+        
+        .filter-btn {
+            background: rgba(125,125,125,0.05);
+            border: 1px solid var(--glass-border);
+            color: var(--text-muted);
+            padding: 8px 20px;
+            border-radius: 99px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+            font-family: var(--font-sans);
+            font-weight: 500;
+        }
+        
+        .filter-btn:hover, .filter-btn.active {
+            background: rgba(59, 130, 246, 0.1);
+            color: var(--primary);
+            border-color: var(--primary);
+        }
+
+        .status-badge {
+            font-size: 0.7rem;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        .status-live { background: rgba(16, 185, 129, 0.1); color: #10b981; border: 1px solid rgba(16, 185, 129, 0.2); }
+        .status-wip { background: rgba(245, 158, 11, 0.1); color: #f59e0b; border: 1px solid rgba(245, 158, 11, 0.2); }
+        .status-archived { background: rgba(148, 163, 184, 0.1); color: #94a3b8; border: 1px solid rgba(148, 163, 184, 0.2); }
+
+        .highlights {
+            margin: 16px 0;
+            padding: 0;
+            list-style: none;
+        }
+        .highlights li {
+            position: relative;
+            padding-left: 20px;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            line-height: 1.4;
+        }
+        .highlights li::before {
+            content: '→';
+            position: absolute;
+            left: 0;
+            color: var(--primary);
+            font-weight: 800;
+        }
+
+        .details-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--text-dim);
+            font-weight: 700;
+            margin-top: 20px;
+            display: block;
+        }
+    </style>
+  </head>
+  <body>
+    <nav id="navbar" class="nav">
+      <div class="nav__brand">
+        <span class="logo-dot" aria-hidden="true"></span>
+        <a href="index.html" class="brand">Brijesh Yadav</a>
+      </div>
+      
+      <div class="nav__controls">
+          <div id="navmenu" class="nav__links">
+            <a href="index.html">← Back to Home</a>
+          </div>
+
+          <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme">
+            <svg class="sun-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display: none;">
+                <circle cx="12" cy="12" r="5"></circle>
+                <line x1="12" y1="1" x2="12" y2="3"></line>
+                <line x1="12" y1="21" x2="12" y2="23"></line>
+                <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                <line x1="1" y1="12" x2="3" y2="12"></line>
+                <line x1="21" y1="12" x2="23" y2="12"></line>
+                <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+            </svg>
+            <svg class="moon-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+            </svg>
+          </button>
+      </div>
+    </nav>
+
+    <header class="hero container" style="padding: 60px 24px 40px; grid-template-columns: 1fr; text-align: center;">
+      <div class="hero__content fade-in">
+        <h1>Project Showcases</h1>
+        <p class="subtitle" style="margin: 0 auto; max-width: 600px;">
+            Deep dives into the technical details and architectures of my <strong>backend engineering</strong> work.
+        </p>
+      </div>
+    </header>
+
+    <main id="main" class="container">
+      
+      <div class="filter-container fade-in">
+        <button class="filter-btn active" data-filter="all">All Projects</button>
+        <button class="filter-btn" data-filter="java">Java / Spring</button>
+        <button class="filter-btn" data-filter="python">Python / AI</button>
+        <button class="filter-btn" data-filter="system">System Design</button>
+      </div>
+
+      <div class="grid" id="projects-grid"></div>
+
+    </main>
+
+    <footer class="footer">
+      <div class="container footer__inner">
+        <span>© <span id="year"></span> Brijesh Yadav</span>
+        <div style="display: flex; gap: 16px;">
+            <a href="index.html">Home</a>
+            <a href="blog/index.html">Blog</a>
+        </div>
+      </div>
+    </footer>
+
+    <script>
+      const projects = [
+        {
+          title: "Document Sharing System",
+          description: "A high-security microservice for physical-to-digital document handoffs using QR codes.",
+          category: ["java", "system"],
+          tags: ["Spring Boot", "AWS S3", "PostgreSQL", "OAuth2"],
+          status: "Live",
+          icon: "bx-file",
+          link: "https://github.com/recscse/project-repo",
+          demo: "#", // Add your real demo link here
+          highlights: [
+            "Implemented a secure QR-based token exchange to ensure 100% auditability of physical handoffs.",
+            "Architected a microservices-based RBAC (Role-Based Access Control) to manage complex document permissions.",
+            "Optimized file retrieval by using CloudFront signed URLs for direct S3 access, reducing server load by 40%."
+          ]
+        },
+        {
+          title: "Growth Quantix",
+          description: "Real-time trading & analytics platform designed for low-latency market data processing.",
+          category: ["python", "system"],
+          tags: ["FastAPI", "Redis", "WebSockets", "Socket.IO"],
+          status: "WIP",
+          icon: "bx-line-chart",
+          link: "blog/scalable-market-data-architecture.html",
+          // No demo for WIP projects usually, but can be added if needed
+          highlights: [
+            "Engineered a Redis-based Pub/Sub data bus to handle over 10,000 live price ticks per second.",
+            "Built a modular signal engine that decouples market data ingestion from trading strategy execution.",
+            "Integrated Upstox WebSocket API with an exponential backoff reconnection strategy for 99.9% uptime."
+          ]
+        },
+        {
+          title: "PDF Extraction Service",
+          description: "AI-driven extraction pipeline for structured data from unstructured PDF documents.",
+          category: ["python", "ai"],
+          tags: ["Python", "TensorFlow", "FastAPI", "OCR"],
+          status: "Live",
+          icon: "bxs-file-pdf",
+          link: "https://github.com/recscse/project-repo",
+          demo: "#", // Add your real demo link here
+          highlights: [
+            "Developed a custom rule engine for mapping dynamic PDF fields to standardized JSON structures.",
+            "Implemented an ML-based detection layer to handle variations in document layouts from multiple vendors.",
+            "Built a validation pipeline using Pydantic to ensure data integrity before persistence."
+          ]
+        },
+        {
+            title: "Market Data Generator",
+            description: "A deterministic simulator for stock market behavior to test trading algorithms safely.",
+            category: ["python", "system"],
+            tags: ["Python", "Asyncio", "Simulation"],
+            status: "Archived",
+            icon: "bx-data",
+            link: "blog/market-data-generator.html",
+            highlights: [
+              "Modeled realistic price movements using Geometric Brownian Motion with stochastic volatility jumps.",
+              "Created a replay engine to simulate high-volatility events like market crashes or news spikes.",
+              "Provided an SSE (Server-Sent Events) interface for easy frontend integration during testing."
+            ]
+        },
+        {
+            title: "Microservices Chassis",
+            description: "A foundational framework for rapid microservices development with built-in best practices.",
+            category: ["java"],
+            tags: ["Java", "Spring Boot", "AspectJ", "Prometheus"],
+            status: "Archived",
+            icon: "bx-package",
+            link: "#",
+            highlights: [
+              "Standardized cross-cutting concerns (Logging, Auth, Tracing) using AOP (Aspect Oriented Programming).",
+              "Integrated Prometheus and Micrometer for out-of-the-box observability across all services.",
+              "Automated the generation of OpenAPI documentation for all downstream microservices."
+            ]
+        }
+      ];
+
+      const grid = document.getElementById('projects-grid');
+      const filterBtns = document.querySelectorAll('.filter-btn');
+
+      function renderProjects(filter) {
+          grid.innerHTML = '';
+          const filtered = filter === 'all' 
+            ? projects 
+            : projects.filter(p => p.category.includes(filter));
+          
+          filtered.forEach(p => {
+              let statusClass = 'status-live';
+              if(p.status === 'WIP') statusClass = 'status-wip';
+              if(p.status === 'Archived') statusClass = 'status-archived';
+
+              const card = document.createElement('article');
+              card.className = 'card project-card fade-in visible';
+              card.innerHTML = `
+                <div class="project-header" style="justify-content: space-between; align-items: flex-start;">
+                   <div style="display:flex; align-items:center; gap:12px;">
+                       <i class='bx ${p.icon} project-icon'></i>
+                       <h3 style="font-size: 1.4rem;">${p.title}</h3>
+                   </div>
+                   <span class="status-badge ${statusClass}">${p.status}</span>
+                </div>
+                <p class="project-description" style="margin-top: 10px; font-weight: 500; color: var(--text-main);">${p.description}</p>
+                
+                <span class="details-label">Key Highlights</span>
+                <ul class="highlights">
+                    ${p.highlights.map(h => `<li>${h}</li>`).join('')}
+                </ul>
+
+                <div class="tags" style="margin-top: 16px;">
+                    ${p.tags.map(t => `<span>${t}</span>`).join('')}
+                </div>
+                
+                <div class="project-links" style="margin-top: 24px; display: flex; gap: 12px; flex-wrap: wrap;">
+                    <a class="btn primary" href="${p.link}" target="_blank" style="flex: 1; justify-content: center;">
+                        <i class='bx ${p.link.includes('blog') ? 'bx-book-content' : 'bxl-github'}'></i> 
+                        ${p.link.includes('blog') ? 'Read Case Study' : 'Source Code'}
+                    </a>
+                    ${p.demo ? `
+                    <a class="btn" href="${p.demo}" target="_blank" style="flex: 1; justify-content: center;">
+                        <i class='bx bx-link-external'></i> Live Demo
+                    </a>` : ''}
+                </div>
+              `;
+              grid.appendChild(card);
+          });
+      }
+
+      filterBtns.forEach(btn => {
+          btn.addEventListener('click', () => {
+              filterBtns.forEach(b => b.classList.remove('active'));
+              btn.classList.add('active');
+              renderProjects(btn.dataset.filter);
+          });
+      });
+
+      renderProjects('all');
+
+      const themeBtn = document.getElementById('theme-toggle');
+      const sunIcon = themeBtn.querySelector('.sun-icon');
+      const moonIcon = themeBtn.querySelector('.moon-icon');
+
+      function updateIcons(theme) {
+          if (theme === 'light') {
+              sunIcon.style.display = 'none';
+              moonIcon.style.display = 'block';
+          } else {
+              sunIcon.style.display = 'block';
+              moonIcon.style.display = 'none';
+          }
+      }
+      
+      const currentTheme = document.documentElement.getAttribute('data-theme');
+      updateIcons(currentTheme);
+
+      themeBtn.addEventListener('click', () => {
+          const current = document.documentElement.getAttribute('data-theme');
+          const next = current === 'light' ? 'dark' : 'light';
+          document.documentElement.setAttribute('data-theme', next);
+          localStorage.setItem('theme', next);
+          updateIcons(next);
+      });
+
+      document.getElementById("year").textContent = new Date().getFullYear();
+    </script>
+  </body>
+</html>
