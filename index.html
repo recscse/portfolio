@@ -275,24 +275,35 @@
           <i class='bx bx-time-five'></i> Experience
         </h2>
         <div class="timeline fade-in">
+          
+          <!-- ArisGlobal -->
           <div class="timeline-item">
             <div class="timeline-dot"></div>
-            <div class="timeline-date">Oct 2021 — Present</div>
             <div class="timeline-content">
-              <h3>Software Engineer @ ArisGlobal</h3>
-              <p>Mysore, India</p>
+              <span class="timeline-date">Oct 2021 — Present</span>
+              <h3 class="role-title">Software Engineer</h3>
+              <div class="company-name">
+                  <i class='bx bxs-building-house' style="color: var(--accent);"></i> 
+                  ArisGlobal · Mysore, India
+              </div>
+              
               <ul class="bullets">
                 <li>Designed and implemented scalable microservices for email processing and secure document sharing using <strong>Spring Boot</strong> and <strong>PostgreSQL</strong>.</li>
                 <li>Developed a QR-code based document transfer system with full auditability and role-based access control.</li>
                 <li>Managed cloud deployments on <strong>AWS (EC2, S3)</strong> using Jenkins CI/CD pipelines.</li>
+                <li>Optimized database queries reducing reporting latency by <strong>40%</strong>.</li>
               </ul>
+              
               <div class="timeline-tags">
                 <span class="tag">Java</span>
                 <span class="tag">Spring Boot</span>
                 <span class="tag">AWS</span>
+                <span class="tag">PostgreSQL</span>
+                <span class="tag">Microservices</span>
               </div>
             </div>
           </div>
+
         </div>
       </section>
 
@@ -332,6 +343,108 @@
         </div>
       </section>
 
+      <!-- GITHUB DASHBOARD -->
+      <section class="section container">
+        <h2 class="section__title fade-in">
+          <i class='bx bxl-github'></i> GitHub Dashboard
+        </h2>
+        
+        <!-- Trophies -->
+        <div class="card fade-in" style="margin-bottom: 24px; padding: 20px; text-align: center; overflow-x: auto;">
+             <img src="https://github-profile-trophy.vercel.app/?username=recscse&theme=darkhub&no-frame=true&margin-w=20&margin-h=20" alt="Brijesh's Trophies" />
+        </div>
+
+        <div class="github-dashboard fade-in">
+            <!-- Overall Stats (High Contrast) -->
+            <div class="card github-card">
+                <img src="https://github-readme-stats.vercel.app/api?username=recscse&show_icons=true&theme=dark&hide_border=true&bg_color=0d1117" alt="GitHub Stats" />
+            </div>
+            <!-- Top Languages (High Contrast) -->
+            <div class="card github-card">
+                <img src="https://github-readme-stats.vercel.app/api/top-langs/?username=recscse&layout=compact&theme=dark&hide_border=true&bg_color=0d1117" alt="Top Languages" />
+            </div>
+            <!-- Streak Stats -->
+            <div class="card github-card">
+                <img src="https://github-readme-streak-stats.herokuapp.com/?user=recscse&theme=dark&background=0d1117&border=30363d&dates=e6edf3" alt="GitHub Streak" />
+            </div>
+        </div>
+
+        <!-- Heatmap -->
+        <div class="card fade-in" style="text-align: center; padding: 30px; overflow: hidden;">
+            <p style="margin-bottom: 20px; color: var(--text-muted); font-size: 0.9rem;">
+                Contributions heatmap over the last year
+            </p>
+            <img 
+                src="https://ghchart.rshah.org/3b82f6/recscse" 
+                alt="Brijesh's Github Chart" 
+                style="width: 100%; max-width: 840px; height: auto;" 
+            />
+        </div>
+      </section>
+
+      <!-- TOOLBOX SECTION -->
+      <section class="section container">
+        <h2 class="section__title fade-in">
+          <i class='bx bx-wrench'></i> My Toolbox
+        </h2>
+        <div class="skills-grid fade-in">
+            <div class="skill-item">
+                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/intellij/intellij-original.svg" style="width: 40px; height: 40px; margin-bottom: 10px;" alt="IntelliJ">
+                <span class="skill-name">IntelliJ IDEA</span>
+            </div>
+            <div class="skill-item">
+                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vscode/vscode-original.svg" style="width: 40px; height: 40px; margin-bottom: 10px;" alt="VS Code">
+                <span class="skill-name">VS Code</span>
+            </div>
+            <div class="skill-item">
+                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postman/postman-original.svg" style="width: 40px; height: 40px; margin-bottom: 10px;" alt="Postman">
+                <span class="skill-name">Postman</span>
+            </div>
+            <div class="skill-item">
+                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/git/git-original.svg" style="width: 40px; height: 40px; margin-bottom: 10px;" alt="Git">
+                <span class="skill-name">Git</span>
+            </div>
+            <div class="skill-item">
+                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/linux/linux-original.svg" style="width: 40px; height: 40px; margin-bottom: 10px;" alt="Linux">
+                <span class="skill-name">Linux</span>
+            </div>
+            <div class="skill-item">
+                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/jira/jira-original.svg" style="width: 40px; height: 40px; margin-bottom: 10px;" alt="Jira">
+                <span class="skill-name">Jira</span>
+            </div>
+        </div>
+      </section>
+
+      <!-- RECOMMENDATIONS / TESTIMONIALS -->
+      <section id="recommendations" class="section container">
+        <h2 class="section__title fade-in">
+          <i class='bx bxs-quote-left'></i> Recommendations
+        </h2>
+        <div class="grid">
+            <div class="card fade-in testimonial-card">
+                <i class='bx bxs-quote-alt-left quote-icon'></i>
+                <p class="testimonial-text">
+                    "Brijesh is one of the most dedicated backend engineers I've worked with. His ability to optimize microservices for high throughput at ArisGlobal was impressive."
+                </p>
+                <div class="testimonial-author">
+                    <strong>Manager Name</strong>
+                    <span>Engineering Manager @ ArisGlobal</span>
+                </div>
+            </div>
+
+            <div class="card fade-in testimonial-card">
+                <i class='bx bxs-quote-alt-left quote-icon'></i>
+                <p class="testimonial-text">
+                    "He has a deep understanding of distributed systems. The QR document sharing system he designed was secure, scalable, and delivered ahead of schedule."
+                </p>
+                <div class="testimonial-author">
+                    <strong>Colleague Name</strong>
+                    <span>Senior Developer</span>
+                </div>
+            </div>
+        </div>
+      </section>
+
       <!-- CONTACT SECTION -->
       <section id="contact" class="section container">
         <h2 class="section__title fade-in">
@@ -360,6 +473,11 @@
             <i class='bx bxl-github contact-icon'></i>
             <span>GitHub</span>
             <span class="contact-sub">Check out my repositories</span>
+          </a>
+          <a class="contact__item" href="https://x.com/_brijeshyadav" target="_blank">
+            <i class='bx bxl-twitter contact-icon'></i>
+            <span>X (Twitter)</span>
+            <span class="contact-sub">Let's connect on X</span>
           </a>
         </div>
       </section>
