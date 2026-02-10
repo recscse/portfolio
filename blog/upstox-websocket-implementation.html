@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Developer Guide: Upstox V3 WebSocket Client — Brijesh Yadav</title>
+    <meta name="description" content="A granular technical guide on implementing a low-latency, binary-encoded WebSocket client for real-time market data." />
+    <link rel="stylesheet" href="blog.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css" />
+    
+    <script>
+        const savedTheme = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+        document.documentElement.setAttribute('data-theme', savedTheme);
+    </script>
+  </head>
+  <body>
+    <nav class="nav-bar">
+      <div class="nav-left">
+        <a href="../index.html" class="nav-brand">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+            </svg>
+            Brijesh Yadav
+        </a>
+      </div>
+      <div style="display: flex; gap: 12px; align-items: center;">
+          <a href="index.html" class="nav-link">← All Posts</a>
+          <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme">
+            <i class='bx bx-moon moon-icon'></i>
+            <i class='bx bx-sun sun-icon' style="display:none;"></i>
+          </button>
+      </div>
+    </nav>
+
+    <article class="layout">
+      <div class="prose">
+        <header class="post-header">
+          <div class="post-meta">Feb 12, 2026 • 12 min read</div>
+          <h1 class="post-title">📡 Upstox Real-Time Market Data: A Technical Implementation Guide</h1>
+          <div class="card-tags" style="justify-content: center; margin-top: 20px;">
+            <span class="tag">WebSockets</span>
+            <span class="tag">Protobuf</span>
+            <span class="tag">Python</span>
+            <span class="tag">Systems Programming</span>
+          </div>
+        </header>
+
+        <section class="post-content">
+          <p class="lead">
+            Fetching market data is easy. Fetching it with <strong>sub-millisecond parsing</strong> and 
+            <strong>99.9% resilience</strong> in a production environment is where the real engineering begins.
+          </p>
+
+          <p>
+            This module provides a deep-dive into the technical implementation of my <code>UpstoxWebSocketClient</code>, 
+            designed to handle high-velocity Binary Protobuf streams from the Upstox V3 API.
+          </p>
+
+          <h2>1. Data Flow & Architecture</h2>
+          <p>
+            The lifecycle of a market data stream involves an initial REST-based authorization followed by a persistent 
+            binary connection. 
+          </p>
+
+          <div class="diagram-box">
+[Trading App] --- (Initialize) ---> [WS Client]
+                                       |
+    (GET /authorize) <----------------+
+          |
+    (WSS URL) ------------------------> [Connect to Upstox]
+                                              |
+    (Stream Data) <--- (Binary Protobuf) --- [WS Server]
+          |
+    [Decode Binary] ---> [Python Dict] ---> [Strategy Engine]
+          </div>
+
+          <h2>2. Key Concepts</h2>
+
+          <h3>A. Binary Protobuf Encoding</h3>
+          <p>
+            By using Protocol Buffers instead of JSON, we reduce the payload size by up to 70%. This isn't just about 
+            bandwidth; it's about <strong>CPU cache efficiency</strong>. Binary data is mapped directly to memory offsets 
+            using the <code>MarketDataFeed_pb2.py</code> generated classes.
+          </p>
+
+          <h3>B. Dual-Layer Decoding</h3>
+          <p>
+            Our engine implements a two-step parsing strategy:
+          </p>
+          <ol>
+            <li><strong>Binary Layer:</strong> The raw buffer is hydrated into a Protobuf object.</li>
+            <li><strong>Dictionary Layer:</strong> The object is converted into a standard Python <code>dict</code> using <code>google.protobuf.json_format</code> for downstream logic.</li>
+          </ol>
+
+          <h2>3. Implementation Details</h2>
+          <p>
+            The client is built using <code>asyncio</code> and <code>websockets</code> libraries in Python. 
+            Below are the core components of the <code>UpstoxWebSocketClient</code> class.
+          </p>
+
+          <table>
+            <thead>
+                <tr>
+                    <th>Method</th>
+                    <th>Technical Responsibility</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><code>connect_and_stream()</code></td>
+                    <td>Main event loop managing Auth, Connection, and Data.</td>
+                </tr>
+                <tr>
+                    <td><code>_send_subscription()</code></td>
+                    <td>Serializes instrument keys into the initial JSON handshake.</td>
+                </tr>
+                <tr>
+                    <td><code>update_subscriptions()</code></td>
+                    <td>Calculates set difference for on-the-fly stock changes.</td>
+                </tr>
+                <tr>
+                    <td><code>_process_market_status()</code></td>
+                    <td>Detects NSE/BSE phases (Pre-Open, Open, Closed).</td>
+                </tr>
+            </tbody>
+          </table>
+
+          <h2>4. Technical Usage Example</h2>
+          <p>
+            The client is designed to be highly decoupled. You simply pass a callback function that handles the 
+            incoming price "Ticks."
+          </p>
+
+<pre><code>from services.upstox.ws_client import UpstoxWebSocketClient
+
+async def my_strategy_callback(data):
+    # Process high-speed tick data here
+    ltp = data.get('ltp')
+    print(f"Price Update: {ltp}")
+
+client = UpstoxWebSocketClient(
+    access_token="...",
+    instrument_keys=["NSE_EQ|INE002A01018"],
+    callback=my_strategy_callback,
+    connection_type="trading" # Supports Greeks & Market Depth
+)
+
+await client.connect_and_stream()
+</code></pre>
+
+          <h2>5. Advanced Resilience Features</h2>
+
+          <h3>🚀 Dynamic Re-subscription</h3>
+          <p>
+            One of the most complex features is updating the watchlist without restarting the connection. 
+            The client calculates a <code>set</code> difference:
+          </p>
+          <ul>
+            <li><strong>Unsubscribe:</strong> Removed keys.</li>
+            <li><strong>Subscribe:</strong> Newly added keys.</li>
+            <li><strong>Unchanged:</strong> Keys currently being streamed (no action taken).</li>
+          </ul>
+
+          <h3>🛡 Fault Tolerance Patterns</h3>
+          <ul>
+            <li><strong>Exponential Backoff:</strong> Retries starting at 5s, doubling up to 60s to prevent IP bans.</li>
+            <li><strong>Manual Health Check:</strong> The engine sends a WebSocket <code>Ping</code> if the stream goes silent for 60 seconds.</li>
+            <li><strong>403 Monitor:</strong> Automatically detects token expiry and triggers a refresh callback.</li>
+          </ul>
+
+          <h2>6. Business & Performance Value</h2>
+          <p>
+            Implementing this institutional-grade client provides several competitive edges:
+          </p>
+          <ul>
+            <li><strong>Zero-Lag:</strong> Essential for High-Frequency Trading (HFT) where milliseconds equate to money.</li>
+            <li><strong>Options Edge:</strong> The <code>trading</code> connection type fetches <strong>real-time IV and Greeks</strong> (Delta, Gamma).</li>
+            <li><strong>99.9% Uptime:</strong> Robust error handling allows for managed hosting services with high reliability.</li>
+          </ul>
+
+          <div class="post-cta" style="margin-top: 60px; padding: 40px; background: rgba(16, 185, 129, 0.05); border-radius: 16px; text-align: center; border: 1px solid var(--glass-border);">
+            <h3 style="margin-top: 0;">Need a Custom Trading Architecture?</h3>
+            <p style="color: var(--text-muted);">I specialize in building low-latency financial systems and automated execution engines. Let's build something fast together.</p>
+            <div style="display: flex; gap: 12px; justify-content: center; margin-top: 20px;">
+                <a href="https://github.com/recscse" class="nav-link" target="_blank"><i class='bx bxl-github'></i> GitHub</a>
+                <a href="https://linkedin.com/in/brijesh-yadav-" class="nav-link" target="_blank"><i class='bx bxl-linkedin'></i> LinkedIn</a>
+            </div>
+          </div>
+        </section>
+      </div>
+    </article>
+
+    <footer class="footer">
+      <p>© <span id="year"></span> Brijesh Yadav</p>
+    </footer>
+
+    <script>
+      const themeBtn = document.getElementById('theme-toggle');
+      const sunIcon = themeBtn.querySelector('.sun-icon');
+      const moonIcon = themeBtn.querySelector('.moon-icon');
+
+      function updateIcons(theme) {
+          if (theme === 'light') {
+              sunIcon.style.display = 'none';
+              moonIcon.style.display = 'block';
+          } else {
+              sunIcon.style.display = 'block';
+              moonIcon.style.display = 'none';
+          }
+      }
+
+      themeBtn.addEventListener('click', () => {
+          const current = document.documentElement.getAttribute('data-theme');
+          const next = current === 'light' ? 'dark' : 'light';
+          document.documentElement.setAttribute('data-theme', next);
+          localStorage.setItem('theme', next);
+          updateIcons(next);
+      });
+
+      document.getElementById("year").textContent = new Date().getFullYear();
+      updateIcons(document.documentElement.getAttribute('data-theme'));
+    </script>
+  </body>
+</html>
