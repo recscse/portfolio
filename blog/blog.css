@@ -235,7 +235,41 @@ a { text-decoration: none; color: inherit; transition: all 0.2s ease; }
 }
 
 .prose p { margin-bottom: 1.5rem; color: var(--text-muted); font-weight: 400; }
+.prose p.lead {
+  font-size: 1.25rem;
+  color: var(--text-main);
+  line-height: 1.6;
+  margin-bottom: 2rem;
+}
 .prose strong { color: var(--text-main); font-weight: 600; }
+
+/* Tables */
+.prose table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 2.5rem 0;
+  font-size: 0.95rem;
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid var(--glass-border);
+}
+.prose th {
+  background: rgba(125, 125, 125, 0.05);
+  text-align: left;
+  padding: 16px;
+  color: var(--text-main);
+  font-weight: 600;
+  border-bottom: 2px solid var(--glass-border);
+}
+.prose td {
+  padding: 16px;
+  color: var(--text-muted);
+  border-bottom: 1px solid var(--glass-border);
+}
+.prose tr:last-child td {
+  border-bottom: none;
+}
 
 .prose h2 {
   font-size: 2rem;

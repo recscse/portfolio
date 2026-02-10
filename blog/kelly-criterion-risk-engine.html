@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>The Math of Winning: Kelly Criterion Risk Engine — Brijesh Yadav</title>
+    <meta name="description" content="Technical deep-dive into implementing the Kelly Criterion for optimal position sizing in algorithmic trading systems." />
+    <link rel="stylesheet" href="blog.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css" />
+    
+    <script>
+        const savedTheme = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+        document.documentElement.setAttribute('data-theme', savedTheme);
+    </script>
+    <style>
+        .formula-card {
+            background: var(--bg-card);
+            border: 1px solid var(--primary);
+            padding: 30px;
+            border-radius: 16px;
+            text-align: center;
+            margin: 40px 0;
+            font-family: var(--font-mono);
+            font-size: 1.5rem;
+            color: var(--text-main);
+            box-shadow: 0 10px 30px rgba(59, 130, 246, 0.1);
+        }
+        .formula-card span {
+            color: var(--primary);
+            font-weight: 700;
+        }
+    </style>
+  </head>
+  <body>
+    <nav class="nav-bar">
+      <div class="nav-left">
+        <a href="../index.html" class="nav-brand">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+            </svg>
+            Brijesh Yadav
+        </a>
+      </div>
+      <div style="display: flex; gap: 12px; align-items: center;">
+          <a href="index.html" class="nav-link">← All Posts</a>
+          <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme">
+            <i class='bx bx-moon moon-icon'></i>
+            <i class='bx bx-sun sun-icon' style="display:none;"></i>
+          </button>
+      </div>
+    </nav>
+
+    <article class="layout">
+      <div class="prose">
+        <header class="post-header">
+          <div class="post-meta">Feb 11, 2026 • 10 min read</div>
+          <h1 class="post-title">The Math of Winning: Implementing the Kelly Criterion for Institutional Risk Management</h1>
+          <div class="card-tags" style="justify-content: center; margin-top: 20px;">
+            <span class="tag">Quantitative Finance</span>
+            <span class="tag">Python</span>
+            <span class="tag">Mathematics</span>
+            <span class="tag">Risk Management</span>
+          </div>
+        </header>
+
+        <section class="post-content">
+          <p class="lead">
+            Most retail traders fail not because their strategy is bad, but because their <strong>position sizing</strong> is arbitrary. 
+            Fixed-lot trading is a recipe for either stagnation or eventual ruin.
+          </p>
+
+          <p>
+            In this post, I detail the architecture of my <strong>Kelly Criterion Risk Engine</strong>—a module that replaces 
+            gut-feeling with institutional-grade mathematics to maximize long-term wealth growth.
+          </p>
+
+          <h2>1. The Problem: The "Gambler's Ruin"</h2>
+          <p>
+            If you risk too little, your capital never grows. If you risk too much, a single "losing streak" (which is statistically 
+            guaranteed to happen) will wipe out your account. The Kelly Criterion finds the <strong>mathematical "Sweet Spot"</strong> 
+            where you risk exactly enough to maximize growth based on your historical edge.
+          </p>
+
+          <h2>2. The Theoretical Foundation</h2>
+          <p>The core of the engine is the standard Kelly Formula:</p>
+
+          <div class="formula-card">
+            f* = (p &middot; b - q) / b
+          </div>
+
+          <p>Where:</p>
+          <ul>
+            <li><strong>f*</strong>: The optimal fraction of the portfolio to wager.</li>
+            <li><strong>p</strong>: The probability of a win (Win Rate).</li>
+            <li><strong>b</strong>: The win/loss ratio (Average Profit / Average Loss).</li>
+            <li><strong>q</strong>: The probability of a loss (1 - p).</li>
+          </ul>
+
+          <h3>The "Half-Kelly" Margin of Safety</h3>
+          <p>
+            In a perfect world, <em>f*</em> is optimal. In the real world, performance data can be noisy. To account for 
+            "Black Swan" events and statistical errors, my engine uses a <strong>0.5 multiplier (Half-Kelly)</strong>. 
+            This drastically reduces volatility while still capturing ~75% of the growth of a Full-Kelly strategy.
+          </p>
+
+          <h2>3. System Architecture</h2>
+          <p>
+            The engine is designed as a standalone micro-service that queries historical performance data from PostgreSQL 
+            before every trade execution.
+          </p>
+
+          <div class="diagram-box">
+[Trading Signal]
+       |
+[Risk Management Service] <---- [Trade Analytics] <---- [PostgreSQL DB]
+       |                            (Win Rate/Ratio)
+[Calculate Kelly f*]
+       |
+[Apply Half-Kelly & Caps] (Min 1% / Max 10%)
+       |
+[Final Trade Quantity] ----> [Broker API]
+          </div>
+
+          <h2>4. Implementation: Step-by-Step Logic</h2>
+          
+          <h3>Step 1: Edge Detection</h3>
+          <p>
+            The engine requires at least <strong>10 closed trades</strong> to build a statistically significant profile. 
+            It calculates the user's current edge by analyzing every trade in the <code>auto_trade_executions</code> table.
+          </p>
+
+          <h3>Step 2: Risk Normalization</h3>
+          <p>
+            Raw Kelly calculations can sometimes suggest aggressive bets (e.g., 40% of capital). My engine enforces 
+            strict <strong>Hard Caps</strong> to ensure survival:
+          </p>
+
+          <table>
+            <thead>
+                <tr>
+                    <th>Variable</th>
+                    <th>Value</th>
+                    <th>Purpose</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><code>multiplier</code></td>
+                    <td>0.5</td>
+                    <td>Half-Kelly safety factor</td>
+                </tr>
+                <tr>
+                    <td><code>min_fraction</code></td>
+                    <td>0.01</td>
+                    <td>Ensures small trades even during slumps</td>
+                </tr>
+                <tr>
+                    <td><code>max_fraction</code></td>
+                    <td>0.10</td>
+                    <td>Protects against single-trade ruin</td>
+                </tr>
+            </tbody>
+          </table>
+
+          <h2>5. Technical Implementation (Python)</h2>
+          <p>
+            The engine is integrated into the core <code>RiskManagement</code> service. It dynamically calculates 
+            position sizes based on live capital and historical performance.
+          </p>
+
+<pre><code># Standard Kelly Implementation with Safety Caps
+def calculate_kelly_fraction(self, win_rate, win_loss_ratio):
+    if win_loss_ratio <= 0: return self.min_kelly
+    
+    # Core Formula
+    f_star = (win_rate * win_loss_ratio - (1 - win_rate)) / win_loss_ratio
+    
+    # Apply Half-Kelly and Hard Caps
+    safe_f = f_star * self.kelly_multiplier
+    return max(self.min_kelly, min(safe_f, self.max_kelly))
+</code></pre>
+
+          <h2>6. Business Impact</h2>
+          <p>
+            Implementing this risk engine transformed the platform from a "Signal Provider" into a 
+            <strong>Quantitative Investment Tool</strong>.
+          </p>
+          <ul>
+            <li><strong>Lower Churn:</strong> Users stay longer because the bot automatically "scales down" during losing streaks.</li>
+            <li><strong>Higher ROI:</strong> The bot "scales up" when the strategy has a high win rate, capturing maximum profit.</li>
+            <li><strong>Marketing Edge:</strong> Positions the product as a data-driven system used by hedge funds, not a gamble.</li>
+          </ul>
+
+          <div class="post-cta" style="margin-top: 60px; padding: 40px; background: rgba(139, 92, 246, 0.05); border-radius: 16px; text-align: center; border: 1px solid var(--glass-border);">
+            <h3 style="margin-top: 0;">Building Robust Trading Systems?</h3>
+            <p style="color: var(--text-muted);">This module is part of my larger algo-trading suite. Connect with me on LinkedIn to discuss risk modeling and system design.</p>
+            <div style="display: flex; gap: 12px; justify-content: center; margin-top: 20px;">
+                <a href="https://github.com/recscse" class="nav-link" target="_blank"><i class='bx bxl-github'></i> GitHub</a>
+                <a href="https://linkedin.com/in/brijesh-yadav-" class="nav-link" target="_blank"><i class='bx bxl-linkedin'></i> LinkedIn</a>
+            </div>
+          </div>
+        </section>
+      </div>
+    </article>
+
+    <footer class="footer">
+      <p>© <span id="year"></span> Brijesh Yadav</p>
+    </footer>
+
+    <script>
+      const themeBtn = document.getElementById('theme-toggle');
+      const sunIcon = themeBtn.querySelector('.sun-icon');
+      const moonIcon = themeBtn.querySelector('.moon-icon');
+
+      function updateIcons(theme) {
+          if (theme === 'light') {
+              sunIcon.style.display = 'none';
+              moonIcon.style.display = 'block';
+          } else {
+              sunIcon.style.display = 'block';
+              moonIcon.style.display = 'none';
+          }
+      }
+
+      themeBtn.addEventListener('click', () => {
+          const current = document.documentElement.getAttribute('data-theme');
+          const next = current === 'light' ? 'dark' : 'light';
+          document.documentElement.setAttribute('data-theme', next);
+          localStorage.setItem('theme', next);
+          updateIcons(next);
+      });
+
+      document.getElementById("year").textContent = new Date().getFullYear();
+      updateIcons(document.documentElement.getAttribute('data-theme'));
+    </script>
+  </body>
+</html>

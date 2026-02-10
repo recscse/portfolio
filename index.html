@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="utf-8" />
@@ -12,7 +12,10 @@
 
     <!-- Open Graph / Social Media Meta Tags -->
     <meta property="og:title" content="Brijesh Yadav · Backend Developer" />
-    <meta property="og:description" content="Backend Engineer with 3+ years experience in Java, Spring Boot, AWS, and microservices." />
+    <meta
+      property="og:description"
+      content="Backend Engineer with 3+ years experience in Java, Spring Boot, AWS, and microservices."
+    />
     <meta property="og:image" content="assets/banner.svg" />
 
     <!-- Fonts -->
@@ -32,10 +35,14 @@
 
     <link rel="icon" href="assets/banner.svg" type="image/svg+xml" />
     <link rel="manifest" href="site.webmanifest" />
-    
+
     <script>
-        const savedTheme = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
-        document.documentElement.setAttribute('data-theme', savedTheme);
+      const savedTheme =
+        localStorage.getItem("theme") ||
+        (window.matchMedia("(prefers-color-scheme: light)").matches
+          ? "light"
+          : "dark");
+      document.documentElement.setAttribute("data-theme", savedTheme);
     </script>
   </head>
   <body>
@@ -44,123 +51,166 @@
         <span class="logo-dot" aria-hidden="true"></span>
         <a href="#welcome-section" class="brand">Brijesh Yadav</a>
       </div>
-      
+
       <div class="nav__controls">
-          <button class="nav__toggle" aria-expanded="false" aria-label="Toggle menu">
-            <i class='bx bx-menu'></i>
-          </button>
+        <button
+          class="nav__toggle"
+          aria-expanded="false"
+          aria-label="Toggle menu"
+        >
+          <i class="bx bx-menu"></i>
+        </button>
 
-          <div id="navmenu" class="nav__links">
-            <a href="#skills">Skills</a>
-            <a href="projects.html">Projects</a>
-            <a href="#experience">Experience</a>
-            <a href="#blog">Blog</a>
-            <a href="#contact">Contact</a>
-          </div>
+        <div id="navmenu" class="nav__links">
+          <a href="#skills">Skills</a>
+          <a href="projects.html">Projects</a>
+          <a href="#experience">Experience</a>
+          <a href="#blog">Blog</a>
+          <a href="#contact">Contact</a>
+        </div>
 
-          <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme">
-            <svg class="sun-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display: none;">
-                <circle cx="12" cy="12" r="5"></circle>
-                <line x1="12" y1="1" x2="12" y2="3"></line>
-                <line x1="12" y1="21" x2="12" y2="23"></line>
-                <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
-                <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
-                <line x1="1" y1="12" x2="3" y2="12"></line>
-                <line x1="21" y1="12" x2="23" y2="12"></line>
-                <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
-                <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
-            </svg>
-            <svg class="moon-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
-            </svg>
-          </button>
+        <button
+          id="theme-toggle"
+          class="theme-toggle"
+          aria-label="Toggle theme"
+        >
+          <svg
+            class="sun-icon"
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            style="display: none"
+          >
+            <circle cx="12" cy="12" r="5"></circle>
+            <line x1="12" y1="1" x2="12" y2="3"></line>
+            <line x1="12" y1="21" x2="12" y2="23"></line>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+            <line x1="1" y1="12" x2="3" y2="12"></line>
+            <line x1="21" y1="12" x2="23" y2="12"></line>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+          </svg>
+          <svg
+            class="moon-icon"
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+          </svg>
+        </button>
       </div>
     </nav>
 
     <header id="welcome-section" class="hero container">
       <div class="hero__content fade-in">
-        <span class="muted">Software Engineer @ ArisGlobal</span>
-        <h1>Backend Engineer &<br>System Architect</h1>
+        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 20px; flex-wrap: wrap;">
+            <span class="muted" style="margin-bottom: 0;">Software Engineer @ ArisGlobal</span>
+            <span style="display: inline-flex; align-items: center; gap: 6px; font-size: 0.75rem; background: rgba(16, 185, 129, 0.1); color: #10b981; padding: 4px 12px; border-radius: 99px; border: 1px solid rgba(16, 185, 129, 0.2); font-weight: 600; white-space: nowrap;">
+                <span style="width: 8px; height: 8px; background: #10b981; border-radius: 50%; display: inline-block; animation: pulse 2s infinite;"></span>
+                Available for New Projects
+            </span>
+        </div>
+        <h1>Backend Engineer &<br />System Architect</h1>
         <p class="subtitle">
-          Building reliable, scalable microservices with <strong>Java, Spring Boot, & AWS</strong>. 
-          Obsessed with low-latency systems and clean architecture.
+          Building reliable, scalable microservices with
+          <strong>Java, Spring Boot, & AWS</strong>. Obsessed with low-latency
+          systems and clean architecture.
         </p>
         <div class="cta">
           <a class="btn primary" href="projects.html">
-            <i class='bx bx-code-alt'></i> View Projects
+            <i class="bx bx-code-alt"></i> View Projects
           </a>
           <a class="btn" href="assets/Brijesh_Yadav_Resume.pdf" target="_blank">
-            <i class='bx bx-download'></i> Resume
+            <i class="bx bx-download"></i> Resume
           </a>
           <a class="btn" href="#contact">
-            <i class='bx bx-envelope'></i> Contact
+            <i class="bx bx-envelope"></i> Contact
           </a>
         </div>
       </div>
-      <img src="assets/banner.svg" alt="Architecture" class="hero__banner fade-in" />
+      <img
+        src="assets/banner.svg"
+        alt="Architecture"
+        class="hero__banner fade-in"
+      />
     </header>
 
     <main id="main">
-      
       <!-- SKILLS SECTION -->
       <section id="skills" class="section container">
         <h2 class="section__title fade-in">
-          <i class='bx bx-chip'></i> Technical Stack
+          <i class="bx bx-chip"></i> Technical Stack
         </h2>
         <div class="skills-grid fade-in">
           <!-- ... existing skills ... -->
           <div class="skill-item">
-            <i class='bx bxl-java skill-icon'></i>
+            <i class="bx bxl-java skill-icon"></i>
             <span class="skill-name">Java</span>
           </div>
           <div class="skill-item">
-            <i class='bx bxl-spring-boot skill-icon'></i>
+            <i class="bx bxl-spring-boot skill-icon"></i>
             <span class="skill-name">Spring Boot</span>
           </div>
           <div class="skill-item">
-            <i class='bx bxl-react skill-icon'></i>
+            <i class="bx bxl-react skill-icon"></i>
             <span class="skill-name">React JS</span>
           </div>
           <div class="skill-item">
-            <i class='bx bxl-nodejs skill-icon'></i>
+            <i class="bx bxl-nodejs skill-icon"></i>
             <span class="skill-name">Node JS</span>
           </div>
           <div class="skill-item">
-            <i class='bx bxl-javascript skill-icon'></i>
+            <i class="bx bxl-javascript skill-icon"></i>
             <span class="skill-name">JavaScript</span>
           </div>
           <div class="skill-item">
-            <i class='bx bxl-html5 skill-icon'></i>
+            <i class="bx bxl-html5 skill-icon"></i>
             <span class="skill-name">HTML</span>
           </div>
           <div class="skill-item">
-            <i class='bx bxl-aws skill-icon'></i>
+            <i class="bx bxl-aws skill-icon"></i>
             <span class="skill-name">AWS</span>
           </div>
           <div class="skill-item">
-            <i class='bx bxl-postgresql skill-icon'></i>
+            <i class="bx bxl-postgresql skill-icon"></i>
             <span class="skill-name">PostgreSQL</span>
           </div>
           <div class="skill-item">
-            <i class='bx bxl-docker skill-icon'></i>
+            <i class="bx bxl-docker skill-icon"></i>
             <span class="skill-name">Docker</span>
           </div>
           <div class="skill-item">
-            <i class='bx bxl-python skill-icon'></i>
+            <i class="bx bxl-python skill-icon"></i>
             <span class="skill-name">Python</span>
           </div>
           <div class="skill-item">
-            <i class='bx bxs-data skill-icon'></i>
+            <i class="bx bxs-data skill-icon"></i>
             <span class="skill-name">Redis</span>
           </div>
           <div class="skill-item">
-            <svg class="skill-icon" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg" style="width: 2.5rem; height: 2.5rem;">
-                <path d="M12.001 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.629 0 12.001 0zm4.562 14.562a1.5 1.5 0 110-3 1.5 1.5 0 010 3zm-4.562 4.563a1.5 1.5 0 110-3 1.5 1.5 0 010 3zm0-9.125a1.5 1.5 0 110-3 1.5 1.5 0 010 3zm-4.563 4.562a1.5 1.5 0 110-3 1.5 1.5 0 010 3z"/>
+            <svg
+              class="skill-icon"
+              viewBox="0 0 24 24"
+              fill="currentColor"
+              xmlns="http://www.w3.org/2000/svg"
+              style="width: 2.5rem; height: 2.5rem"
+            >
+              <path
+                d="M12.001 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.629 0 12.001 0zm4.562 14.562a1.5 1.5 0 110-3 1.5 1.5 0 010 3zm-4.562 4.563a1.5 1.5 0 110-3 1.5 1.5 0 010 3zm0-9.125a1.5 1.5 0 110-3 1.5 1.5 0 010 3zm-4.563 4.562a1.5 1.5 0 110-3 1.5 1.5 0 010 3z"
+              />
             </svg>
             <span class="skill-name">Kafka</span>
           </div>
           <div class="skill-item">
-            <i class='bx bx-server skill-icon'></i>
+            <i class="bx bx-server skill-icon"></i>
             <span class="skill-name">Microservices</span>
           </div>
         </div>
@@ -169,18 +219,18 @@
       <!-- CERTIFICATIONS SECTION -->
       <section id="certifications" class="section container">
         <h2 class="section__title fade-in">
-          <i class='bx bx-award'></i> Certifications
+          <i class="bx bx-award"></i> Certifications
         </h2>
         <div class="cert-grid fade-in">
           <div class="cert-card">
-            <i class='bx bxl-aws cert-icon'></i>
+            <i class="bx bxl-aws cert-icon"></i>
             <div class="cert-info">
               <h3>AWS Certified Developer</h3>
               <p>Associate Level · Amazon Web Services</p>
             </div>
           </div>
           <div class="cert-card">
-            <i class='bx bxl-java cert-icon'></i>
+            <i class="bx bxl-java cert-icon"></i>
             <div class="cert-info">
               <h3>Oracle Certified Professional</h3>
               <p>Java SE 11 Developer</p>
@@ -195,14 +245,20 @@
           <i class="bx bxs-briefcase-alt-2"></i> Featured Projects
         </h2>
         <div class="grid">
-          
           <article class="card project-card fade-in">
-            <div class="project-header">
-              <i class="bx bx-file project-icon"></i>
-              <h3>Document Sharing System</h3>
+            <div
+              class="project-header"
+              style="justify-content: space-between; align-items: flex-start"
+            >
+              <div style="display: flex; align-items: center; gap: 12px">
+                <i class="bx bx-file project-icon"></i>
+                <h3>Document Sharing System</h3>
+              </div>
+              <span class="status-badge status-live">Live</span>
             </div>
             <p class="project-description">
-              Secure, QR-based document handoffs with real-time receiver updates.
+              Secure, QR-based document handoffs with real-time receiver
+              updates.
             </p>
             <div class="project-features">
               <ul>
@@ -214,14 +270,27 @@
               <span>Java</span><span>Spring Boot</span><span>AWS</span>
             </div>
             <div class="project-links">
-              <a class="btn" href="#" target="_blank"><i class="bx bxl-github"></i> Source</a>
+              <a class="btn primary" href="https://github.com/recscse" target="_blank"
+                ><i class="bx bxl-github"></i> Source</a
+              >
+              <img
+                src="https://img.shields.io/github/stars/recscse/project-repo?style=flat&color=3b82f6&labelColor=161b22"
+                alt="Stars"
+                style="height: 20px"
+              />
             </div>
           </article>
 
           <article class="card project-card fade-in">
-            <div class="project-header">
-              <i class="bx bxs-file-pdf project-icon"></i>
-              <h3>PDF Extraction Service</h3>
+            <div
+              class="project-header"
+              style="justify-content: space-between; align-items: flex-start"
+            >
+              <div style="display: flex; align-items: center; gap: 12px">
+                <i class="bx bxs-file-pdf project-icon"></i>
+                <h3>PDF Extraction Service</h3>
+              </div>
+              <span class="status-badge status-live">Live</span>
             </div>
             <p class="project-description">
               AI-powered PDF data extraction with customizable mapping rules.
@@ -236,17 +305,31 @@
               <span>Python</span><span>AI/ML</span><span>Java</span>
             </div>
             <div class="project-links">
-              <a class="btn" href="#" target="_blank"><i class="bx bxl-github"></i> Source</a>
+              <a class="btn primary" href="https://github.com/recscse" target="_blank"
+                ><i class="bx bxl-github"></i> Source</a
+              >
+              <img
+                src="https://img.shields.io/github/stars/recscse/project-repo?style=flat&color=3b82f6&labelColor=161b22"
+                alt="Stars"
+                style="height: 20px"
+              />
             </div>
           </article>
 
           <article class="card project-card fade-in">
-            <div class="project-header">
-              <i class="bx bx-line-chart project-icon"></i>
-              <h3>Growth Quantix</h3>
+            <div
+              class="project-header"
+              style="justify-content: space-between; align-items: flex-start"
+            >
+              <div style="display: flex; align-items: center; gap: 12px">
+                <i class="bx bx-line-chart project-icon"></i>
+                <h3>Growth Quantix</h3>
+              </div>
+              <span class="status-badge status-wip">WIP</span>
             </div>
             <p class="project-description">
-              Real-time trading & analytics platform with high-performance data processing.
+              Real-time trading & analytics platform with high-performance data
+              processing.
             </p>
             <div class="project-features">
               <ul>
@@ -258,12 +341,25 @@
               <span>FastAPI</span><span>Redis</span><span>React</span>
             </div>
             <div class="project-links">
-              <a class="btn" href="blog/scalable-market-data-architecture.html"><i class="bx bx-book-content"></i> Read Case Study</a>
+              <a
+                class="btn primary"
+                href="blog/scalable-market-data-architecture.html"
+                ><i class="bx bx-book-content"></i> Read Case Study</a
+              >
             </div>
           </article>
 
           <!-- View All Button -->
-          <div class="card fade-in" style="display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.02); min-height: 200px;">
+          <div
+            class="card fade-in"
+            style="
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              background: rgba(255, 255, 255, 0.02);
+              min-height: 200px;
+            "
+          >
             <a href="projects.html" class="btn primary">View All Projects →</a>
           </div>
         </div>
@@ -272,10 +368,9 @@
       <!-- EXPERIENCE SECTION -->
       <section id="experience" class="section container">
         <h2 class="section__title fade-in">
-          <i class='bx bx-time-five'></i> Experience
+          <i class="bx bx-time-five"></i> Experience
         </h2>
         <div class="timeline fade-in">
-          
           <!-- ArisGlobal -->
           <div class="timeline-item">
             <div class="timeline-dot"></div>
@@ -283,17 +378,33 @@
               <span class="timeline-date">Oct 2021 — Present</span>
               <h3 class="role-title">Software Engineer</h3>
               <div class="company-name">
-                  <i class='bx bxs-building-house' style="color: var(--accent);"></i> 
-                  ArisGlobal · Mysore, India
+                <i
+                  class="bx bxs-building-house"
+                  style="color: var(--accent)"
+                ></i>
+                ArisGlobal · Mysore, India
               </div>
-              
+
               <ul class="bullets">
-                <li>Designed and implemented scalable microservices for email processing and secure document sharing using <strong>Spring Boot</strong> and <strong>PostgreSQL</strong>.</li>
-                <li>Developed a QR-code based document transfer system with full auditability and role-based access control.</li>
-                <li>Managed cloud deployments on <strong>AWS (EC2, S3)</strong> using Jenkins CI/CD pipelines.</li>
-                <li>Optimized database queries reducing reporting latency by <strong>40%</strong>.</li>
+                <li>
+                  Designed and implemented scalable microservices for email
+                  processing and secure document sharing using
+                  <strong>Spring Boot</strong> and <strong>PostgreSQL</strong>.
+                </li>
+                <li>
+                  Developed a QR-code based document transfer system with full
+                  auditability and role-based access control.
+                </li>
+                <li>
+                  Managed cloud deployments on
+                  <strong>AWS (EC2, S3)</strong> using Jenkins CI/CD pipelines.
+                </li>
+                <li>
+                  Optimized database queries reducing reporting latency by
+                  <strong>40%</strong>.
+                </li>
               </ul>
-              
+
               <div class="timeline-tags">
                 <span class="tag">Java</span>
                 <span class="tag">Spring Boot</span>
@@ -303,222 +414,351 @@
               </div>
             </div>
           </div>
-
         </div>
       </section>
 
       <!-- LATEST ARTICLES SECTION -->
       <section id="blog" class="section container">
         <h2 class="section__title fade-in">
-          <i class='bx bx-pen'></i> Latest Engineering Notes
+          <i class="bx bx-pen"></i> Latest Engineering Notes
         </h2>
         <div class="grid">
-          
-          <a href="blog/scalable-market-data-architecture.html" class="card fade-in" style="text-decoration: none;">
+          <a
+            href="blog/scalable-market-data-architecture.html"
+            class="card fade-in"
+            style="text-decoration: none"
+          >
             <span class="timeline-date">Dec 27, 2025</span>
             <h3>Scalable Market Data Architecture</h3>
             <p class="project-description">
-              A deep dive into building a high-frequency trading data pipeline using FastAPI, Redis, and WebSockets.
+              A deep dive into building a high-frequency trading data pipeline
+              using FastAPI, Redis, and WebSockets.
             </p>
-            <div class="tags">
-              <span>System Design</span><span>Redis</span>
-            </div>
+            <div class="tags"><span>System Design</span><span>Redis</span></div>
           </a>
 
-          <a href="blog/market-data-generator.html" class="card fade-in" style="text-decoration: none;">
+          <a
+            href="blog/market-data-generator.html"
+            class="card fade-in"
+            style="text-decoration: none"
+          >
             <span class="timeline-date">Oct 17, 2025</span>
             <h3>Real-Time Market Data Generator</h3>
             <p class="project-description">
-              Simulating live stock market ticks to test algo trading systems with deterministic replay.
+              Simulating live stock market ticks to test algo trading systems
+              with deterministic replay.
             </p>
-            <div class="tags">
-              <span>Python</span><span>Simulation</span>
-            </div>
+            <div class="tags"><span>Python</span><span>Simulation</span></div>
           </a>
 
-          <div class="card fade-in" style="display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.02);">
+          <div
+            class="card fade-in"
+            style="
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              background: rgba(255, 255, 255, 0.02);
+            "
+          >
             <a href="blog/index.html" class="btn">View All Posts →</a>
           </div>
-
         </div>
       </section>
 
       <!-- GITHUB DASHBOARD -->
       <section class="section container">
-        <h2 class="section__title fade-in">
-          <i class='bx bxl-github'></i> GitHub Dashboard
-        </h2>
-        
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 40px; flex-wrap: wrap; gap: 20px;">
+            <h2 class="section__title fade-in" style="margin-bottom: 0;">
+              <i class="bx bxl-github"></i> 
+              <a href="https://github.com/recscse" target="_blank" style="display: inline-flex; align-items: center; gap: 8px;">
+                GitHub Dashboard <i class="bx bx-link-external" style="font-size: 1rem; opacity: 0.5;"></i>
+              </a>
+            </h2>
+            <div class="fade-in" style="display: flex; align-items: center; gap: 12px; font-size: 0.85rem; color: var(--text-muted); background: rgba(255,255,255,0.03); padding: 8px 16px; border-radius: 99px; border: 1px solid var(--glass-border);">
+                <span style="width: 8px; height: 8px; background: #10b981; border-radius: 50%; display: inline-block;"></span>
+                Stats live from GitHub API
+            </div>
+        </div>
+
         <!-- Trophies -->
-        <div class="card fade-in" style="margin-bottom: 24px; padding: 20px; text-align: center; overflow-x: auto;">
-             <img src="https://github-profile-trophy.vercel.app/?username=recscse&theme=darkhub&no-frame=true&margin-w=20&margin-h=20" alt="Brijesh's Trophies" />
+        <div
+          class="card fade-in"
+          style="
+            margin-bottom: 24px;
+            padding: 20px;
+            text-align: center;
+            overflow-x: auto;
+          "
+        >
+          <img
+            src="https://github-profile-trophy.vercel.app/?username=recscse&theme=darkhub&no-frame=true&margin-w=20&margin-h=20"
+            alt="Brijesh's Trophies"
+          />
         </div>
 
         <div class="github-dashboard fade-in">
-            <!-- Overall Stats (High Contrast) -->
-            <div class="card github-card">
-                <img src="https://github-readme-stats.vercel.app/api?username=recscse&show_icons=true&theme=dark&hide_border=true&bg_color=0d1117" alt="GitHub Stats" />
-            </div>
-            <!-- Top Languages (High Contrast) -->
-            <div class="card github-card">
-                <img src="https://github-readme-stats.vercel.app/api/top-langs/?username=recscse&layout=compact&theme=dark&hide_border=true&bg_color=0d1117" alt="Top Languages" />
-            </div>
-            <!-- Streak Stats -->
-            <div class="card github-card">
-                <img src="https://github-readme-streak-stats.herokuapp.com/?user=recscse&theme=dark&background=0d1117&border=30363d&dates=e6edf3" alt="GitHub Streak" />
-            </div>
+          <!-- Overall Stats (High Contrast) -->
+          <div class="card github-card">
+            <img
+              src="https://github-readme-stats.vercel.app/api?username=recscse&show_icons=true&theme=dark&hide_border=true&bg_color=0d1117"
+              alt="GitHub Stats"
+            />
+          </div>
+          <!-- Top Languages (High Contrast) -->
+          <div class="card github-card">
+            <img
+              src="https://github-readme-stats.vercel.app/api/top-langs/?username=recscse&layout=compact&theme=dark&hide_border=true&bg_color=0d1117"
+              alt="Top Languages"
+            />
+          </div>
+          <!-- Streak Stats -->
+          <div class="card github-card">
+            <img
+              src="https://github-readme-streak-stats.herokuapp.com/?user=recscse&theme=dark&background=0d1117&border=30363d&dates=e6edf3"
+              alt="GitHub Streak"
+            />
+          </div>
         </div>
 
         <!-- Heatmap -->
-        <div class="card fade-in" style="text-align: center; padding: 30px; overflow: hidden;">
-            <p style="margin-bottom: 20px; color: var(--text-muted); font-size: 0.9rem;">
-                Contributions heatmap over the last year
-            </p>
-            <img 
-                src="https://ghchart.rshah.org/3b82f6/recscse" 
-                alt="Brijesh's Github Chart" 
-                style="width: 100%; max-width: 840px; height: auto;" 
-            />
+        <div
+          class="card fade-in"
+          style="text-align: center; padding: 30px; overflow: hidden"
+        >
+          <p
+            style="
+              margin-bottom: 20px;
+              color: var(--text-muted);
+              font-size: 0.9rem;
+            "
+          >
+            Contributions heatmap over the last year
+          </p>
+          <img
+            src="https://ghchart.rshah.org/3b82f6/recscse"
+            alt="Brijesh's Github Chart"
+            style="width: 100%; max-width: 840px; height: auto"
+          />
         </div>
       </section>
 
       <!-- TOOLBOX SECTION -->
       <section class="section container">
         <h2 class="section__title fade-in">
-          <i class='bx bx-wrench'></i> My Toolbox
+          <i class="bx bx-wrench"></i> My Toolbox
         </h2>
         <div class="skills-grid fade-in">
-            <div class="skill-item">
-                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/intellij/intellij-original.svg" style="width: 40px; height: 40px; margin-bottom: 10px;" alt="IntelliJ">
-                <span class="skill-name">IntelliJ IDEA</span>
-            </div>
-            <div class="skill-item">
-                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vscode/vscode-original.svg" style="width: 40px; height: 40px; margin-bottom: 10px;" alt="VS Code">
-                <span class="skill-name">VS Code</span>
-            </div>
-            <div class="skill-item">
-                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postman/postman-original.svg" style="width: 40px; height: 40px; margin-bottom: 10px;" alt="Postman">
-                <span class="skill-name">Postman</span>
-            </div>
-            <div class="skill-item">
-                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/git/git-original.svg" style="width: 40px; height: 40px; margin-bottom: 10px;" alt="Git">
-                <span class="skill-name">Git</span>
-            </div>
-            <div class="skill-item">
-                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/linux/linux-original.svg" style="width: 40px; height: 40px; margin-bottom: 10px;" alt="Linux">
-                <span class="skill-name">Linux</span>
-            </div>
-            <div class="skill-item">
-                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/jira/jira-original.svg" style="width: 40px; height: 40px; margin-bottom: 10px;" alt="Jira">
-                <span class="skill-name">Jira</span>
-            </div>
+          <div class="skill-item">
+            <img
+              src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/intellij/intellij-original.svg"
+              style="width: 40px; height: 40px; margin-bottom: 10px"
+              alt="IntelliJ"
+            />
+            <span class="skill-name">IntelliJ IDEA</span>
+          </div>
+          <div class="skill-item">
+            <img
+              src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vscode/vscode-original.svg"
+              style="width: 40px; height: 40px; margin-bottom: 10px"
+              alt="VS Code"
+            />
+            <span class="skill-name">VS Code</span>
+          </div>
+          <div class="skill-item">
+            <img
+              src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postman/postman-original.svg"
+              style="width: 40px; height: 40px; margin-bottom: 10px"
+              alt="Postman"
+            />
+            <span class="skill-name">Postman</span>
+          </div>
+          <div class="skill-item">
+            <img
+              src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/git/git-original.svg"
+              style="width: 40px; height: 40px; margin-bottom: 10px"
+              alt="Git"
+            />
+            <span class="skill-name">Git</span>
+          </div>
+          <div class="skill-item">
+            <img
+              src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/linux/linux-original.svg"
+              style="width: 40px; height: 40px; margin-bottom: 10px"
+              alt="Linux"
+            />
+            <span class="skill-name">Linux</span>
+          </div>
+          <div class="skill-item">
+            <img
+              src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/jira/jira-original.svg"
+              style="width: 40px; height: 40px; margin-bottom: 10px"
+              alt="Jira"
+            />
+            <span class="skill-name">Jira</span>
+          </div>
         </div>
       </section>
 
       <!-- RECOMMENDATIONS / TESTIMONIALS -->
       <section id="recommendations" class="section container">
         <h2 class="section__title fade-in">
-          <i class='bx bxs-quote-left'></i> Recommendations
+          <i class="bx bxs-quote-left"></i> Recommendations
         </h2>
         <div class="grid">
-            <div class="card fade-in testimonial-card">
-                <i class='bx bxs-quote-alt-left quote-icon'></i>
-                <p class="testimonial-text">
-                    "Brijesh is one of the most dedicated backend engineers I've worked with. His ability to optimize microservices for high throughput at ArisGlobal was impressive."
-                </p>
-                <div class="testimonial-author">
-                    <strong>Manager Name</strong>
-                    <span>Engineering Manager @ ArisGlobal</span>
-                </div>
+          <div class="card fade-in testimonial-card">
+            <i class="bx bxs-quote-alt-left quote-icon"></i>
+            <p class="testimonial-text">
+              "Brijesh is one of the most dedicated backend engineers I've
+              worked with. His ability to optimize microservices for high
+              throughput at ArisGlobal was impressive."
+            </p>
+            <div class="testimonial-author">
+              <strong>Manager Name</strong>
+              <span>Engineering Manager @ ArisGlobal</span>
             </div>
+          </div>
 
-            <div class="card fade-in testimonial-card">
-                <i class='bx bxs-quote-alt-left quote-icon'></i>
-                <p class="testimonial-text">
-                    "He has a deep understanding of distributed systems. The QR document sharing system he designed was secure, scalable, and delivered ahead of schedule."
-                </p>
-                <div class="testimonial-author">
-                    <strong>Colleague Name</strong>
-                    <span>Senior Developer</span>
-                </div>
+          <div class="card fade-in testimonial-card">
+            <i class="bx bxs-quote-alt-left quote-icon"></i>
+            <p class="testimonial-text">
+              "He has a deep understanding of distributed systems. The QR
+              document sharing system he designed was secure, scalable, and
+              delivered ahead of schedule."
+            </p>
+            <div class="testimonial-author">
+              <strong>Colleague Name</strong>
+              <span>Senior Developer</span>
             </div>
+          </div>
         </div>
       </section>
 
       <!-- CONTACT SECTION -->
       <section id="contact" class="section container">
         <h2 class="section__title fade-in">
-          <i class='bx bx-message-rounded-dots'></i> Get In Touch
+          <i class="bx bx-message-rounded-dots"></i> Get In Touch
         </h2>
-        
-        <div class="fade-in" style="text-align: center; margin-bottom: 40px;">
-            <p style="font-size: 1.15rem; color: var(--text-muted); max-width: 600px; margin: 0 auto;">
-                Whether you have a question, a project proposal, or just want to discuss tech, 
-                my inbox is always open!
-            </p>
+
+        <div class="fade-in" style="text-align: center; margin-bottom: 40px">
+          <p
+            style="
+              font-size: 1.15rem;
+              color: var(--text-muted);
+              max-width: 600px;
+              margin: 0 auto;
+            "
+          >
+            Whether you have a question, a project proposal, or just want to
+            discuss tech, my inbox is always open!
+          </p>
         </div>
 
         <div class="contact__grid fade-in">
           <a class="contact__item" href="mailto:brijeshyadav30599@gmail.com">
-             <i class='bx bx-envelope contact-icon'></i>
-             <span>Email Me</span>
-             <span class="contact-sub">brijeshyadav30599@gmail.com</span>
+            <i class="bx bx-envelope contact-icon"></i>
+            <span>Email Me</span>
+            <span class="contact-sub">brijeshyadav30599@gmail.com</span>
           </a>
-          <a class="contact__item" href="https://www.linkedin.com/in/brijesh-yadav-" target="_blank">
-            <i class='bx bxl-linkedin-square contact-icon'></i>
+          <a
+            class="contact__item"
+            href="https://www.linkedin.com/in/brijesh-yadav-"
+            target="_blank"
+          >
+            <i class="bx bxl-linkedin-square contact-icon"></i>
             <span>LinkedIn</span>
             <span class="contact-sub">Let's connect professionally</span>
           </a>
-          <a class="contact__item" href="https://github.com/recscse" target="_blank">
-            <i class='bx bxl-github contact-icon'></i>
+          <a
+            class="contact__item"
+            href="https://github.com/recscse"
+            target="_blank"
+          >
+            <i class="bx bxl-github contact-icon"></i>
             <span>GitHub</span>
             <span class="contact-sub">Check out my repositories</span>
           </a>
-          <a class="contact__item" href="https://x.com/_brijeshyadav" target="_blank">
-            <i class='bx bxl-twitter contact-icon'></i>
+          <a
+            class="contact__item"
+            href="https://x.com/_brijeshyadav"
+            target="_blank"
+          >
+            <i class="bx bxl-twitter contact-icon"></i>
             <span>X (Twitter)</span>
             <span class="contact-sub">Let's connect on X</span>
           </a>
         </div>
       </section>
-
     </main>
 
     <footer class="footer">
       <div class="container footer__inner">
         <span>© <span id="year"></span> Brijesh Yadav</span>
-        <div style="display: flex; gap: 16px;">
-            <a href="#skills">Skills</a>
-            <a href="blog/index.html">Blog</a>
+        <div style="display: flex; gap: 16px">
+          <a href="#skills">Skills</a>
+          <a href="blog/index.html">Blog</a>
         </div>
       </div>
     </footer>
 
+    <!-- Scroll to Top Button -->
+    <button
+      id="scroll-top"
+      class="theme-toggle"
+      style="
+        position: fixed;
+        bottom: 30px;
+        right: 30px;
+        z-index: 99;
+        display: none;
+        width: 44px;
+        height: 44px;
+        background: var(--bg-card);
+        border-color: var(--primary);
+        align-items: center;
+        justify-content: center;
+      "
+    >
+      <i class="bx bx-up-arrow-alt" style="font-size: 1.5rem"></i>
+    </button>
+
     <script>
       // Theme Logic
-      const themeBtn = document.getElementById('theme-toggle');
-      const sunIcon = themeBtn.querySelector('.sun-icon');
-      const moonIcon = themeBtn.querySelector('.moon-icon');
+      const themeBtn = document.getElementById("theme-toggle");
+      const sunIcon = themeBtn.querySelector(".sun-icon");
+      const moonIcon = themeBtn.querySelector(".moon-icon");
 
       function updateIcons(theme) {
-          if (theme === 'light') {
-              sunIcon.style.display = 'none';
-              moonIcon.style.display = 'block';
-          } else {
-              sunIcon.style.display = 'block';
-              moonIcon.style.display = 'none';
-          }
+        if (theme === "light") {
+          sunIcon.style.display = "none";
+          moonIcon.style.display = "block";
+        } else {
+          sunIcon.style.display = "block";
+          moonIcon.style.display = "none";
+        }
       }
-      
-      const currentTheme = document.documentElement.getAttribute('data-theme');
+
+      const currentTheme = document.documentElement.getAttribute("data-theme");
       updateIcons(currentTheme);
 
-      themeBtn.addEventListener('click', () => {
-          const current = document.documentElement.getAttribute('data-theme');
-          const next = current === 'light' ? 'dark' : 'light';
-          document.documentElement.setAttribute('data-theme', next);
-          localStorage.setItem('theme', next);
-          updateIcons(next);
+      themeBtn.addEventListener("click", () => {
+        const current = document.documentElement.getAttribute("data-theme");
+        const next = current === "light" ? "dark" : "light";
+        document.documentElement.setAttribute("data-theme", next);
+        localStorage.setItem("theme", next);
+        updateIcons(next);
+      });
+
+      // Scroll to Top Logic
+      const scrollTopBtn = document.getElementById('scroll-top');
+      window.onscroll = function() {
+          if (document.body.scrollTop > 500 || document.documentElement.scrollTop > 500) {
+              scrollTopBtn.style.display = "flex";
+          } else {
+              scrollTopBtn.style.display = "none";
+          }
+      };
+      scrollTopBtn.addEventListener('click', () => {
+          window.scrollTo({ top: 0, behavior: 'smooth' });
       });
 
       // Mobile Menu
@@ -555,7 +795,7 @@
             }
           });
         },
-        { threshold: 0.1 }
+        { threshold: 0.1 },
       );
 
       document.querySelectorAll(".fade-in").forEach((el) => {

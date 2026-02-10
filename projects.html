@@ -57,18 +57,6 @@
             border-color: var(--primary);
         }
 
-        .status-badge {
-            font-size: 0.7rem;
-            padding: 4px 10px;
-            border-radius: 6px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-        }
-        .status-live { background: rgba(16, 185, 129, 0.1); color: #10b981; border: 1px solid rgba(16, 185, 129, 0.2); }
-        .status-wip { background: rgba(245, 158, 11, 0.1); color: #f59e0b; border: 1px solid rgba(245, 158, 11, 0.2); }
-        .status-archived { background: rgba(148, 163, 184, 0.1); color: #94a3b8; border: 1px solid rgba(148, 163, 184, 0.2); }
-
         .highlights {
             margin: 16px 0;
             padding: 0;
@@ -252,8 +240,12 @@
           
           filtered.forEach(p => {
               let statusClass = 'status-live';
-              if(p.status === 'WIP') statusClass = 'status-wip';
-              if(p.status === 'Archived') statusClass = 'status-archived';
+              let displayStatus = p.status || 'Live';
+              if(displayStatus === 'WIP') statusClass = 'status-wip';
+              if(displayStatus === 'Archived') statusClass = 'status-archived';
+
+              const isGitHub = p.link.includes('github.com');
+              const repoPath = isGitHub ? p.link.split('github.com/')[1] : null;
 
               const card = document.createElement('article');
               card.className = 'card project-card fade-in visible';
@@ -263,7 +255,7 @@
                        <i class='bx ${p.icon} project-icon'></i>
                        <h3 style="font-size: 1.4rem;">${p.title}</h3>
                    </div>
-                   <span class="status-badge ${statusClass}">${p.status}</span>
+                   <span class="status-badge ${statusClass}">${displayStatus}</span>
                 </div>
                 <p class="project-description" style="margin-top: 10px; font-weight: 500; color: var(--text-main);">${p.description}</p>
                 
@@ -276,15 +268,19 @@
                     ${p.tags.map(t => `<span>${t}</span>`).join('')}
                 </div>
                 
-                <div class="project-links" style="margin-top: 24px; display: flex; gap: 12px; flex-wrap: wrap;">
+                <div class="project-links" style="margin-top: 24px; display: flex; gap: 12px; align-items: center; flex-wrap: wrap;">
                     <a class="btn primary" href="${p.link}" target="_blank" style="flex: 1; justify-content: center;">
                         <i class='bx ${p.link.includes('blog') ? 'bx-book-content' : 'bxl-github'}'></i> 
                         ${p.link.includes('blog') ? 'Read Case Study' : 'Source Code'}
                     </a>
-                    ${p.demo ? `
+                    ${p.demo && p.demo !== '#' ? `
                     <a class="btn" href="${p.demo}" target="_blank" style="flex: 1; justify-content: center;">
                         <i class='bx bx-link-external'></i> Live Demo
                     </a>` : ''}
+                    ${isGitHub && repoPath && repoPath !== 'recscse/project-repo' ? `
+                    <div style="display: flex; gap: 8px;">
+                        <img src="https://img.shields.io/github/stars/${repoPath}?style=flat&color=3b82f6&labelColor=161b22" alt="Stars">
+                    </div>` : ''}
                 </div>
               `;
               grid.appendChild(card);

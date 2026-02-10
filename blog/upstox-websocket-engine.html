@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Latency Kills: Building a High-Speed Market Data Engine — Brijesh Yadav</title>
+    <meta name="description" content="Technical deep-dive into implementing Upstox V3 WebSockets and Protocol Buffers for near-zero lag market data streaming." />
+    <link rel="stylesheet" href="blog.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css" />
+    
+    <script>
+        const savedTheme = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+        document.documentElement.setAttribute('data-theme', savedTheme);
+    </script>
+  </head>
+  <body>
+    <nav class="nav-bar">
+      <div class="nav-left">
+        <a href="../index.html" class="nav-brand">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+            </svg>
+            Brijesh Yadav
+        </a>
+      </div>
+      <div style="display: flex; gap: 12px; align-items: center;">
+          <a href="index.html" class="nav-link">← All Posts</a>
+          <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme">
+            <i class='bx bx-moon moon-icon'></i>
+            <i class='bx bx-sun sun-icon' style="display:none;"></i>
+          </button>
+      </div>
+    </nav>
+
+    <article class="layout">
+      <div class="prose">
+        <header class="post-header">
+          <div class="post-meta">Feb 10, 2026 • 8 min read</div>
+          <h1 class="post-title">Latency Kills: Building a High-Speed Market Data Engine with Upstox V3</h1>
+          <div class="card-tags" style="justify-content: center; margin-top: 20px;">
+            <span class="tag">Python</span>
+            <span class="tag">WebSockets</span>
+            <span class="tag">Protobuf</span>
+            <span class="tag">FinTech</span>
+          </div>
+        </header>
+
+        <section class="post-content">
+          <p class="lead">
+            In the world of algorithmic trading, <strong>data is the new oil</strong>, but <strong>latency is the enemy</strong>. 
+            If your execution engine is even 500 milliseconds behind a price move, your edge is already gone.
+          </p>
+          
+          <!-- ... rest of content ... -->
+        </section>
+      </div>
+    </article>
+
+        <p>
+          This post deep-dives into how I architected a production-grade market data engine using 
+          <strong>Upstox V3 WebSockets</strong> and <strong>Protocol Buffers (Protobuf)</strong> to achieve near-zero lag streaming.
+        </p>
+
+        <h2>The Architecture: From Polling to Streaming</h2>
+        <p>
+          Most beginner trading bots use "Polling"—requesting prices via REST APIs every second. This is inefficient 
+          and slow. My platform utilizes a <strong>Persistent WebSocket Stream</strong>. Once the pipe is open, data flows 
+          unidirectionally from the exchange to the bot in real-time.
+        </p>
+
+        <div class="diagram-box">
+[NSE/BSE Exchange]
+       |
+[Upstox Market Data Servers]
+       |
+       | (Binary Protobuf Stream)
+       v
+[My WebSocket Engine] <--- (Handles Auth & Heartbeats)
+       |
+       +-----> [AI Strategy Engine] (Execution Logic)
+       |
+       +-----> [React UI Dashboard] (Live Visualization)
+        </div>
+
+        <h2>Why Binary Protobuf?</h2>
+        <p>
+          Unlike many brokers that send data in JSON (plain text), Upstox V3 uses <strong>Protocol Buffers</strong>. 
+          While JSON is human-readable, it carries significant overhead due to text parsing and large payloads.
+        </p>
+        
+        <table>
+            <thead>
+                <tr>
+                    <th>Feature</th>
+                    <th>JSON (Traditional)</th>
+                    <th>Protobuf (Optimized)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Data Type</strong></td>
+                    <td>Text/String</td>
+                    <td>Compressed Binary</td>
+                </tr>
+                <tr>
+                    <td><strong>Parsing</strong></td>
+                    <td>Slow (CPU Intensive)</td>
+                    <td>Ultra-Fast (Native Mapping)</td>
+                </tr>
+                <tr>
+                    <td><strong>Payload Size</strong></td>
+                    <td>Heavy</td>
+                    <td>Minimal (Up to 80% smaller)</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Implementation Workflow</h2>
+        
+        <h3>1. Authorization Handshake</h3>
+        <p>
+          Before connecting, we must request a short-lived authorized redirect URI. This ensures that the 
+          WebSocket connection is secure and bound to a valid session.
+        </p>
+
+<pre><code>def get_authorized_url(access_token):
+    url = "https://api.upstox.com/v3/feed/market-data-feed/authorize"
+    headers = {"Authorization": f"Bearer {access_token}"}
+    response = requests.get(url, headers=headers)
+    return response.json()['data']['authorized_redirect_uri']
+</code></pre>
+
+        <h3>2. Binary Decoding with Protobuf</h3>
+        <p>
+          When binary packets arrive, they must be decoded using the pre-defined <code>.proto</code> schema. 
+          This is where the speed comes from—we map raw bytes directly to Python objects.
+        </p>
+
+<pre><code>import MarketDataFeed_pb2 as pb
+from google.protobuf.json_format import MessageToDict
+
+def on_message(raw_binary):
+    # Decode the binary buffer using the Protobuf schema
+    feed_response = pb.FeedResponse()
+    feed_response.ParseFromString(raw_binary)
+    
+    # Convert to a dictionary for the strategy engine
+    return MessageToDict(feed_response)
+</code></pre>
+
+        <h2>Production Fail-Safes</h2>
+        <p>
+          A real-world trading engine must be resilient. I implemented several critical patterns to ensure 
+          high availability:
+        </p>
+        <ul>
+            <li><strong>Exponential Backoff:</strong> If the connection drops, the bot waits 5s, then 10s, then 20s... avoiding server-side rate limits.</li>
+            <li><strong>Heartbeat Monitoring:</strong> We monitor "Ticks." If no data arrives for 60 seconds during market hours, the engine triggers a silent reconnect.</li>
+            <li><strong>Dynamic Re-subscription:</strong> The engine allows adding or removing stocks (e.g., shifting from NIFTY to BANKNIFTY) without dropping the current connection.</li>
+        </ul>
+
+        <h2>Final Results</h2>
+        <p>
+          By implementing this binary-first architecture, the system now processes <strong>over 1,000 price updates 
+          per second</strong> with an internal latency of <strong>< 5ms</strong>. This allows the strategy engine to 
+          react to "Flash Breakouts" faster than manual traders can even see the chart update.
+        </p>
+
+        <div class="post-cta" style="margin-top: 60px; padding: 40px; background: rgba(59, 130, 246, 0.05); border-radius: 16px; text-align: center; border: 1px solid var(--glass-border);">
+            <h3 style="margin-top: 0;">Interested in High-Frequency Systems?</h3>
+            <p style="color: var(--text-muted);">Check out the full implementation on my GitHub or connect with me on LinkedIn to discuss FinTech architectures.</p>
+            <div style="display: flex; gap: 12px; justify-content: center; margin-top: 20px;">
+                <a href="https://github.com/recscse" class="nav-link" target="_blank"><i class='bx bxl-github'></i> GitHub</a>
+                <a href="https://linkedin.com/in/brijesh-yadav-" class="nav-link" target="_blank"><i class='bx bxl-linkedin'></i> LinkedIn</a>
+            </div>
+        </div>
+      </section>
+      </div>
+    </article>
+
+    <footer class="footer">
+      <p>© <span id="year"></span> Brijesh Yadav</p>
+    </footer>
+
+    <script>
+      const themeBtn = document.getElementById('theme-toggle');
+      const sunIcon = themeBtn.querySelector('.sun-icon');
+      const moonIcon = themeBtn.querySelector('.moon-icon');
+
+      function updateIcons(theme) {
+          if (theme === 'light') {
+              sunIcon.style.display = 'none';
+              moonIcon.style.display = 'block';
+          } else {
+              sunIcon.style.display = 'block';
+              moonIcon.style.display = 'none';
+          }
+      }
+
+      themeBtn.addEventListener('click', () => {
+          const current = document.documentElement.getAttribute('data-theme');
+          const next = current === 'light' ? 'dark' : 'light';
+          document.documentElement.setAttribute('data-theme', next);
+          localStorage.setItem('theme', next);
+          updateIcons(next);
+      });
+
+      document.getElementById("year").textContent = new Date().getFullYear();
+      updateIcons(document.documentElement.getAttribute('data-theme'));
+    </script>
+  </body>
+</html>
