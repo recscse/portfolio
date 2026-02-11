@@ -110,6 +110,15 @@
           </p>
 
           <div class="diagram-box">
+            <div class="diagram-header">
+                <div class="window-controls">
+                    <span class="control red"></span>
+                    <span class="control yellow"></span>
+                    <span class="control green"></span>
+                </div>
+                <div class="diagram-title">System Architecture</div>
+            </div>
+            <pre class="diagram-content">
 [Trading Signal]
        |
 [Risk Management Service] <---- [Trade Analytics] <---- [PostgreSQL DB]
@@ -119,6 +128,7 @@
 [Apply Half-Kelly & Caps] (Min 1% / Max 10%)
        |
 [Final Trade Quantity] ----> [Broker API]
+            </pre>
           </div>
 
           <h2>4. Implementation: Step-by-Step Logic</h2>
