@@ -161,8 +161,9 @@
           tags: ["Spring Boot", "AWS S3", "PostgreSQL", "OAuth2"],
           status: "Live",
           icon: "bx-file",
-          link: "https://github.com/recscse/project-repo",
-          demo: "#", // Add your real demo link here
+          link: "https://github.com/recscse/Document-Sharing-System",
+          repo: "recscse/Document-Sharing-System",
+          demo: "#", 
           highlights: [
             "Implemented a secure QR-based token exchange to ensure 100% auditability of physical handoffs.",
             "Architected a microservices-based RBAC (Role-Based Access Control) to manage complex document permissions.",
@@ -177,7 +178,6 @@
           status: "WIP",
           icon: "bx-line-chart",
           link: "blog/scalable-market-data-architecture.html",
-          // No demo for WIP projects usually, but can be added if needed
           highlights: [
             "Engineered a Redis-based Pub/Sub data bus to handle over 10,000 live price ticks per second.",
             "Built a modular signal engine that decouples market data ingestion from trading strategy execution.",
@@ -191,8 +191,9 @@
           tags: ["Python", "TensorFlow", "FastAPI", "OCR"],
           status: "Live",
           icon: "bxs-file-pdf",
-          link: "https://github.com/recscse/project-repo",
-          demo: "#", // Add your real demo link here
+          link: "https://github.com/recscse/PDF-Extraction-Service",
+          repo: "recscse/PDF-Extraction-Service",
+          demo: "#", 
           highlights: [
             "Developed a custom rule engine for mapping dynamic PDF fields to standardized JSON structures.",
             "Implemented an ML-based detection layer to handle variations in document layouts from multiple vendors.",
@@ -220,7 +221,8 @@
             tags: ["Java", "Spring Boot", "AspectJ", "Prometheus"],
             status: "Archived",
             icon: "bx-package",
-            link: "#",
+            link: "https://github.com/recscse/microservices-chassis",
+            repo: "recscse/microservices-chassis",
             highlights: [
               "Standardized cross-cutting concerns (Logging, Auth, Tracing) using AOP (Aspect Oriented Programming).",
               "Integrated Prometheus and Micrometer for out-of-the-box observability across all services.",
@@ -244,11 +246,10 @@
               if(displayStatus === 'WIP') statusClass = 'status-wip';
               if(displayStatus === 'Archived') statusClass = 'status-archived';
 
-              const isGitHub = p.link.includes('github.com');
-              const repoPath = isGitHub ? p.link.split('github.com/')[1] : null;
-
               const card = document.createElement('article');
               card.className = 'card project-card fade-in visible';
+              if (p.repo) card.setAttribute('data-repo', p.repo);
+              
               card.innerHTML = `
                 <div class="project-header" style="justify-content: space-between; align-items: flex-start;">
                    <div style="display:flex; align-items:center; gap:12px;">
@@ -277,14 +278,42 @@
                     <a class="btn" href="${p.demo}" target="_blank" style="flex: 1; justify-content: center;">
                         <i class='bx bx-link-external'></i> Live Demo
                     </a>` : ''}
-                    ${isGitHub && repoPath && repoPath !== 'recscse/project-repo' ? `
-                    <div style="display: flex; gap: 8px;">
-                        <img src="https://img.shields.io/github/stars/${repoPath}?style=flat&color=3b82f6&labelColor=161b22" alt="Stars">
+                    ${p.repo ? `
+                    <div class="repo-stats" style="display: flex; gap: 10px; align-items: center; font-size: 0.8rem; color: var(--text-muted); background: rgba(255,255,255,0.03); padding: 5px 12px; border-radius: 99px; border: 1px solid var(--glass-border);">
+                        <span class="stat-item"><i class="bx bx-star"></i> <span class="stars-count">--</span></span>
+                        <span class="stat-item"><i class="bx bx-git-commit"></i> <span class="last-commit">--</span></span>
                     </div>` : ''}
                 </div>
               `;
               grid.appendChild(card);
           });
+          fetchGitHubStats();
+      }
+
+      async function fetchGitHubStats() {
+          const cards = document.querySelectorAll('[data-repo]');
+          for (const card of cards) {
+              const repo = card.getAttribute('data-repo');
+              if (!repo || repo.includes('project-repo')) continue;
+
+              try {
+                  const response = await fetch(`https://api.github.com/repos/${repo}`);
+                  if (!response.ok) throw new Error('Repo not found');
+                  const data = await response.json();
+                  
+                  const starsEl = card.querySelector('.stars-count');
+                  const commitEl = card.querySelector('.last-commit');
+                  
+                  if (starsEl) starsEl.textContent = data.stargazers_count;
+                  if (commitEl) {
+                      const date = new Date(data.updated_at);
+                      commitEl.textContent = date.toLocaleDateString(undefined, { month: 'short', year: 'numeric' });
+                      commitEl.parentElement.title = `Last updated: ${date.toLocaleString()}`;
+                  }
+              } catch (err) {
+                  console.error(`Error fetching stats for ${repo}:`, err);
+              }
+          }
       }
 
       filterBtns.forEach(btn => {

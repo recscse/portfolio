@@ -36,6 +36,28 @@
     <link rel="icon" href="assets/banner.svg" type="image/svg+xml" />
     <link rel="manifest" href="site.webmanifest" />
 
+    <!-- Structured Data for SEO -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "Brijesh Yadav",
+      "jobTitle": "Backend Engineer & System Architect",
+      "url": "https://recscse.github.io",
+      "sameAs": [
+        "https://github.com/recscse",
+        "https://linkedin.com/in/brijesh-yadav-",
+        "https://x.com/_brijeshyadav"
+      ],
+      "worksFor": {
+        "@type": "Organization",
+        "name": "ArisGlobal"
+      },
+      "description": "Backend Engineer with 3+ years experience in Java, Spring Boot, AWS, and microservices.",
+      "image": "https://recscse.github.io/assets/banner.svg"
+    }
+    </script>
+
     <script>
       const savedTheme =
         localStorage.getItem("theme") ||
@@ -245,7 +267,7 @@
           <i class="bx bxs-briefcase-alt-2"></i> Featured Projects
         </h2>
         <div class="grid">
-          <article class="card project-card fade-in">
+          <article class="card project-card fade-in" data-repo="recscse/Document-Sharing-System">
             <div
               class="project-header"
               style="justify-content: space-between; align-items: flex-start"
@@ -273,15 +295,14 @@
               <a class="btn primary" href="https://github.com/recscse" target="_blank"
                 ><i class="bx bxl-github"></i> Source</a
               >
-              <img
-                src="https://img.shields.io/github/stars/recscse/project-repo?style=flat&color=3b82f6&labelColor=161b22"
-                alt="Stars"
-                style="height: 20px"
-              />
+              <div class="repo-stats" style="display: flex; gap: 10px; align-items: center; font-size: 0.8rem; color: var(--text-muted);">
+                <span class="stat-item"><i class="bx bx-star"></i> <span class="stars-count">--</span></span>
+                <span class="stat-item"><i class="bx bx-git-commit"></i> <span class="last-commit">--</span></span>
+              </div>
             </div>
           </article>
 
-          <article class="card project-card fade-in">
+          <article class="card project-card fade-in" data-repo="recscse/PDF-Extraction-Service">
             <div
               class="project-header"
               style="justify-content: space-between; align-items: flex-start"
@@ -308,11 +329,10 @@
               <a class="btn primary" href="https://github.com/recscse" target="_blank"
                 ><i class="bx bxl-github"></i> Source</a
               >
-              <img
-                src="https://img.shields.io/github/stars/recscse/project-repo?style=flat&color=3b82f6&labelColor=161b22"
-                alt="Stars"
-                style="height: 20px"
-              />
+              <div class="repo-stats" style="display: flex; gap: 10px; align-items: center; font-size: 0.8rem; color: var(--text-muted);">
+                <span class="stat-item"><i class="bx bx-star"></i> <span class="stars-count">--</span></span>
+                <span class="stat-item"><i class="bx bx-git-commit"></i> <span class="last-commit">--</span></span>
+              </div>
             </div>
           </article>
 
@@ -801,6 +821,34 @@
       document.querySelectorAll(".fade-in").forEach((el) => {
         observer.observe(el);
       });
+
+      // GitHub Stats Fetcher
+      async function fetchGitHubStats() {
+          const cards = document.querySelectorAll('[data-repo]');
+          for (const card of cards) {
+              const repo = card.getAttribute('data-repo');
+              if (!repo || repo.includes('project-repo')) continue;
+
+              try {
+                  const response = await fetch(`https://api.github.com/repos/${repo}`);
+                  if (!response.ok) throw new Error('Repo not found');
+                  const data = await response.json();
+                  
+                  const starsEl = card.querySelector('.stars-count');
+                  const commitEl = card.querySelector('.last-commit');
+                  
+                  if (starsEl) starsEl.textContent = data.stargazers_count;
+                  if (commitEl) {
+                      const date = new Date(data.updated_at);
+                      commitEl.textContent = date.toLocaleDateString(undefined, { month: 'short', year: 'numeric' });
+                      commitEl.parentElement.title = `Last updated: ${date.toLocaleString()}`;
+                  }
+              } catch (err) {
+                  console.error(`Error fetching stats for ${repo}:`, err);
+              }
+          }
+      }
+      fetchGitHubStats();
     </script>
     <!-- Deployment Trigger: Update 1 -->
   </body>

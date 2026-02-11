@@ -6,6 +6,24 @@
     <title>Post Title | Brijesh Yadav</title>
     <link rel="stylesheet" href="blog.css" />
     <meta name="description" content="Brief summary of the post for SEO." />
+    
+    <!-- Structured Data for SEO -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "BlogPosting",
+      "headline": "Your Blog Post Title Goes Here",
+      "description": "Brief summary of the post for SEO.",
+      "author": {
+        "@type": "Person",
+        "name": "Brijesh Yadav",
+        "url": "https://recscse.github.io"
+      },
+      "datePublished": "2025-12-27",
+      "image": "https://recscse.github.io/assets/banner.svg"
+    }
+    </script>
+
     <script>
         // Inline script to prevent flash of unstyled content
         const savedTheme = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
