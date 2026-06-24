@@ -138,7 +138,6 @@
             "How I wired a low-latency live market feed into a modular signal engine using FastAPI, Redis, and WebSockets.",
           tags: ["FastAPI", "WebSockets", "Redis", "Trading"],
           url: "#",
-          status: "Coming soon",
         },
         {
           title: "Spring Boot Email Pipeline: From Queue to Delivery",
@@ -147,7 +146,6 @@
             "Designing a resilient email processing microservice with idempotent APIs, retries, and observability.",
           tags: ["Java", "Spring Boot", "Microservices", "Observability"],
           url: "#",
-          status: "Coming soon",
         },
         {
           title: "S3 + CloudFront for Low-Cost Static Hosting",
@@ -156,7 +154,6 @@
             "Step-by-step notes on deploying a static portfolio with caching, invalidations, and HTTPS.",
           tags: ["AWS", "S3", "CloudFront", "DevOps"],
           url: "#",
-          status: "Coming soon",
         },
         {
           title: "QR-based Document Handoffs with Audit Trails",
@@ -165,7 +162,6 @@
             "Security and UX considerations for a QR-driven document sharing flow backed by PostgreSQL.",
           tags: ["Security", "PostgreSQL", "Spring Boot"],
           url: "#",
-          status: "Coming soon",
         },
         {
           title: "Building a Real-Time Market Data Generator",
@@ -202,23 +198,15 @@
 
         filtered.forEach((p) => {
             const card = document.createElement("a");
-            const isDraft = !p.url || p.url === "#";
-            card.className = `blog-card${isDraft ? " blog-card--draft" : ""}`;
+            card.className = "blog-card";
             card.href = p.url || "#";
-            if (isDraft) {
-              card.setAttribute("aria-disabled", "true");
-              card.setAttribute("title", "Draft article coming soon");
-            }
             
             // Format date nicely
             const dateObj = new Date(p.date);
             const dateStr = dateObj.toLocaleDateString("en-US", { year: 'numeric', month: 'long', day: 'numeric' });
 
             card.innerHTML = `
-              <div class="card-meta-row">
-                <div class="card-date">${dateStr}</div>
-                ${p.status ? `<span class="card-status">${p.status}</span>` : ""}
-              </div>
+              <div class="card-date">${dateStr}</div>
               <h3 class="card-title">${p.title}</h3>
               <p class="card-excerpt">${p.summary}</p>
               <div class="card-tags">

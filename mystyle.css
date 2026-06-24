@@ -288,34 +288,6 @@ a { text-decoration: none; color: inherit; transition: all 0.2s ease; }
 }
 .section__title i { color: var(--primary); font-size: 1.8rem; }
 
-.section-heading {
-  max-width: 760px;
-  margin-bottom: 40px;
-}
-
-.section-heading .section__title {
-  margin: 8px 0 12px;
-}
-
-.eyebrow {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  color: var(--primary);
-  font-family: var(--font-mono);
-  font-size: 0.85rem;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-}
-
-.section__intro {
-  color: var(--text-muted);
-  font-size: 1.1rem;
-  margin: 0;
-  max-width: 640px;
-}
-
 .grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
@@ -536,52 +508,7 @@ a { text-decoration: none; color: inherit; transition: all 0.2s ease; }
   margin: 0;
 }
 
-/* 6.2 Capabilities */
-.capabilities-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 20px;
-}
-
-.capability-card {
-  background: linear-gradient(145deg, var(--bg-card), rgba(59, 130, 246, 0.04));
-  border: 1px solid var(--glass-border);
-  border-radius: var(--radius-lg);
-  padding: 28px;
-  transition: all 0.3s ease;
-}
-
-.capability-card:hover {
-  transform: translateY(-6px);
-  border-color: var(--primary);
-  background: var(--bg-card-hover);
-  box-shadow: var(--glass-shadow);
-}
-
-.capability-icon {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 48px;
-  height: 48px;
-  margin-bottom: 18px;
-  border-radius: 14px;
-  background: rgba(59, 130, 246, 0.12);
-  color: var(--primary);
-  font-size: 1.8rem;
-}
-
-.capability-card h3 {
-  font-size: 1.2rem;
-  margin: 0 0 10px;
-}
-
-.capability-card p {
-  color: var(--text-muted);
-  margin: 0;
-}
-
-/* 6.3 Testimonials */
+/* 6.2 Testimonials */
 .testimonial-card {
   position: relative;
   padding-left: 32px;
@@ -613,7 +540,7 @@ a { text-decoration: none; color: inherit; transition: all 0.2s ease; }
   font-family: var(--font-mono);
 }
 
-/* 6.4 GitHub Dashboard */
+/* 6.3 GitHub Dashboard */
 .github-dashboard {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -659,81 +586,6 @@ a { text-decoration: none; color: inherit; transition: all 0.2s ease; }
   font-weight: 600;
   font-size: 0.9rem;
   color: var(--text-main);
-}
-
-/* 6.1 Skill Proof */
-.proof-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 20px;
-}
-
-.proof-card {
-  background: var(--bg-card);
-  border: 1px solid var(--glass-border);
-  border-radius: var(--radius-lg);
-  padding: 24px;
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  transition: all 0.3s ease;
-}
-
-.proof-card:hover {
-  transform: translateY(-6px);
-  border-color: var(--primary);
-  background: var(--bg-card-hover);
-  box-shadow: var(--glass-shadow);
-}
-
-.proof-card__head {
-  display: flex;
-  align-items: flex-start;
-  gap: 16px;
-}
-
-.proof-card__icon {
-  color: var(--primary);
-  font-size: 2rem;
-  padding: 10px;
-  border-radius: 14px;
-  background: rgba(59, 130, 246, 0.12);
-}
-
-.proof-card h3 {
-  margin: 0 0 6px;
-  font-size: 1.15rem;
-}
-
-.proof-card p {
-  color: var(--text-muted);
-  margin: 0;
-  font-size: 0.95rem;
-}
-
-.proof-links {
-  display: grid;
-  gap: 10px;
-  margin-top: auto;
-}
-
-.proof-link {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  color: var(--text-main);
-  border: 1px solid var(--glass-border);
-  border-radius: 10px;
-  padding: 10px 12px;
-  background: rgba(255,255,255,0.04);
-  font-size: 0.9rem;
-  font-weight: 600;
-}
-
-.proof-link:hover {
-  color: #fff;
-  border-color: var(--primary);
-  background: var(--primary);
 }
 
 /* Status Badges */
