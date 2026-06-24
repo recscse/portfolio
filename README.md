@@ -75,6 +75,13 @@ portfolio/
 
 ## 🧪 Featured Projects
 
+### [Upstox Auth Pro](https://github.com/growthquantix/upstox-auth-pro)
+**Stack:** Python, Playwright, pyotp, OAuth2, PyPI
+*   Published Python SDK for automating Upstox OAuth2 login, TOTP 2FA, and token storage.
+*   Available on PyPI: `pip install upstox-auth-pro`.
+*   PyPI downloads: **2.65k total** and **436 in the last 30 days**.
+*   [PyPI Package](https://pypi.org/project/upstox-auth-pro/) · [Documentation](https://growthquantix.github.io/upstox-auth-pro/)
+
 ### [Growth Quantix (WIP)](blog/scalable-market-data-architecture.html)
 **Stack:** Python FastAPI, Redis Pub/Sub, WebSockets, React
 *   Real-time trading platform handling 10k+ ticks/sec.
