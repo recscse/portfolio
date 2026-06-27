@@ -3,11 +3,27 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>The Math of Winning: Kelly Criterion Risk Engine — Brijesh Yadav</title>
-    <meta name="description" content="Technical deep-dive into implementing the Kelly Criterion for optimal position sizing in algorithmic trading systems." />
+    <title>The Math of Winning: Kelly Criterion Risk Engine | Brijesh Yadav</title>
     <link rel="stylesheet" href="blog.css" />
+    <meta name="description" content="Technical deep-dive into implementing the Kelly Criterion for optimal position sizing in algorithmic trading systems." />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css" />
     
+    <!-- Structured Data for SEO -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "BlogPosting",
+      "headline": "The Math of Winning: Implementing the Kelly Criterion for Institutional Risk Management",
+      "description": "Technical deep-dive into implementing the Kelly Criterion for optimal position sizing in algorithmic trading systems.",
+      "author": {
+        "@type": "Person",
+        "name": "Brijesh Yadav",
+        "url": "https://recscse.github.io"
+      },
+      "datePublished": "2026-02-11"
+    }
+    </script>
+
     <script>
         const savedTheme = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
         document.documentElement.setAttribute('data-theme', savedTheme);
@@ -45,6 +61,7 @@
       <div style="display: flex; gap: 12px; align-items: center;">
           <a href="index.html" class="nav-link">← All Posts</a>
           <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme">
+            <!-- Sun Icon -->
             <svg class="sun-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display: none;">
                 <circle cx="12" cy="12" r="5"></circle>
                 <line x1="12" y1="1" x2="12" y2="3"></line>
@@ -56,6 +73,7 @@
                 <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
                 <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
             </svg>
+            <!-- Moon Icon -->
             <svg class="moon-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
             </svg>
@@ -93,8 +111,8 @@
 
         <h2 id="problem">1. The Problem: The "Gambler's Ruin"</h2>
         <p>
-          If you risk too little, your capital never grows. If you risk too much, a single "losing streak" (which is statistically 
-          guaranteed to happen) will wipe out your account. The Kelly Criterion finds the <strong>mathematical "Sweet Spot"</strong> 
+          If you risk too little, your capital never grows. If you risk too much, a single losing streak (which is statistically 
+          guaranteed to happen) will wipe out your account. The Kelly Criterion finds the mathematical sweet spot 
           where you risk exactly enough to maximize growth based on your historical edge.
         </p>
 
@@ -116,50 +134,59 @@
         <h3>The "Half-Kelly" Margin of Safety</h3>
         <p>
           In a perfect world, <em>f*</em> is optimal. In the real world, performance data can be noisy. To account for 
-          "Black Swan" events and statistical errors, my engine uses a <strong>0.5 multiplier (Half-Kelly)</strong>. 
+          black swan events and statistical errors, my engine uses a <strong>0.5 multiplier (Half-Kelly)</strong>. 
           This drastically reduces volatility while still capturing ~75% of the growth of a Full-Kelly strategy.
         </p>
 
         <h2 id="architecture">3. System Architecture</h2>
         <p>
-          The engine is designed as a standalone micro-service that queries historical performance data from PostgreSQL 
+          The engine is designed as a standalone microservice that queries historical performance data from PostgreSQL 
           before every trade execution.
         </p>
 
         <div class="diagram-box">
           <div class="diagram-header">
-              <div class="window-controls">
-                  <span class="control red"></span>
-                  <span class="control yellow"></span>
-                  <span class="control green"></span>
-              </div>
-              <div class="diagram-title">System Architecture</div>
+            <div class="window-controls">
+              <div class="control red"></div>
+              <div class="control yellow"></div>
+              <div class="control green"></div>
+            </div>
+            <div class="diagram-title">System Architecture</div>
           </div>
           <pre class="diagram-content">
-[Trading Signal]
-       │
-[Risk Management Service] ◀──── [Trade Analytics] ◀──── [PostgreSQL DB]
-       │                            (Win Rate/Ratio)
-[Calculate Kelly f*]
-       │
-[Apply Half-Kelly & Caps] (Min 1% / Max 10%)
-       │
-[Final Trade Quantity] ────▶ [Broker API]
+  ┌────────────────┐
+  │ Trading Signal │
+  └────────────────┘
+          │
+          ▼
+  ┌────────────────┐     Trade Analytics     ┌──────────────┐
+  │  Risk Engine   │◀────────────────────────│ PostgreSQL DB│
+  └────────────────┘                         └──────────────┘
+          │
+          ▼
+  Calculate Kelly f*
+          │
+          ▼
+  Apply Half-Kelly & Caps (1% - 10%)
+          │
+          ▼
+  ┌────────────────┐
+  │   Broker API   │
+  └────────────────┘
           </pre>
         </div>
 
-        <h2 id="implementation">4. Implementation: Step-by-Step Logic</h2>
+        <h2 id="implementation">4. Step-by-Step Logic</h2>
         
-        <h3>Step 1: Edge Detection</h3>
+        <h3>Edge Detection</h3>
         <p>
-          The engine requires at least <strong>10 closed trades</strong> to build a statistically significant profile. 
-          It calculates the user's current edge by analyzing every trade in the <code>auto_trade_executions</code> table.
+          The engine requires at least 10 closed trades to build a statistically significant profile. 
+          It calculates the user's current edge by analyzing closed execution records in PostgreSQL.
         </p>
 
-        <h3>Step 2: Risk Normalization</h3>
+        <h3>Risk Normalization</h3>
         <p>
-          Raw Kelly calculations can sometimes suggest aggressive bets (e.g., 40% of capital). My engine enforces 
-          strict <strong>Hard Caps</strong> to ensure survival:
+          Raw Kelly calculations can sometimes suggest aggressive bets. My engine enforces strict hard caps to ensure survival:
         </p>
 
         <table>
@@ -189,13 +216,13 @@
           </tbody>
         </table>
 
-        <h2 id="code">5. Technical Implementation (Python)</h2>
+        <h2 id="code">5. Technical Implementation</h2>
         <p>
-          The engine is integrated into the core <code>RiskManagement</code> service. It dynamically calculates 
-          position sizes based on live capital and historical performance.
+          The engine dynamically calculates position sizes based on live equity and historical edge.
         </p>
 
-        <pre><code class="language-python"># Standard Kelly Implementation with Safety Caps
+        <pre><code class="language-python">
+# Standard Kelly Implementation with Safety Caps
 def calculate_kelly_fraction(self, win_rate, win_loss_ratio):
     if win_loss_ratio <= 0: return self.min_kelly
     
@@ -204,21 +231,21 @@ def calculate_kelly_fraction(self, win_rate, win_loss_ratio):
     
     # Apply Half-Kelly and Hard Caps
     safe_f = f_star * self.kelly_multiplier
-    return max(self.min_kelly, min(safe_f, self.max_kelly))</code></pre>
+    return max(self.min_kelly, min(safe_f, self.max_kelly))
+        </code></pre>
 
         <h2 id="impact">6. Business Impact</h2>
         <p>
-          Implementing this risk engine transformed the platform from a "Signal Provider" into a 
-          <strong>Quantitative Investment Tool</strong>.
+          Implementing this risk engine transformed the platform into an institutional quantitative tool:
         </p>
         <ul>
-          <li><strong>Lower Churn:</strong> Users stay longer because the bot automatically "scales down" during losing streaks.</li>
-          <li><strong>Higher ROI:</strong> The bot "scales up" when the strategy has a high win rate, capturing maximum profit.</li>
-          <li><strong>Marketing Edge:</strong> Positions the product as a data-driven system used by hedge funds, not a gamble.</li>
+          <li><strong>Lower Churn:</strong> Automatically scales down sizing during losing streaks to preserve capital.</li>
+          <li><strong>Higher ROI:</strong> Aggressively compounds returns during positive momentum regimes.</li>
+          <li><strong>Risk Hygiene:</strong> Eliminates human bias and arbitrary lot selections.</li>
         </ul>
       </article>
 
-      <!-- Sidebar TOC -->
+      <!-- Sidebar Table of Contents -->
       <aside class="toc">
         <div class="toc-header">On this page</div>
         <div class="toc-links">

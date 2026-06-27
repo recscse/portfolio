@@ -3,11 +3,27 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Latency Kills: Building a High-Speed Market Data Engine — Brijesh Yadav</title>
-    <meta name="description" content="Technical deep-dive into implementing Upstox V3 WebSockets and Protocol Buffers for near-zero lag market data streaming." />
+    <title>Latency Kills: Building a High-Speed Market Data Engine | Brijesh Yadav</title>
     <link rel="stylesheet" href="blog.css" />
+    <meta name="description" content="Technical deep-dive into implementing Upstox V3 WebSockets and Protocol Buffers for near-zero lag market data streaming." />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css" />
     
+    <!-- Structured Data for SEO -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "BlogPosting",
+      "headline": "Latency Kills: Building a High-Speed Market Data Engine with Upstox V3",
+      "description": "Technical deep-dive into implementing Upstox V3 WebSockets and Protocol Buffers for near-zero lag market data streaming.",
+      "author": {
+        "@type": "Person",
+        "name": "Brijesh Yadav",
+        "url": "https://recscse.github.io"
+      },
+      "datePublished": "2026-02-10"
+    }
+    </script>
+
     <script>
         const savedTheme = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
         document.documentElement.setAttribute('data-theme', savedTheme);
@@ -19,7 +35,7 @@
       <div class="nav-left">
         <a href="../index.html" class="nav-brand">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
             </svg>
             Brijesh Yadav
         </a>
@@ -27,6 +43,7 @@
       <div style="display: flex; gap: 12px; align-items: center;">
           <a href="index.html" class="nav-link">← All Posts</a>
           <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme">
+            <!-- Sun Icon -->
             <svg class="sun-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display: none;">
                 <circle cx="12" cy="12" r="5"></circle>
                 <line x1="12" y1="1" x2="12" y2="3"></line>
@@ -38,6 +55,7 @@
                 <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
                 <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
             </svg>
+            <!-- Moon Icon -->
             <svg class="moon-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
             </svg>
@@ -46,7 +64,7 @@
     </nav>
 
     <div class="layout">
-      <!-- Main Content -->
+      <!-- Main Article -->
       <article class="prose">
         <header class="post-header">
           <div class="post-meta">
@@ -64,7 +82,7 @@
         </header>
 
         <p class="lead">
-          In the world of algorithmic trading, <strong>data is the new oil</strong>, but <strong>latency is the enemy</strong>. 
+          In algorithmic trading, <strong>data is the new oil</strong>, but <strong>latency is the enemy</strong>. 
           If your execution engine is even 500 milliseconds behind a price move, your edge is already gone.
         </p>
           
@@ -73,41 +91,45 @@
           <strong>Upstox V3 WebSockets</strong> and <strong>Protocol Buffers (Protobuf)</strong> to achieve near-zero lag streaming.
         </p>
 
-        <h2 id="architecture">The Architecture: From Polling to Streaming</h2>
+        <h2 id="architecture">1. From Polling to Streaming</h2>
         <p>
-          Most beginner trading bots use "Polling"—requesting prices via REST APIs every second. This is inefficient 
-          and slow. My platform utilizes a <strong>Persistent WebSocket Stream</strong>. Once the pipe is open, data flows 
-          unidirectionally from the exchange to the bot in real-time.
+          Most basic trading bots use polling—requesting prices via REST APIs every second. This is inefficient 
+          and slow. My platform utilizes a persistent WebSocket stream where data flows unidirectionally from exchange servers in real time.
         </p>
 
         <div class="diagram-box">
           <div class="diagram-header">
-              <div class="window-controls">
-                  <span class="control red"></span>
-                  <span class="control yellow"></span>
-                  <span class="control green"></span>
-              </div>
-              <div class="diagram-title">Market Data Flow</div>
+            <div class="window-controls">
+              <div class="control red"></div>
+              <div class="control yellow"></div>
+              <div class="control green"></div>
+            </div>
+            <div class="diagram-title">Market Data Flow</div>
           </div>
           <pre class="diagram-content">
-[NSE/BSE Exchange]
-       │
-[Upstox Market Data Servers]
-       │
-       │ (Binary Protobuf Stream)
-       ▼
-[My WebSocket Engine] ◀─── (Handles Auth & Heartbeats)
-       │
-       ├─────▶ [AI Strategy Engine] (Execution Logic)
-       │
-       └─────▶ [React UI Dashboard] (Live Visualization)
+  ┌─────────────┐
+  │  Exchange   │
+  └─────────────┘
+         │
+         ▼
+  ┌─────────────┐  Binary Protobuf
+  │ Upstox API  │─────────────────┐
+  └─────────────┘                 │
+                                  ▼
+                           ┌─────────────┐
+                           │  WS Engine  │
+                           └─────────────┘
+                             │         │
+                   Strategy  ▼         ▼ UI Dashboard
+                      ┌──────────┐ ┌──────────┐
+                      │ AI Engine│ │ React UI │
+                      └──────────┘ └──────────┘
           </pre>
         </div>
 
-        <h2 id="protobuf">Why Binary Protobuf?</h2>
+        <h2 id="protobuf">2. Why Binary Protobuf?</h2>
         <p>
-          Unlike many brokers that send data in JSON (plain text), Upstox V3 uses <strong>Protocol Buffers</strong>. 
-          While JSON is human-readable, it carries significant overhead due to text parsing and large payloads.
+          Unlike many brokers that send data in JSON text, Upstox V3 uses Protocol Buffers. While JSON is readable, it carries significant network overhead due to text serialization and larger payload sizes.
         </p>
           
         <table>
@@ -121,7 +143,7 @@
             <tbody>
                 <tr>
                     <td><strong>Data Type</strong></td>
-                    <td>Text/String</td>
+                    <td>Text / String</td>
                     <td>Compressed Binary</td>
                 </tr>
                 <tr>
@@ -137,65 +159,61 @@
             </tbody>
         </table>
 
-        <h2 id="workflow">Implementation Workflow</h2>
+        <h2 id="workflow">3. Implementation Workflow</h2>
           
-        <h3>1. Authorization Handshake</h3>
+        <h3>Authorization Handshake</h3>
         <p>
-          Before connecting, we must request a short-lived authorized redirect URI. This ensures that the 
-          WebSocket connection is secure and bound to a valid session.
+          Before connecting, we must request a short-lived authorized redirect URI to ensure the WebSocket connection is authenticated and secure.
         </p>
 
-        <pre><code class="language-python">def get_authorized_url(access_token):
+        <pre><code class="language-python">
+def get_authorized_url(access_token):
     url = "https://api.upstox.com/v3/feed/market-data-feed/authorize"
     headers = {"Authorization": f"Bearer {access_token}"}
     response = requests.get(url, headers=headers)
-    return response.json()['data']['authorized_redirect_uri']</code></pre>
+    return response.json()['data']['authorized_redirect_uri']
+        </code></pre>
 
-        <h3>2. Binary Decoding with Protobuf</h3>
+        <h3>Binary Decoding with Protobuf</h3>
         <p>
-          When binary packets arrive, they must be decoded using the pre-defined <code>.proto</code> schema. 
-          This is where the speed comes from—we map raw bytes directly to Python objects.
+          When binary packets arrive, they must be decoded using the pre-defined Protobuf schema. We map raw bytes directly to structured Python objects.
         </p>
 
-        <pre><code class="language-python">import MarketDataFeed_pb2 as pb
+        <pre><code class="language-python">
+import MarketDataFeed_pb2 as pb
 from google.protobuf.json_format import MessageToDict
 
 def on_message(raw_binary):
-    # Decode the binary buffer using the Protobuf schema
     feed_response = pb.FeedResponse()
     feed_response.ParseFromString(raw_binary)
-    
-    # Convert to a dictionary for the strategy engine
-    return MessageToDict(feed_response)</code></pre>
+    return MessageToDict(feed_response)
+        </code></pre>
 
-        <h2 id="failsafes">Production Fail-Safes</h2>
+        <h2 id="failsafes">4. Production Fail-Safes</h2>
         <p>
-          A real-world trading engine must be resilient. I implemented several critical patterns to ensure 
-          high availability:
+          A real-world trading engine must be resilient. I implemented several critical patterns to guarantee high availability:
         </p>
         <ul>
-            <li><strong>Exponential Backoff:</strong> If the connection drops, the bot waits 5s, then 10s, then 20s... avoiding server-side rate limits.</li>
-            <li><strong>Heartbeat Monitoring:</strong> We monitor "Ticks." If no data arrives for 60 seconds during market hours, the engine triggers a silent reconnect.</li>
-            <li><strong>Dynamic Re-subscription:</strong> The engine allows adding or removing stocks (e.g., shifting from NIFTY to BANKNIFTY) without dropping the current connection.</li>
+            <li><strong>Exponential Backoff:</strong> Automatic progressive reconnect delays to avoid server rate-limiting.</li>
+            <li><strong>Heartbeat Monitoring:</strong> If no tick data arrives for 60 seconds during market hours, the engine triggers a silent reconnect.</li>
+            <li><strong>Dynamic Subscription:</strong> Allows adding or removing tickers on the fly without interrupting ongoing data streaming.</li>
         </ul>
 
-        <h2 id="results">Final Results</h2>
+        <h2 id="results">5. Final Results</h2>
         <p>
-          By implementing this binary-first architecture, the system now processes <strong>over 1,000 price updates 
-          per second</strong> with an internal latency of <strong>&lt; 5ms</strong>. This allows the strategy engine to 
-          react to "Flash Breakouts" faster than manual traders can even see the chart update.
+          By implementing this binary-first architecture, the system processes over 1,000 price updates per second with internal latency under 5 milliseconds.
         </p>
       </article>
 
-      <!-- Sidebar TOC -->
+      <!-- Sidebar Table of Contents -->
       <aside class="toc">
         <div class="toc-header">On this page</div>
         <div class="toc-links">
-          <a href="#architecture" class="toc-link">Polling to Streaming</a>
-          <a href="#protobuf" class="toc-link">Why Binary Protobuf?</a>
-          <a href="#workflow" class="toc-link">Implementation Workflow</a>
-          <a href="#failsafes" class="toc-link">Production Fail-Safes</a>
-          <a href="#results" class="toc-link">Final Results</a>
+          <a href="#architecture" class="toc-link">1. Polling to Streaming</a>
+          <a href="#protobuf" class="toc-link">2. Why Protobuf?</a>
+          <a href="#workflow" class="toc-link">3. Workflow</a>
+          <a href="#failsafes" class="toc-link">4. Fail-Safes</a>
+          <a href="#results" class="toc-link">5. Results</a>
         </div>
       </aside>
     </div>
@@ -205,8 +223,10 @@ def on_message(raw_binary):
     </footer>
 
     <script>
+      // Year Update
       document.getElementById('year').textContent = new Date().getFullYear();
 
+      // Theme Logic
       const themeBtn = document.getElementById('theme-toggle');
       const sunIcon = themeBtn.querySelector('.sun-icon');
       const moonIcon = themeBtn.querySelector('.moon-icon');
@@ -221,12 +241,14 @@ def on_message(raw_binary):
           }
       }
 
+      // Init Icons
       const currentTheme = document.documentElement.getAttribute('data-theme');
       updateIcons(currentTheme);
 
       themeBtn.addEventListener('click', () => {
           const current = document.documentElement.getAttribute('data-theme');
           const next = current === 'light' ? 'dark' : 'light';
+          
           document.documentElement.setAttribute('data-theme', next);
           localStorage.setItem('theme', next);
           updateIcons(next);

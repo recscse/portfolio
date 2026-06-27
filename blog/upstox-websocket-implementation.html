@@ -3,11 +3,27 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Upstox Real-Time Market Data: Implementation Guide — Brijesh Yadav</title>
-    <meta name="description" content="A granular technical guide on implementing a low-latency, binary-encoded WebSocket client for real-time market data fetching." />
+    <title>Upstox Real-Time Market Data: WebSocket Implementation Guide | Brijesh Yadav</title>
     <link rel="stylesheet" href="blog.css" />
+    <meta name="description" content="A granular technical guide on implementing a low-latency, binary-encoded WebSocket client for real-time market data fetching." />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css" />
     
+    <!-- Structured Data for SEO -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "BlogPosting",
+      "headline": "Upstox Real-Time Market Data: WebSocket Implementation Guide",
+      "description": "A granular technical guide on implementing a low-latency, binary-encoded WebSocket client for real-time market data fetching.",
+      "author": {
+        "@type": "Person",
+        "name": "Brijesh Yadav",
+        "url": "https://recscse.github.io"
+      },
+      "datePublished": "2026-02-12"
+    }
+    </script>
+
     <script>
         const savedTheme = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
         document.documentElement.setAttribute('data-theme', savedTheme);
@@ -19,7 +35,7 @@
       <div class="nav-left">
         <a href="../index.html" class="nav-brand">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
             </svg>
             Brijesh Yadav
         </a>
@@ -27,6 +43,7 @@
       <div style="display: flex; gap: 12px; align-items: center;">
           <a href="index.html" class="nav-link">← All Posts</a>
           <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme">
+            <!-- Sun Icon -->
             <svg class="sun-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display: none;">
                 <circle cx="12" cy="12" r="5"></circle>
                 <line x1="12" y1="1" x2="12" y2="3"></line>
@@ -38,6 +55,7 @@
                 <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
                 <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
             </svg>
+            <!-- Moon Icon -->
             <svg class="moon-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
             </svg>
@@ -46,7 +64,7 @@
     </nav>
 
     <div class="layout">
-      <!-- Main Content -->
+      <!-- Main Article -->
       <article class="prose">
         <header class="post-header">
           <div class="post-meta">
@@ -54,7 +72,7 @@
             <span>·</span>
             <span>12 min read</span>
           </div>
-          <h1 class="post-title">📡 Upstox Real-Time Market Data: A Technical Implementation Guide</h1>
+          <h1 class="post-title">Upstox Real-Time Market Data: A Technical Implementation Guide</h1>
           <div class="tags-container">
             <span class="tag">WebSockets</span>
             <span class="tag">Protobuf</span>
@@ -81,23 +99,28 @@
 
         <div class="diagram-box">
           <div class="diagram-header">
-              <div class="window-controls">
-                  <span class="control red"></span>
-                  <span class="control yellow"></span>
-                  <span class="control green"></span>
-              </div>
-              <div class="diagram-title">System Architecture</div>
+            <div class="window-controls">
+              <div class="control red"></div>
+              <div class="control yellow"></div>
+              <div class="control green"></div>
+            </div>
+            <div class="diagram-title">System Architecture</div>
           </div>
           <pre class="diagram-content">
-[Trading App] ─── (Initialize) ───▶ [WS Client]
-                                       │
-    (GET /authorize) ◀─────────────────┼
-          │
-    (WSS URL) ─────────────────────────▶ [Connect to Upstox]
-                                              │
-    (Stream Data) ◀─── (Binary Protobuf) ──── [WS Server]
-          │
-    [Decode Binary] ───▶ [Python Dict] ───▶ [Strategy Engine]
+  ┌─────────────┐   Initialize   ┌─────────────┐
+  │ Trading App │───────────────▶│  WS Client  │
+  └─────────────┘                └─────────────┘
+         │                              │
+  GET /authorize                        │ Connect WSS
+         ▼                              ▼
+  ┌─────────────┐  Binary Stream ┌─────────────┐
+  │ Upstox API  │───────────────▶│ WS Decoder  │
+  └─────────────┘   (Protobuf)   └─────────────┘
+                                        │
+                                        ▼
+                                 ┌─────────────┐
+                                 │ Strategy Engine│
+                                 └─────────────┘
           </pre>
         </div>
 
@@ -105,24 +128,23 @@
 
         <h3>A. Binary Protobuf Encoding</h3>
         <p>
-          By using Protocol Buffers instead of JSON, we reduce the payload size by up to 70%. This isn't just about 
+          By using Protocol Buffers instead of JSON, we reduce payload size by up to 70%. This isn't just about 
           bandwidth; it's about <strong>CPU cache efficiency</strong>. Binary data is mapped directly to memory offsets 
-          using the <code>MarketDataFeed_pb2.py</code> generated classes.
+          using the generated Protobuf classes.
         </p>
 
         <h3>B. Dual-Layer Decoding</h3>
         <p>
-          Our engine implements a two-step parsing strategy:
+          Our engine implements a structured two-step parsing strategy:
         </p>
-        <ol>
+        <ul>
           <li><strong>Binary Layer:</strong> The raw buffer is hydrated into a Protobuf object.</li>
-          <li><strong>Dictionary Layer:</strong> The object is converted into a standard Python <code>dict</code> using <code>google.protobuf.json_format</code> for downstream logic.</li>
-        </ol>
+          <li><strong>Dictionary Layer:</strong> The object is converted into standard dictionary mapping for downstream trading logic.</li>
+        </ul>
 
         <h2 id="details">3. Implementation Details</h2>
         <p>
-          The client is built using <code>asyncio</code> and <code>websockets</code> libraries in Python. 
-          Below are the core components of the <code>UpstoxWebSocketClient</code> class.
+          The client is built using asynchronous Python routines. Below are the core technical components responsible for maintaining the stream.
         </p>
 
         <table>
@@ -135,30 +157,30 @@
           <tbody>
               <tr>
                   <td><code>connect_and_stream()</code></td>
-                  <td>Main event loop managing Auth, Connection, and Data.</td>
+                  <td>Main event loop managing Auth, Connection, and Data streams.</td>
               </tr>
               <tr>
                   <td><code>_send_subscription()</code></td>
-                  <td>Serializes instrument keys into the initial JSON handshake.</td>
+                  <td>Serializes instrument keys into the initial binary handshake.</td>
               </tr>
               <tr>
                   <td><code>update_subscriptions()</code></td>
-                  <td>Calculates set difference for on-the-fly stock changes.</td>
+                  <td>Calculates set difference for on-the-fly watchlist changes.</td>
               </tr>
               <tr>
                   <td><code>_process_market_status()</code></td>
-                  <td>Detects NSE/BSE phases (Pre-Open, Open, Closed).</td>
+                  <td>Detects exchange phases (Pre-Open, Open, Closed).</td>
               </tr>
           </tbody>
         </table>
 
         <h2 id="example">4. Technical Usage Example</h2>
         <p>
-          The client is designed to be highly decoupled. You simply pass a callback function that handles the 
-          incoming price "Ticks."
+          The client is designed to be highly decoupled. You simply pass an async callback function that processes incoming price ticks.
         </p>
 
-        <pre><code class="language-python">from services.upstox.ws_client import UpstoxWebSocketClient
+        <pre><code class="language-python">
+from services.upstox.ws_client import UpstoxWebSocketClient
 
 async def my_strategy_callback(data):
     # Process high-speed tick data here
@@ -169,51 +191,47 @@ client = UpstoxWebSocketClient(
     access_token="...",
     instrument_keys=["NSE_EQ|INE002A01018"],
     callback=my_strategy_callback,
-    connection_type="trading" # Supports Greeks & Market Depth
+    connection_type="trading"
 )
 
-await client.connect_and_stream()</code></pre>
+await client.connect_and_stream()
+        </code></pre>
 
         <h2 id="resilience">5. Advanced Resilience Features</h2>
 
-        <h3>🚀 Dynamic Re-subscription</h3>
+        <h3>Dynamic Re-subscription</h3>
         <p>
           One of the most complex features is updating the watchlist without restarting the connection. 
-          The client calculates a <code>set</code> difference:
+          The client calculates a set difference to unsubscribe removed keys and subscribe newly added keys seamlessly.
         </p>
-        <ul>
-          <li><strong>Unsubscribe:</strong> Removed keys.</li>
-          <li><strong>Subscribe:</strong> Newly added keys.</li>
-          <li><strong>Unchanged:</strong> Keys currently being streamed (no action taken).</li>
-        </ul>
 
-        <h3>🛡 Fault Tolerance Patterns</h3>
+        <h3>Fault Tolerance Patterns</h3>
         <ul>
           <li><strong>Exponential Backoff:</strong> Retries starting at 5s, doubling up to 60s to prevent IP bans.</li>
-          <li><strong>Manual Health Check:</strong> The engine sends a WebSocket <code>Ping</code> if the stream goes silent for 60 seconds.</li>
-          <li><strong>403 Monitor:</strong> Automatically detects token expiry and triggers a refresh callback.</li>
+          <li><strong>Heartbeat Monitor:</strong> The engine sends a manual ping if the stream goes silent for 60 seconds.</li>
+          <li><strong>Token Refresh:</strong> Automatically detects token expiry and triggers auth renewal callbacks.</li>
         </ul>
 
         <h2 id="value">6. Business & Performance Value</h2>
         <p>
-          Implementing this institutional-grade client provides several competitive edges:
+          Implementing this institutional-grade client provides critical edges:
         </p>
         <ul>
-          <li><strong>Zero-Lag:</strong> Essential for High-Frequency Trading (HFT) where milliseconds equate to money.</li>
-          <li><strong>Options Edge:</strong> The <code>trading</code> connection type fetches <strong>real-time IV and Greeks</strong> (Delta, Gamma).</li>
-          <li><strong>99.9% Uptime:</strong> Robust error handling allows for managed hosting services with high reliability.</li>
+          <li><strong>Zero-Lag:</strong> Essential for quantitative strategies where milliseconds dictate execution pricing.</li>
+          <li><strong>Options Edge:</strong> Fetches real-time implied volatility and option Greek metrics.</li>
+          <li><strong>High Availability:</strong> Robust error handling ensures automated execution engines survive network blips.</li>
         </ul>
       </article>
 
-      <!-- Sidebar TOC -->
+      <!-- Sidebar Table of Contents -->
       <aside class="toc">
         <div class="toc-header">On this page</div>
         <div class="toc-links">
-          <a href="#architecture" class="toc-link">1. Data Flow & Architecture</a>
+          <a href="#architecture" class="toc-link">1. Architecture</a>
           <a href="#concepts" class="toc-link">2. Key Concepts</a>
-          <a href="#details" class="toc-link">3. Implementation Details</a>
-          <a href="#example" class="toc-link">4. Technical Usage Example</a>
-          <a href="#resilience" class="toc-link">5. Advanced Resilience</a>
+          <a href="#details" class="toc-link">3. Implementation</a>
+          <a href="#example" class="toc-link">4. Code Example</a>
+          <a href="#resilience" class="toc-link">5. Resilience</a>
           <a href="#value" class="toc-link">6. Business Value</a>
         </div>
       </aside>
@@ -224,8 +242,10 @@ await client.connect_and_stream()</code></pre>
     </footer>
 
     <script>
+      // Year Update
       document.getElementById('year').textContent = new Date().getFullYear();
 
+      // Theme Logic
       const themeBtn = document.getElementById('theme-toggle');
       const sunIcon = themeBtn.querySelector('.sun-icon');
       const moonIcon = themeBtn.querySelector('.moon-icon');
@@ -240,12 +260,14 @@ await client.connect_and_stream()</code></pre>
           }
       }
 
+      // Init Icons
       const currentTheme = document.documentElement.getAttribute('data-theme');
       updateIcons(currentTheme);
 
       themeBtn.addEventListener('click', () => {
           const current = document.documentElement.getAttribute('data-theme');
           const next = current === 'light' ? 'dark' : 'light';
+          
           document.documentElement.setAttribute('data-theme', next);
           localStorage.setItem('theme', next);
           updateIcons(next);
