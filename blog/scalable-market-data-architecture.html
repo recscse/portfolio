@@ -268,10 +268,12 @@
     </div>
 
     <footer class="footer">
-      <p>© 2025 Brijesh Yadav</p>
+      <p>© <span id="year"></span> Brijesh Yadav</p>
     </footer>
 
     <script>
+      document.getElementById('year').textContent = new Date().getFullYear();
+
       // Theme Logic
       const themeBtn = document.getElementById('theme-toggle');
       const sunIcon = themeBtn.querySelector('.sun-icon');

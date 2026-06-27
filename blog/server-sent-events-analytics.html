@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Server-Sent Events (SSE) for Live Analytics Feeds | Brijesh Yadav</title>
+    <link rel="stylesheet" href="blog.css" />
+    <meta
+      name="description"
+      content="Real-time analytics streaming using Server-Sent Events (SSE) in Node.js and JavaScript."
+    />
+    <script>
+        const savedTheme = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+        document.documentElement.setAttribute('data-theme', savedTheme);
+    </script>
+  </head>
+  <body>
+    <!-- Navbar -->
+    <nav class="nav-bar">
+      <div class="nav-left">
+        <a href="../index.html" class="nav-brand">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+            </svg>
+            Brijesh Yadav
+        </a>
+      </div>
+      <div style="display: flex; gap: 12px; align-items: center;">
+          <a href="index.html" class="nav-link">← All Posts</a>
+          <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme">
+            <svg class="sun-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display: none;">
+                <circle cx="12" cy="12" r="5"></circle>
+                <line x1="12" y1="1" x2="12" y2="3"></line>
+                <line x1="12" y1="21" x2="12" y2="23"></line>
+                <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                <line x1="1" y1="12" x2="3" y2="12"></line>
+                <line x1="21" y1="12" x2="23" y2="12"></line>
+                <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+            </svg>
+            <svg class="moon-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+            </svg>
+          </button>
+      </div>
+    </nav>
+
+    <div class="layout">
+      <!-- Main Content -->
+      <article class="prose">
+        <header class="post-header">
+          <div class="post-meta">
+            <span>Aug 15, 2025</span>
+            <span>·</span>
+            <span>5 min read</span>
+          </div>
+          <h1 class="post-title">Server-Sent Events (SSE) for Live Analytics Feeds</h1>
+          <div class="tags-container">
+            <span class="tag">JavaScript</span>
+            <span class="tag">Node.js</span>
+            <span class="tag">Real-Time</span>
+            <span class="tag">Streaming</span>
+          </div>
+        </header>
+
+        <p class="lead">
+          Real-time analytics are essential for modern web applications, especially dashboards and monitoring tools. <strong>Server-Sent Events (SSE)</strong> provide a simple, robust way to push live updates from the server to the browser, making them ideal for streaming analytics data to the UI without the overhead of WebSockets.
+        </p>
+
+        <h2 id="what-is-sse">What are Server-Sent Events?</h2>
+        <p>
+          Server-Sent Events (SSE) is a browser API that allows servers to push text-based event data to clients over HTTP. Unlike WebSockets, SSE is unidirectional (server to client) and uses a simple, native event stream format.
+        </p>
+
+        <ul>
+          <li><strong>Protocol:</strong> Standard HTTP / HTTPS</li>
+          <li><strong>Direction:</strong> Server → Client (Unidirectional)</li>
+          <li><strong>Format:</strong> <code>text/event-stream</code></li>
+        </ul>
+
+        <h2 id="how-it-works">How SSE Works</h2>
+        <ol>
+          <li>The client (browser) opens a persistent connection to the server using JavaScript's native <code>EventSource</code> API.</li>
+          <li>The server responds with an HTTP stream of events, each formatted as text separated by double newlines.</li>
+          <li>The browser receives and processes events in real time, firing event listeners automatically.</li>
+        </ol>
+
+        <div class="diagram-box">
+          <div class="diagram-header">
+            <div class="window-controls">
+              <div class="control red"></div>
+              <div class="control yellow"></div>
+              <div class="control green"></div>
+            </div>
+            <div class="diagram-title">SSE Communication Flow</div>
+          </div>
+          <pre class="diagram-content">
+  ┌─────────────┐                                ┌─────────────┐
+  │   Browser   │ ─── 1. HTTP GET /events ─────▶ │ Server API  │
+  │ (Client UI) │ ◀── 2. text/event-stream ───── │  (Node.js)  │
+  └─────────────┘                                └─────────────┘
+         │                                              │
+         │ ◀─── 3. data: {"users": 42} ─────────────────┤ (Keep-Alive Stream)
+         │ ◀─── 4. data: {"users": 45} ─────────────────┤
+          </pre>
+        </div>
+
+        <h2 id="example">Example: Live Analytics Feed</h2>
+
+        <h3>Backend (Node.js Example)</h3>
+        <pre><code class="language-javascript">const http = require("http");
+
+http
+  .createServer((req, res) => {
+    if (req.url === "/events") {
+      res.writeHead(200, {
+        "Content-Type": "text/event-stream",
+        "Cache-Control": "no-cache",
+        Connection: "keep-alive",
+      });
+      setInterval(() => {
+        const data = JSON.stringify({
+          users: Math.floor(Math.random() * 100),
+          sales: Math.floor(Math.random() * 50),
+        });
+        res.write(`data: ${data}\n\n`);
+      }, 2000);
+    } else {
+      res.writeHead(404);
+      res.end();
+    }
+  })
+  .listen(3000);</code></pre>
+
+        <h3>Frontend (HTML + JS)</h3>
+        <pre><code class="language-html">&lt;div id="analytics"&gt;&lt;/div&gt;
+&lt;script&gt;
+  const analyticsDiv = document.getElementById("analytics");
+  const source = new EventSource("/events");
+  source.onmessage = function (event) {
+    const data = JSON.parse(event.data);
+    analyticsDiv.innerHTML = `Users: ${data.users}, Sales: ${data.sales}`;
+  };
+&lt;/script&gt;</code></pre>
+
+        <h2 id="use-cases">Use Cases</h2>
+        <ul>
+          <li><strong>Real-time dashboards</strong> — live metrics, CPU/memory stats, active user counters.</li>
+          <li><strong>Live notifications</strong> — status alerts, build pipeline updates, system health triggers.</li>
+          <li><strong>Monitoring systems</strong> — log tailing and telemetry feeds.</li>
+          <li><strong>Stock tickers</strong> — streaming price updates where client-to-server messages aren't needed.</li>
+        </ul>
+
+        <h2 id="best-practices">Best Practices</h2>
+        <ul>
+          <li>Use SSE for simple, unidirectional data streams where WebSockets would be overkill.</li>
+          <li>For bidirectional communication (e.g., chat apps, interactive games), consider WebSockets.</li>
+          <li>Handle reconnections gracefully in the client using the native reconnection capabilities of <code>EventSource</code>.</li>
+          <li>Secure your endpoints with authentication headers or tokens and validate incoming stream data.</li>
+        </ul>
+
+        <h2 id="conclusion">Conclusion</h2>
+        <p>
+          SSE is a powerful, lightweight tool for streaming live analytics to your UI with minimal setup. It works seamlessly over standard HTTP, bypasses firewall issues often encountered with WebSockets, and provides native browser reconnect handling out of the box.
+        </p>
+      </article>
+
+      <!-- Sidebar TOC -->
+      <aside class="toc">
+        <div class="toc-header">On this page</div>
+        <div class="toc-links">
+          <a href="#what-is-sse" class="toc-link">What are SSE?</a>
+          <a href="#how-it-works" class="toc-link">How SSE Works</a>
+          <a href="#example" class="toc-link">Code Example</a>
+          <a href="#use-cases" class="toc-link">Use Cases</a>
+          <a href="#best-practices" class="toc-link">Best Practices</a>
+          <a href="#conclusion" class="toc-link">Conclusion</a>
+        </div>
+      </aside>
+    </div>
+
+    <footer class="footer">
+      <p>© <span id="year"></span> Brijesh Yadav</p>
+    </footer>
+
+    <script>
+      document.getElementById('year').textContent = new Date().getFullYear();
+
+      const themeBtn = document.getElementById('theme-toggle');
+      const sunIcon = themeBtn.querySelector('.sun-icon');
+      const moonIcon = themeBtn.querySelector('.moon-icon');
+
+      function updateIcons(theme) {
+          if (theme === 'light') {
+              sunIcon.style.display = 'none';
+              moonIcon.style.display = 'block';
+          } else {
+              sunIcon.style.display = 'block';
+              moonIcon.style.display = 'none';
+          }
+      }
+
+      const currentTheme = document.documentElement.getAttribute('data-theme');
+      updateIcons(currentTheme);
+
+      themeBtn.addEventListener('click', () => {
+          const current = document.documentElement.getAttribute('data-theme');
+          const next = current === 'light' ? 'dark' : 'light';
+          document.documentElement.setAttribute('data-theme', next);
+          localStorage.setItem('theme', next);
+          updateIcons(next);
+      });
+    </script>
+  </body>
+</html>

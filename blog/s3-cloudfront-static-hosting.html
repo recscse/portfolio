@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>S3 + CloudFront for Low-Cost Static Hosting | Brijesh Yadav</title>
+    <link rel="stylesheet" href="blog.css" />
+    <meta
+      name="description"
+      content="Step-by-step notes on deploying a static portfolio with caching, invalidations, and HTTPS on AWS S3 and CloudFront."
+    />
+    <script>
+        const savedTheme = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+        document.documentElement.setAttribute('data-theme', savedTheme);
+    </script>
+  </head>
+  <body>
+    <!-- Navbar -->
+    <nav class="nav-bar">
+      <div class="nav-left">
+        <a href="../index.html" class="nav-brand">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+            </svg>
+            Brijesh Yadav
+        </a>
+      </div>
+      <div style="display: flex; gap: 12px; align-items: center;">
+          <a href="index.html" class="nav-link">← All Posts</a>
+          <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme">
+            <svg class="sun-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display: none;">
+                <circle cx="12" cy="12" r="5"></circle>
+                <line x1="12" y1="1" x2="12" y2="3"></line>
+                <line x1="12" y1="21" x2="12" y2="23"></line>
+                <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                <line x1="1" y1="12" x2="3" y2="12"></line>
+                <line x1="21" y1="12" x2="23" y2="12"></line>
+                <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+            </svg>
+            <svg class="moon-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+            </svg>
+          </button>
+      </div>
+    </nav>
+
+    <div class="layout">
+      <!-- Main Content -->
+      <article class="prose">
+        <header class="post-header">
+          <div class="post-meta">
+            <span>Mar 18, 2025</span>
+            <span>·</span>
+            <span>6 min read</span>
+          </div>
+          <h1 class="post-title">S3 + CloudFront: Production-Grade Static Hosting for Pennies</h1>
+          <div class="tags-container">
+            <span class="tag">AWS</span>
+            <span class="tag">S3</span>
+            <span class="tag">CloudFront</span>
+            <span class="tag">DevOps</span>
+          </div>
+        </header>
+
+        <p class="lead">
+          Hosting modern frontend applications or developer portfolios doesn't require expensive virtual private servers. Combining <strong>Amazon S3</strong> for storage with <strong>AWS CloudFront</strong> for global CDN distribution delivers enterprise-grade performance, SSL encryption, and infinite scalability for mere cents per month.
+        </p>
+
+        <p>
+          Here are my architectural setup notes and best practices for configuring a hardened static delivery pipeline.
+        </p>
+
+        <h2 id="architecture">Delivery Architecture</h2>
+        <p>
+          Never expose an S3 bucket directly to the public internet. Instead, configure the bucket as private and grant access strictly to CloudFront using an Origin Access Control (OAC).
+        </p>
+
+        <div class="diagram-box">
+          <div class="diagram-header">
+            <div class="window-controls">
+              <div class="control red"></div>
+              <div class="control yellow"></div>
+              <div class="control green"></div>
+            </div>
+            <div class="diagram-title">AWS Static Hosting Topology</div>
+          </div>
+          <pre class="diagram-content">
+  ┌──────────────┐      ┌─────────────────────────┐      ┌──────────────────────┐
+  │ User Browser │─────▶│ AWS CloudFront (CDN)    │─────▶│ Private S3 Bucket    │
+  │ (HTTPS / SSL)│ ◀────│ (Edge Caching + WAF)    │ ◀────│ (Origin Access Control)│
+  └──────────────┘      └─────────────────────────┘      └──────────────────────┘
+        </pre>
+        </div>
+
+        <h2 id="bucket-security">Hardening S3 Bucket Policies</h2>
+        <p>
+          With Origin Access Control (OAC), your S3 bucket policy blocks all public IAM requests while explicitly permitting CloudFront to retrieve objects on behalf of users.
+        </p>
+
+        <pre><code class="language-json">{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "AllowCloudFrontServicePrincipal",
+            "Effect": "Allow",
+            "Principal": {
+                "Service": "cloudfront.amazonaws.com"
+            },
+            "Action": "s3:GetObject",
+            "Resource": "arn:aws:s3:::my-portfolio-bucket/*",
+            "Condition": {
+                "StringEquals": {
+                    "AWS:SourceArn": "arn:aws:cloudfront::123456789012:distribution/EDFDVBD632BHDS5"
+                }
+            }
+        }
+    ]
+}</code></pre>
+
+        <h2 id="caching">Optimizing Edge Caching & Cache-Control</h2>
+        <p>
+          To achieve blazing fast load times, configure HTTP headers during deployment. For static assets with hashed filenames (like compiled CSS/JS), set long caching ttl. For HTML files, force frequent edge revalidation.
+        </p>
+
+        <ul>
+          <li><code>HTML files:</code> Cache-Control: max-age=3600, must-revalidate</li>
+          <li><code>Assets (Images/CSS/JS):</code> Cache-Control: max-age=31536000, immutable</li>
+        </ul>
+
+        <h2 id="invalidation">Automated CI/CD Cache Invalidation</h2>
+        <p>
+          When deploying updates via GitHub Actions or Jenkins, always trigger an automated CloudFront invalidation for changed HTML paths to guarantee visitors immediately see the latest release.
+        </p>
+
+        <pre><code class="language-bash"># Deploy synced assets to S3
+aws s3 sync ./dist s3://my-portfolio-bucket --delete
+
+# Invalidate HTML index cache across edge nodes
+aws cloudfront create-invalidation --distribution-id EDFDVBD632BHDS5 --paths "/*.html" "/index.html"</code></pre>
+
+        <h2 id="conclusion">Conclusion</h2>
+        <p>
+          This serverless hosting topology combines sub-50ms global latencies with zero ongoing server maintenance. It represents the gold standard for hosting static assets and single-page applications.
+        </p>
+      </article>
+
+      <!-- Sidebar TOC -->
+      <aside class="toc">
+        <div class="toc-header">On this page</div>
+        <div class="toc-links">
+          <a href="#architecture" class="toc-link">Delivery Architecture</a>
+          <a href="#bucket-security" class="toc-link">Hardening S3 Policies</a>
+          <a href="#caching" class="toc-link">Edge Caching</a>
+          <a href="#invalidation" class="toc-link">CI/CD Invalidation</a>
+          <a href="#conclusion" class="toc-link">Conclusion</a>
+        </div>
+      </aside>
+    </div>
+
+    <footer class="footer">
+      <p>© <span id="year"></span> Brijesh Yadav</p>
+    </footer>
+
+    <script>
+      document.getElementById('year').textContent = new Date().getFullYear();
+
+      const themeBtn = document.getElementById('theme-toggle');
+      const sunIcon = themeBtn.querySelector('.sun-icon');
+      const moonIcon = themeBtn.querySelector('.moon-icon');
+
+      function updateIcons(theme) {
+          if (theme === 'light') {
+              sunIcon.style.display = 'none';
+              moonIcon.style.display = 'block';
+          } else {
+              sunIcon.style.display = 'block';
+              moonIcon.style.display = 'none';
+          }
+      }
+
+      const currentTheme = document.documentElement.getAttribute('data-theme');
+      updateIcons(currentTheme);
+
+      themeBtn.addEventListener('click', () => {
+          const current = document.documentElement.getAttribute('data-theme');
+          const next = current === 'light' ? 'dark' : 'light';
+          document.documentElement.setAttribute('data-theme', next);
+          localStorage.setItem('theme', next);
+          updateIcons(next);
+      });
+    </script>
+  </body>
+</html>

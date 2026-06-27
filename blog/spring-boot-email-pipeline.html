@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Spring Boot Email Pipeline: From Queue to Delivery | Brijesh Yadav</title>
+    <link rel="stylesheet" href="blog.css" />
+    <meta
+      name="description"
+      content="Designing a resilient email processing microservice with idempotent APIs, retries, and observability in Spring Boot."
+    />
+    <script>
+        const savedTheme = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+        document.documentElement.setAttribute('data-theme', savedTheme);
+    </script>
+  </head>
+  <body>
+    <!-- Navbar -->
+    <nav class="nav-bar">
+      <div class="nav-left">
+        <a href="../index.html" class="nav-brand">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+            </svg>
+            Brijesh Yadav
+        </a>
+      </div>
+      <div style="display: flex; gap: 12px; align-items: center;">
+          <a href="index.html" class="nav-link">← All Posts</a>
+          <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme">
+            <svg class="sun-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display: none;">
+                <circle cx="12" cy="12" r="5"></circle>
+                <line x1="12" y1="1" x2="12" y2="3"></line>
+                <line x1="12" y1="21" x2="12" y2="23"></line>
+                <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                <line x1="1" y1="12" x2="3" y2="12"></line>
+                <line x1="21" y1="12" x2="23" y2="12"></line>
+                <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+            </svg>
+            <svg class="moon-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+            </svg>
+          </button>
+      </div>
+    </nav>
+
+    <div class="layout">
+      <!-- Main Content -->
+      <article class="prose">
+        <header class="post-header">
+          <div class="post-meta">
+            <span>Jun 04, 2025</span>
+            <span>·</span>
+            <span>7 min read</span>
+          </div>
+          <h1 class="post-title">Spring Boot Email Pipeline: Designing for 99.99% Delivery Reliability</h1>
+          <div class="tags-container">
+            <span class="tag">Java</span>
+            <span class="tag">Spring Boot</span>
+            <span class="tag">Microservices</span>
+            <span class="tag">Observability</span>
+          </div>
+        </header>
+
+        <p class="lead">
+          Sending an email seems simple until you operate at enterprise scale. When handling transactional notifications across distributed microservices, network timeouts, third-party SMTP rate limits, and duplicate dispatches can degrade system trust.
+        </p>
+
+        <p>
+          In this article, I share how I architected an asynchronous, idempotent email processing pipeline in <strong>Java and Spring Boot</strong> backed by message queues and dead-letter handling.
+        </p>
+
+        <h2 id="architecture">Pipeline Architecture</h2>
+        <p>
+          Synchronous email dispatch during API request cycles hurts response times and increases failure rates. Instead, all outgoing communications are offloaded to an asynchronous message queue (RabbitMQ / Kafka) and processed by dedicated workers.
+        </p>
+
+        <div class="diagram-box">
+          <div class="diagram-header">
+            <div class="window-controls">
+              <div class="control red"></div>
+              <div class="control yellow"></div>
+              <div class="control green"></div>
+            </div>
+            <div class="diagram-title">Asynchronous Email Dispatch Architecture</div>
+          </div>
+          <pre class="diagram-content">
+  ┌─────────────────┐      ┌──────────────┐      ┌─────────────────────────┐
+  │ API Controller  │─────▶│ Message Queue│─────▶│ Email Dispatch Worker   │
+  └─────────────────┘      └──────────────┘      └─────────────────────────┘
+                                                             │
+                                     ┌───────────────────────┴───────────────────────┐
+                                     ▼                                               ▼
+                          ┌─────────────────────┐                         ┌─────────────────────┐
+                          │ Idempotency Check   │                         │ SMTP / SES Provider │
+                          │   (PostgreSQL DB)   │                         │ (With Retry Backoff)│
+                          └─────────────────────┘                         └─────────────────────┘
+          </pre>
+        </div>
+
+        <h2 id="idempotency">Guaranteeing Idempotency</h2>
+        <p>
+          In distributed systems, "at-least-once" message delivery guarantees mean duplicate email requests will inevitably arrive. To prevent spamming users, every transactional email request is assigned a deterministic <code>idempotency_key</code> stored in PostgreSQL.
+        </p>
+
+        <pre><code class="language-java">@Service
+public class EmailDispatchService {
+
+    @Autowired
+    private EmailAuditRepository auditRepository;
+    
+    @Autowired
+    private JavaMailSender mailSender;
+
+    @Transactional
+    public void processEmailRequest(EmailPayload payload) {
+        String key = payload.getIdempotencyKey();
+        
+        if (auditRepository.existsByIdempotencyKeyAndStatus(key, EmailStatus.SENT)) {
+            log.info("Duplicate request detected for key: {}. Skipping dispatch.", key);
+            return;
+        }
+
+        try {
+            sendSmtpEmail(payload);
+            auditRepository.save(new EmailAuditRecord(key, EmailStatus.SENT, Instant.now()));
+        } catch (Exception e) {
+            log.error("Failed to dispatch email for key: {}", key, e);
+            auditRepository.save(new EmailAuditRecord(key, EmailStatus.FAILED, Instant.now()));
+            throw new RetryableException("SMTP Failure", e);
+        }
+    }
+}</code></pre>
+
+        <h2 id="retries">Resilience and Dead-Letter Queues (DLQ)</h2>
+        <p>
+          Third-party providers like AWS SES or SendGrid occasionally experience transient downtimes. Using Spring Retry combined with exponential backoff ensures worker threads don't hammer failing providers. If delivery fails after 5 progressive attempts, messages route automatically to a Dead-Letter Queue (DLQ) for manual inspection and alerting.
+        </p>
+
+        <h2 id="observability">Observability with Micrometer & Prometheus</h2>
+        <p>
+          To monitor health in real time, custom metrics are injected into Spring Boot's actuator pipeline using Micrometer. Alerts trigger automatically if the ratio of failed dispatches exceeds 1% over a 5-minute rolling window.
+        </p>
+
+        <ul>
+          <li><code>email.dispatch.success.count</code> — Counter tracking successful deliveries.</li>
+          <li><code>email.dispatch.latency</code> — Timer recording SMTP handshake duration.</li>
+          <li><code>email.dlq.depth</code> — Gauge monitoring trapped messages needing intervention.</li>
+        </ul>
+
+        <h2 id="conclusion">Key Takeaways</h2>
+        <p>
+          Treating email delivery as a mission-critical distributed pipeline rather than an afterthought fire-and-forget task dramatically improves customer experience and operational peace of mind.
+        </p>
+      </article>
+
+      <!-- Sidebar TOC -->
+      <aside class="toc">
+        <div class="toc-header">On this page</div>
+        <div class="toc-links">
+          <a href="#architecture" class="toc-link">Pipeline Architecture</a>
+          <a href="#idempotency" class="toc-link">Idempotency Guarantees</a>
+          <a href="#retries" class="toc-link">DLQ & Resilience</a>
+          <a href="#observability" class="toc-link">Observability</a>
+          <a href="#conclusion" class="toc-link">Key Takeaways</a>
+        </div>
+      </aside>
+    </div>
+
+    <footer class="footer">
+      <p>© <span id="year"></span> Brijesh Yadav</p>
+    </footer>
+
+    <script>
+      document.getElementById('year').textContent = new Date().getFullYear();
+
+      const themeBtn = document.getElementById('theme-toggle');
+      const sunIcon = themeBtn.querySelector('.sun-icon');
+      const moonIcon = themeBtn.querySelector('.moon-icon');
+
+      function updateIcons(theme) {
+          if (theme === 'light') {
+              sunIcon.style.display = 'none';
+              moonIcon.style.display = 'block';
+          } else {
+              sunIcon.style.display = 'block';
+              moonIcon.style.display = 'none';
+          }
+      }
+
+      const currentTheme = document.documentElement.getAttribute('data-theme');
+      updateIcons(currentTheme);
+
+      themeBtn.addEventListener('click', () => {
+          const current = document.documentElement.getAttribute('data-theme');
+          const next = current === 'light' ? 'dark' : 'light';
+          document.documentElement.setAttribute('data-theme', next);
+          localStorage.setItem('theme', next);
+          updateIcons(next);
+      });
+    </script>
+  </body>
+</html>
