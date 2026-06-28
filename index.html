@@ -511,9 +511,11 @@
           class="card fade-in"
           style="
             margin-bottom: 24px;
-            padding: 20px;
+            padding: 24px;
             text-align: center;
             overflow-x: auto;
+            background: #0d1117;
+            border: 1px solid #30363d;
           "
         >
           <img
@@ -523,47 +525,62 @@
         </div>
 
         <div class="github-dashboard fade-in">
-          <!-- Overall Stats (High Contrast) -->
-          <div class="card github-card">
+          <!-- Overall Stats -->
+          <div class="card github-card" style="background: #0d1117; border: 1px solid #30363d;">
             <img
               src="https://github-readme-stats.vercel.app/api?username=recscse&show_icons=true&theme=dark&hide_border=true&bg_color=0d1117"
               alt="GitHub Stats"
             />
           </div>
-          <!-- Top Languages (High Contrast) -->
-          <div class="card github-card">
+          <!-- Top Languages -->
+          <div class="card github-card" style="background: #0d1117; border: 1px solid #30363d;">
             <img
               src="https://github-readme-stats.vercel.app/api/top-langs/?username=recscse&layout=compact&theme=dark&hide_border=true&bg_color=0d1117"
               alt="Top Languages"
             />
           </div>
           <!-- Streak Stats -->
-          <div class="card github-card">
+          <div class="card github-card" style="background: #0d1117; border: 1px solid #30363d;">
             <img
-              src="https://github-readme-streak-stats.herokuapp.com/?user=recscse&theme=dark&background=0d1117&border=30363d&dates=e6edf3"
+              src="https://github-readme-streak-stats.herokuapp.com/?user=recscse&theme=dark&background=0d1117&border=30363d&dates=40c463"
               alt="GitHub Streak"
             />
           </div>
         </div>
 
-        <!-- Heatmap -->
+        <!-- Authentic GitHub Contribution Heatmap -->
         <div
           class="card fade-in"
-          style="text-align: center; padding: 30px; overflow: hidden"
+          style="background: #0d1117; border: 1px solid #30363d; padding: 30px; margin-bottom: 24px; text-align: center; overflow-x: auto;"
         >
-          <p
-            style="
-              margin-bottom: 20px;
-              color: var(--text-muted);
-              font-size: 0.9rem;
-            "
-          >
-            Contributions heatmap over the last year
-          </p>
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 10px; max-width: 860px; margin-left: auto; margin-right: auto;">
+            <span style="font-weight: 600; font-size: 0.95rem; color: #e6edf3; display: flex; align-items: center; gap: 8px;">
+              <i class="bx bx-calendar"></i> Contributions Heatmap
+            </span>
+            <span style="font-size: 0.85rem; color: #8b949e;">Last 365 Days</span>
+          </div>
           <img
-            src="https://ghchart.rshah.org/3b82f6/recscse"
-            alt="Brijesh's Github Chart"
-            style="width: 100%; max-width: 840px; height: auto"
+            src="https://ghchart.rshah.org/40c463/recscse"
+            alt="Brijesh's Github Contribution Chart"
+            style="width: 100%; max-width: 860px; height: auto;"
+          />
+        </div>
+
+        <!-- Activity Line Graph -->
+        <div
+          class="card fade-in"
+          style="background: #0d1117; border: 1px solid #30363d; padding: 24px; text-align: center; overflow-x: auto;"
+        >
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 10px; max-width: 860px; margin-left: auto; margin-right: auto;">
+            <span style="font-weight: 600; font-size: 0.95rem; color: #e6edf3; display: flex; align-items: center; gap: 8px;">
+              <i class="bx bx-line-chart"></i> Contribution Frequency Trends
+            </span>
+            <span style="font-size: 0.85rem; color: #8b949e;">Commit Activity</span>
+          </div>
+          <img
+            src="https://github-readme-activity-graph.vercel.app/graph?username=recscse&bg_color=0d1117&color=40c463&line=26a641&point=ffffff&area=true&hide_border=true"
+            alt="GitHub Activity Graph"
+            style="width: 100%; max-width: 860px; height: auto;"
           />
         </div>
       </section>
