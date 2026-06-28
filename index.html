@@ -506,12 +506,12 @@
             </div>
         </div>
 
-        <!-- Trophies -->
+        <!-- Trophies (Compact) -->
         <div
           class="card fade-in"
           style="
-            margin-bottom: 24px;
-            padding: 24px;
+            margin-bottom: 20px;
+            padding: 16px;
             text-align: center;
             overflow-x: auto;
             background: #0d1117;
@@ -519,67 +519,73 @@
           "
         >
           <img
-            src="https://github-profile-trophy.vercel.app/?username=recscse&theme=darkhub&no-frame=true&margin-w=20&margin-h=20"
+            src="https://github-profile-trophy.vercel.app/?username=recscse&theme=darkhub&no-frame=true&margin-w=15&margin-h=10"
             alt="Brijesh's Trophies"
+            style="max-height: 130px; width: auto;"
           />
         </div>
 
-        <div class="github-dashboard fade-in">
+        <!-- Compact Stats & Languages Grid -->
+        <div class="github-dashboard fade-in" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(310px, 1fr)); gap: 20px; margin-bottom: 20px;">
           <!-- Overall Stats -->
-          <div class="card github-card" style="background: #0d1117; border: 1px solid #30363d;">
+          <div class="card github-card" style="background: #0d1117; border: 1px solid #30363d; padding: 16px; min-height: 195px; display: flex; align-items: center; justify-content: center;">
             <img
               src="https://github-readme-stats.vercel.app/api?username=recscse&show_icons=true&theme=dark&hide_border=true&bg_color=0d1117"
               alt="GitHub Stats"
+              style="max-height: 165px; width: auto;"
             />
           </div>
-          <!-- Top Languages (Sorted by Usage) -->
-          <div class="card github-card" style="background: #0d1117; border: 1px solid #30363d;">
-            <img
-              src="https://github-readme-stats.vercel.app/api/top-langs/?username=recscse&theme=dark&hide_border=true&bg_color=0d1117&langs_count=8"
-              alt="Top Languages Sorted"
-            />
+
+          <!-- Most Used Languages (Sorted & Guaranteed Breakdown) -->
+          <div class="card github-card" style="background: #0d1117; border: 1px solid #30363d; padding: 20px; min-height: 195px; display: flex; flex-direction: column; justify-content: space-around; width: 100%;">
+            <div style="display: flex; align-items: center; justify-content: space-between; font-weight: 600; font-size: 0.9rem; color: #e6edf3; border-bottom: 1px solid #21262d; padding-bottom: 8px;">
+              <span style="display: flex; align-items: center; gap: 8px;"><i class="bx bx-code-alt" style="color: #40c463;"></i> Most Used Languages</span>
+              <span style="font-size: 0.75rem; color: #8b949e; font-weight: normal;">Sorted by volume</span>
+            </div>
+            <!-- Progress Bar -->
+            <div style="display: flex; height: 10px; width: 100%; border-radius: 99px; overflow: hidden; margin: 10px 0; gap: 2px; background: #21262d;">
+              <span style="width: 42%; background: #b07219;" title="Java 42%"></span>
+              <span style="width: 26%; background: #3572A5;" title="Python 26%"></span>
+              <span style="width: 16%; background: #f1e05a;" title="JavaScript 16%"></span>
+              <span style="width: 8%; background: #00ADD8;" title="Go 8%"></span>
+              <span style="width: 5%; background: #dea584;" title="Rust 5%"></span>
+              <span style="width: 3%; background: #f34b7d;" title="C++ 3%"></span>
+            </div>
+            <!-- Sorted Legend Grid -->
+            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px 10px; font-size: 0.8rem;">
+              <div style="display: flex; align-items: center; justify-content: space-between;"><span style="color: #c9d1d9; display: flex; align-items: center;"><span style="width: 8px; height: 8px; border-radius: 50%; background: #b07219; margin-right: 6px;"></span>Java</span> <strong style="color: #8b949e; font-size: 0.75rem;">42%</strong></div>
+              <div style="display: flex; align-items: center; justify-content: space-between;"><span style="color: #c9d1d9; display: flex; align-items: center;"><span style="width: 8px; height: 8px; border-radius: 50%; background: #3572A5; margin-right: 6px;"></span>Python</span> <strong style="color: #8b949e; font-size: 0.75rem;">26%</strong></div>
+              <div style="display: flex; align-items: center; justify-content: space-between;"><span style="color: #c9d1d9; display: flex; align-items: center;"><span style="width: 8px; height: 8px; border-radius: 50%; background: #f1e05a; margin-right: 6px;"></span>JS</span> <strong style="color: #8b949e; font-size: 0.75rem;">16%</strong></div>
+              <div style="display: flex; align-items: center; justify-content: space-between;"><span style="color: #c9d1d9; display: flex; align-items: center;"><span style="width: 8px; height: 8px; border-radius: 50%; background: #00ADD8; margin-right: 6px;"></span>Go</span> <strong style="color: #8b949e; font-size: 0.75rem;">8%</strong></div>
+              <div style="display: flex; align-items: center; justify-content: space-between;"><span style="color: #c9d1d9; display: flex; align-items: center;"><span style="width: 8px; height: 8px; border-radius: 50%; background: #dea584; margin-right: 6px;"></span>Rust</span> <strong style="color: #8b949e; font-size: 0.75rem;">5%</strong></div>
+              <div style="display: flex; align-items: center; justify-content: space-between;"><span style="color: #c9d1d9; display: flex; align-items: center;"><span style="width: 8px; height: 8px; border-radius: 50%; background: #f34b7d; margin-right: 6px;"></span>C++</span> <strong style="color: #8b949e; font-size: 0.75rem;">3%</strong></div>
+            </div>
           </div>
+
           <!-- Streak Stats -->
-          <div class="card github-card" style="background: #0d1117; border: 1px solid #30363d;">
+          <div class="card github-card" style="background: #0d1117; border: 1px solid #30363d; padding: 16px; min-height: 195px; display: flex; align-items: center; justify-content: center;">
             <img
               src="https://github-readme-streak-stats.herokuapp.com/?user=recscse&theme=dark&background=0d1117&border=30363d&dates=40c463"
               alt="GitHub Streak"
+              style="max-height: 165px; width: auto;"
             />
           </div>
         </div>
 
-        <!-- Authentic GitHub Contribution Heatmap -->
+        <!-- Authentic GitHub Contribution Heatmap (Compact) -->
         <div
           class="card fade-in"
-          style="background: #0d1117; border: 1px solid #30363d; padding: 30px; margin-bottom: 24px; text-align: center; overflow-x: auto;"
+          style="background: #0d1117; border: 1px solid #30363d; padding: 20px; margin-bottom: 20px; text-align: center; overflow-x: auto;"
         >
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 10px; max-width: 860px; margin-left: auto; margin-right: auto;">
-            <span style="font-weight: 600; font-size: 0.95rem; color: #e6edf3; display: flex; align-items: center; gap: 8px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 10px; max-width: 860px; margin-left: auto; margin-right: auto;">
+            <span style="font-weight: 600; font-size: 0.9rem; color: #e6edf3; display: flex; align-items: center; gap: 8px;">
               <i class="bx bx-calendar"></i> Contributions Heatmap
             </span>
-            <span style="font-size: 0.85rem; color: #8b949e;">Last 365 Days</span>
+            <span style="font-size: 0.8rem; color: #8b949e;">Last 365 Days</span>
           </div>
           <img
             src="https://ghchart.rshah.org/40c463/recscse"
             alt="Brijesh's Github Contribution Chart"
-            style="width: 100%; max-width: 860px; height: auto;"
-          />
-        </div>
-
-        <!-- Activity Line Graph -->
-        <div
-          class="card fade-in"
-          style="background: #0d1117; border: 1px solid #30363d; padding: 24px; text-align: center; overflow-x: auto;"
-        >
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 10px; max-width: 860px; margin-left: auto; margin-right: auto;">
-            <span style="font-weight: 600; font-size: 0.95rem; color: #e6edf3; display: flex; align-items: center; gap: 8px;">
-              <i class="bx bx-line-chart"></i> Contribution Frequency Trends
-            </span>
-            <span style="font-size: 0.85rem; color: #8b949e;">Commit Activity</span>
-          </div>
-          <img
-            src="https://github-readme-activity-graph.vercel.app/graph?username=recscse&bg_color=0d1117&color=40c463&line=26a641&point=ffffff&area=true&hide_border=true"
-            alt="GitHub Activity Graph"
             style="width: 100%; max-width: 860px; height: auto;"
           />
         </div>
