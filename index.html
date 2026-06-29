@@ -536,14 +536,14 @@
             />
           </div>
 
-          <!-- Most Used Languages (Sorted & Guaranteed Breakdown) -->
+          <!-- Most Used Languages (Sorted & Dynamic Live Fetch) -->
           <div class="card github-card" style="background: #0d1117; border: 1px solid #30363d; padding: 20px; min-height: 195px; display: flex; flex-direction: column; justify-content: space-around; width: 100%;">
             <div style="display: flex; align-items: center; justify-content: space-between; font-weight: 600; font-size: 0.9rem; color: #e6edf3; border-bottom: 1px solid #21262d; padding-bottom: 8px;">
               <span style="display: flex; align-items: center; gap: 8px;"><i class="bx bx-code-alt" style="color: #40c463;"></i> Most Used Languages</span>
-              <span style="font-size: 0.75rem; color: #8b949e; font-weight: normal;">Sorted by volume</span>
+              <span id="lang-fetch-status" style="font-size: 0.75rem; color: #8b949e; font-weight: normal;">Sorted by volume</span>
             </div>
             <!-- Progress Bar -->
-            <div style="display: flex; height: 10px; width: 100%; border-radius: 99px; overflow: hidden; margin: 10px 0; gap: 2px; background: #21262d;">
+            <div id="lang-progress-bar" style="display: flex; height: 10px; width: 100%; border-radius: 99px; overflow: hidden; margin: 10px 0; gap: 2px; background: #21262d;">
               <span style="width: 42%; background: #b07219;" title="Java 42%"></span>
               <span style="width: 26%; background: #3572A5;" title="Python 26%"></span>
               <span style="width: 16%; background: #f1e05a;" title="JavaScript 16%"></span>
@@ -552,7 +552,7 @@
               <span style="width: 3%; background: #f34b7d;" title="C++ 3%"></span>
             </div>
             <!-- Sorted Legend Grid -->
-            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px 10px; font-size: 0.8rem;">
+            <div id="lang-legend-grid" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px 10px; font-size: 0.8rem;">
               <div style="display: flex; align-items: center; justify-content: space-between;"><span style="color: #c9d1d9; display: flex; align-items: center;"><span style="width: 8px; height: 8px; border-radius: 50%; background: #b07219; margin-right: 6px;"></span>Java</span> <strong style="color: #8b949e; font-size: 0.75rem;">42%</strong></div>
               <div style="display: flex; align-items: center; justify-content: space-between;"><span style="color: #c9d1d9; display: flex; align-items: center;"><span style="width: 8px; height: 8px; border-radius: 50%; background: #3572A5; margin-right: 6px;"></span>Python</span> <strong style="color: #8b949e; font-size: 0.75rem;">26%</strong></div>
               <div style="display: flex; align-items: center; justify-content: space-between;"><span style="color: #c9d1d9; display: flex; align-items: center;"><span style="width: 8px; height: 8px; border-radius: 50%; background: #f1e05a; margin-right: 6px;"></span>JS</span> <strong style="color: #8b949e; font-size: 0.75rem;">16%</strong></div>
@@ -843,8 +843,66 @@
                   console.error(`Error fetching stats for ${repo}:`, err);
               }
           }
-      }
       fetchGitHubStats();
+
+      // Live Dynamic GitHub Languages Fetcher
+      async function fetchGitHubLanguages() {
+          const colorMap = {
+              'Java': '#b07219',
+              'Python': '#3572A5',
+              'JavaScript': '#f1e05a',
+              'TypeScript': '#3178c6',
+              'Go': '#00ADD8',
+              'Rust': '#dea584',
+              'C++': '#f34b7d',
+              'Ruby': '#701516',
+              'HTML': '#e34c26',
+              'CSS': '#563d7c',
+              'Shell': '#89e051',
+              'C': '#555555'
+          };
+          try {
+              const response = await fetch('https://api.github.com/users/recscse/repos?per_page=100');
+              if (!response.ok) return;
+              const repos = await response.json();
+              
+              const langCounts = {};
+              let totalSize = 0;
+              
+              repos.forEach(repo => {
+                  if (repo.language && repo.size > 0) {
+                      langCounts[repo.language] = (langCounts[repo.language] || 0) + repo.size;
+                      totalSize += repo.size;
+                  }
+              });
+
+              if (totalSize === 0) return;
+
+              const sortedLangs = Object.entries(langCounts)
+                  .map(([lang, size]) => ({ lang, percent: Math.round((size / totalSize) * 100) }))
+                  .sort((a, b) => b.percent - a.percent)
+                  .slice(0, 6);
+
+              const progressBar = document.getElementById('lang-progress-bar');
+              const legendGrid = document.getElementById('lang-legend-grid');
+              const statusEl = document.getElementById('lang-fetch-status');
+
+              if (progressBar && legendGrid && sortedLangs.length > 0) {
+                  progressBar.innerHTML = sortedLangs.map(item => `
+                      <span style="width: ${item.percent}%; background: ${colorMap[item.lang] || '#8b949e'};" title="${item.lang} ${item.percent}%"></span>
+                  `).join('');
+
+                  legendGrid.innerHTML = sortedLangs.map(item => `
+                      <div style="display: flex; align-items: center; justify-content: space-between;"><span style="color: #c9d1d9; display: flex; align-items: center;"><span style="width: 8px; height: 8px; border-radius: 50%; background: ${colorMap[item.lang] || '#8b949e'}; margin-right: 6px;"></span>${item.lang === 'JavaScript' ? 'JS' : item.lang}</span> <strong style="color: #8b949e; font-size: 0.75rem;">${item.percent}%</strong></div>
+                  `).join('');
+
+                  if (statusEl) statusEl.textContent = 'Live from GitHub';
+              }
+          } catch (err) {
+              console.error('Error fetching live languages:', err);
+          }
+      }
+      fetchGitHubLanguages();
     </script>
     <!-- Deployment Trigger: Update 1 -->
   </body>
