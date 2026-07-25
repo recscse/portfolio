@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>From PyTorch to ONNX: Designing a Low-Latency Model Inference Pipeline | Brijesh Yadav</title>
+    <link rel="stylesheet" href="blog.css" />
+    <meta
+      name="description"
+      content="An engineering case study on exporting PyTorch deep learning models to ONNX format and building high-performance ONNX Runtime inference microservices."
+    />
+    
+    <!-- Structured Data for SEO -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "BlogPosting",
+      "headline": "From PyTorch to ONNX: Designing a Low-Latency Model Inference Pipeline",
+      "description": "An engineering case study on exporting PyTorch deep learning models to ONNX format and building high-performance ONNX Runtime inference microservices.",
+      "author": {
+        "@type": "Person",
+        "name": "Brijesh Yadav",
+        "url": "https://recscse.github.io"
+      },
+      "datePublished": "2026-02-25",
+      "image": "https://recscse.github.io/assets/banner.svg"
+    }
+    </script>
+
+    <script>
+        const savedTheme = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+        document.documentElement.setAttribute('data-theme', savedTheme);
+    </script>
+  </head>
+  <body>
+    <!-- Navbar -->
+    <nav class="nav-bar">
+      <div class="nav-left">
+        <a href="../index.html" class="nav-brand">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+            </svg>
+            Brijesh Yadav
+        </a>
+      </div>
+      <div style="display: flex; gap: 12px; align-items: center;">
+          <a href="index.html" class="nav-link">← All Posts</a>
+          <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme">
+            <svg class="sun-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display: none;">
+                <circle cx="12" cy="12" r="5"></circle>
+                <line x1="12" y1="1" x2="12" y2="3"></line>
+                <line x1="12" y1="21" x2="12" y2="23"></line>
+                <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                <line x1="1" y1="12" x2="3" y2="12"></line>
+                <line x1="21" y1="12" x2="23" y2="12"></line>
+                <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+            </svg>
+            <svg class="moon-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+            </svg>
+          </button>
+      </div>
+    </nav>
+
+    <div class="layout">
+      <!-- Main Article -->
+      <article class="prose">
+        <header class="post-header">
+          <div class="post-meta">
+            <span>February 25, 2026</span>
+            <span>·</span>
+            <span>12 min read</span>
+          </div>
+          <h1 class="post-title">From PyTorch to ONNX: Designing a Low-Latency Model Inference Pipeline</h1>
+          <div class="tags-container">
+            <span class="tag">PyTorch</span>
+            <span class="tag">ONNX Runtime</span>
+            <span class="tag">Inference Pipeline</span>
+            <span class="tag">FastAPI</span>
+            <span class="tag">Model Deployment</span>
+          </div>
+        </header>
+
+        <!-- INTRO -->
+        <p class="lead">
+          Training deep learning models in PyTorch provides maximum flexibility for research, rapid experimentation, and gradient exploration. However, deploying raw PyTorch models into low-latency production backend services introduces unnecessary overhead: heavy GPU dependency, large Python runtime footprints, and sluggish single-sample inference latency.
+        </p>
+        <p>
+          To serve neural models efficiently inside backend microservices, modern ML engineering decouples <strong>model training</strong> from <strong>production inference</strong>.
+        </p>
+        <p>
+          In this case study, I walk through the architecture of converting PyTorch models into <strong>ONNX (Open Neural Network Exchange)</strong> format and serving them using <strong>ONNX Runtime</strong> inside FastAPI microservices.
+        </p>
+
+        <!-- SECTION 1 -->
+        <h2 id="pipeline-architecture">1. End-to-End Inference Pipeline</h2>
+        <p>
+          The pipeline establishes a clean build and deployment flow:
+        </p>
+
+        <!-- DIAGRAM -->
+        <div class="diagram-box">
+          <div class="diagram-header">
+            <div class="window-controls">
+              <div class="control red"></div>
+              <div class="control yellow"></div>
+              <div class="control green"></div>
+            </div>
+            <div class="diagram-title">PyTorch to ONNX Deployment Pipeline</div>
+          </div>
+          <pre class="diagram-content">
+ [ PyTorch Training Loop ]
+            │
+            ▼
+ [ Model Checkpoint (.pt) ]
+            │
+            ▼
+ [ ONNX Export Script ] ──▶ Convert Operations to Static Graph (model.onnx)
+            │
+            ▼
+ [ Model Validation Step] ──▶ Verify Output Numeric Parity (PyTorch vs ONNX)
+            │
+            ▼
+ [ ONNX Runtime Server  ] ──▶ Pre-Warmed Session Engine (FastAPI Service)
+            │
+            ▼
+ [ Backend Consumer App ] ──▶ Low-Latency REST / gRPC API Consumption
+          </pre>
+        </div>
+
+        <!-- SECTION 2 -->
+        <h2 id="export-validation">2. Exporting PyTorch to ONNX</h2>
+        <p>
+          Exporting a PyTorch model requires tracing sample input tensors through the neural computational graph to generate a standardized graph format:
+        </p>
+
+        <pre><code class="language-python">import torch
+import onnxruntime as ort
+import numpy as np
+
+def export_model_to_onnx(model: torch.nn.Module, input_shape: tuple, export_path: str):
+    model.eval()
+    dummy_input = torch.randn(*input_shape)
+    
+    # Export to static ONNX graph
+    torch.onnx.export(
+        model,
+        dummy_input,
+        export_path,
+        export_params=True,
+        opset_version=14,
+        do_constant_folding=True,
+        input_names=["input"],
+        output_names=["output"],
+        dynamic_axes={"input": {0: "batch_size"}, "output": {0: "batch_size"}}
+    )
+    print(f"Model exported successfully to {export_path}")
+        </code></pre>
+
+        <!-- SECTION 3 -->
+        <h2 id="parity-verification">3. Verifying Numerical Parity</h2>
+        <p>
+          Before deploying an exported ONNX model, we verify that ONNX Runtime inference outputs match PyTorch outputs within a strict numerical tolerance (`np.testing.assert_allclose`):
+        </p>
+
+        <pre><code class="language-python">def verify_parity(torch_model, onnx_path, input_data: np.ndarray):
+    # PyTorch Inference
+    torch_model.eval()
+    with torch.no_grad():
+        torch_out = torch_model(torch.from_numpy(input_data)).numpy()
+        
+    # ONNX Runtime Inference
+    ort_session = ort.InferenceSession(onnx_path, providers=["CPUExecutionProvider"])
+    ort_inputs = {ort_session.get_inputs()[0].name: input_data}
+    ort_out = ort_session.run(None, ort_inputs)[0]
+    
+    # Check numeric parity
+    np.testing.assert_allclose(torch_out, ort_out, rtol=1e-03, atol=1e-05)
+    print("Numerical parity check passed!")
+        </code></pre>
+
+        <!-- SECTION 4 -->
+        <h2 id="inference-service">4. Pre-Warmed ONNX Runtime Service</h2>
+        <p>
+          In a backend FastAPI microservice, ONNX sessions are loaded during application startup. Running a "warmup" inference query initializes internal memory pools and execution graphs before live traffic arrives:
+        </p>
+
+        <pre><code class="language-python">from fastapi import FastAPI
+import onnxruntime as ort
+import numpy as np
+
+app = FastAPI()
+session = None
+
+@app.on_event("startup")
+async def load_onnx_model():
+    global session
+    session = ort.InferenceSession("model.onnx", providers=["CPUExecutionProvider"])
+    
+    # Session Warmup
+    dummy = np.zeros((1, 30, 10), dtype=np.float32)
+    session.run(None, {session.get_inputs()[0].name: dummy})
+    print("ONNX Session loaded and warmed up.")
+        </code></pre>
+
+        <!-- REFERENCES -->
+        <h2 id="references">5. References & Engineering Reading</h2>
+        <ul>
+          <li><a href="https://onnxruntime.ai/docs/" target="_blank" rel="noopener noreferrer">ONNX Runtime Official Documentation</a></li>
+          <li><a href="https://pytorch.org/docs/stable/onnx.html" target="_blank" rel="noopener noreferrer">PyTorch ONNX Export Documentation</a></li>
+          <li><a href="https://onnx.ai/" target="_blank" rel="noopener noreferrer">Open Neural Network Exchange (ONNX) Standards</a></li>
+        </ul>
+
+        <h2 id="conclusion">Conclusion</h2>
+        <p>
+          Exporting PyTorch models to ONNX and serving them via ONNX Runtime yields significant inference speedups, eliminates bulky deep learning framework dependencies in production, and provides a clean separation between ML research and backend microservice engineering.
+        </p>
+      </article>
+
+      <!-- Sidebar Table of Contents -->
+      <aside class="toc">
+        <div class="toc-header">On this page</div>
+        <div class="toc-links">
+          <a href="#pipeline-architecture" class="toc-link">1. Pipeline Architecture</a>
+          <a href="#export-validation" class="toc-link">2. ONNX Exporting</a>
+          <a href="#parity-verification" class="toc-link">3. Numerical Parity</a>
+          <a href="#inference-service" class="toc-link">4. Pre-Warmed Service</a>
+          <a href="#references" class="toc-link">5. References</a>
+        </div>
+      </aside>
+    </div>
+
+    <footer class="footer">
+      <p>© <span id="year"></span> Brijesh Yadav</p>
+    </footer>
+
+    <script>
+      document.getElementById('year').textContent = new Date().getFullYear();
+
+      const themeBtn = document.getElementById('theme-toggle');
+      const sunIcon = themeBtn.querySelector('.sun-icon');
+      const moonIcon = themeBtn.querySelector('.moon-icon');
+
+      function updateIcons(theme) {
+          if (theme === 'light') {
+              sunIcon.style.display = 'none';
+              moonIcon.style.display = 'block';
+          } else {
+              sunIcon.style.display = 'block';
+              moonIcon.style.display = 'none';
+          }
+      }
+
+      const currentTheme = document.documentElement.getAttribute('data-theme');
+      updateIcons(currentTheme);
+
+      themeBtn.addEventListener('click', () => {
+          const current = document.documentElement.getAttribute('data-theme');
+          const next = current === 'light' ? 'dark' : 'light';
+          document.documentElement.setAttribute('data-theme', next);
+          localStorage.setItem('theme', next);
+          updateIcons(next);
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Designing a Safe AI-Assisted Trading System: From Stock Selection to Execution | Brijesh Yadav</title>
+    <link rel="stylesheet" href="blog.css" />
+    <meta
+      name="description"
+      content="An engineering deep dive into building an AI-assisted stock selection pipeline with strict risk filters, paper-trading verification, and execution safety boundaries."
+    />
+    
+    <!-- Structured Data for SEO -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "BlogPosting",
+      "headline": "Designing a Safe AI-Assisted Trading System: From Stock Selection to Execution",
+      "description": "An engineering deep dive into building an AI-assisted stock selection pipeline with strict risk filters, paper-trading verification, and execution safety boundaries.",
+      "author": {
+        "@type": "Person",
+        "name": "Brijesh Yadav",
+        "url": "https://recscse.github.io"
+      },
+      "datePublished": "2026-02-20",
+      "image": "https://recscse.github.io/assets/banner.svg"
+    }
+    </script>
+
+    <script>
+        const savedTheme = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+        document.documentElement.setAttribute('data-theme', savedTheme);
+    </script>
+  </head>
+  <body>
+    <!-- Navbar -->
+    <nav class="nav-bar">
+      <div class="nav-left">
+        <a href="../index.html" class="nav-brand">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+            </svg>
+            Brijesh Yadav
+        </a>
+      </div>
+      <div style="display: flex; gap: 12px; align-items: center;">
+          <a href="index.html" class="nav-link">← All Posts</a>
+          <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme">
+            <svg class="sun-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display: none;">
+                <circle cx="12" cy="12" r="5"></circle>
+                <line x1="12" y1="1" x2="12" y2="3"></line>
+                <line x1="12" y1="21" x2="12" y2="23"></line>
+                <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                <line x1="1" y1="12" x2="3" y2="12"></line>
+                <line x1="21" y1="12" x2="23" y2="12"></line>
+                <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+            </svg>
+            <svg class="moon-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+            </svg>
+          </button>
+      </div>
+    </nav>
+
+    <div class="layout">
+      <!-- Main Article -->
+      <article class="prose">
+        <header class="post-header">
+          <div class="post-meta">
+            <span>February 20, 2026</span>
+            <span>·</span>
+            <span>13 min read</span>
+          </div>
+          <h1 class="post-title">Designing a Safe AI-Assisted Trading System: From Stock Selection to Execution</h1>
+          <div class="tags-container">
+            <span class="tag">AI System Architecture</span>
+            <span class="tag">Risk Management</span>
+            <span class="tag">FastAPI</span>
+            <span class="tag">Trading Infrastructure</span>
+            <span class="tag">Safety Controls</span>
+          </div>
+        </header>
+
+        <!-- DISCLAIMER BOX -->
+        <div style="background: rgba(245, 158, 11, 0.08); border-left: 4px solid #f59e0b; padding: 14px 18px; margin-bottom: 24px; border-radius: 4px; font-size: 0.88rem; color: var(--text-muted);">
+          <strong>Financial & Engineering Disclaimer:</strong> This project is an engineering and research system designed to explore software safety patterns in quantitative pipelines. It does NOT constitute financial advice, investment recommendations, or a claim of market trading profitability.
+        </div>
+
+        <!-- INTRO -->
+        <p class="lead">
+          Applying machine learning models to financial markets presents unique backend engineering challenges. Unconstrained AI models can hallucinate signals, output high-confidence predictions during extreme illiquidity, or place orders outside valid market hours. 
+        </p>
+        <p>
+          In automated trading software, <strong>AI output must never directly trigger order placement without passing through deterministic risk validation layers</strong>.
+        </p>
+        <p>
+          In this article, I break down the engineering architecture of an AI-assisted stock selection and execution pipeline, focusing on data validation, feature engineering, risk isolation, paper-trading simulation, and audit controls.
+        </p>
+
+        <!-- SECTION 1 -->
+        <h2 id="pipeline-architecture">1. The Multi-Stage Pipeline Architecture</h2>
+        <p>
+          The system enforces strict stage-gating. If any validation stage fails, the process halts immediately without advancing to order execution.
+        </p>
+
+        <!-- DIAGRAM -->
+        <div class="diagram-box">
+          <div class="diagram-header">
+            <div class="window-controls">
+              <div class="control red"></div>
+              <div class="control yellow"></div>
+              <div class="control green"></div>
+            </div>
+            <div class="diagram-title">AI Stock Selection & Risk Control Flow</div>
+          </div>
+          <pre class="diagram-content">
+ ┌───────────────────────┐
+ │ Market Universe Input │ (NIFTY 50 / Liquid Stock List)
+ └───────────────────────┘
+             │
+             ▼
+ ┌───────────────────────┐
+ │ Data Validation Stage │ ──▶ Drop Missing Prices, Stale Candles, Extreme Spikes
+ └───────────────────────┘
+             │
+             ▼
+ ┌───────────────────────┐
+ │ Feature Engineering   │ ──▶ Calculate RSI, Volatility, Momentum, Volume Ratio
+ └───────────────────────┘
+             │
+             ▼
+ ┌───────────────────────┐
+ │ Stock Selection Model │ ──▶ Compute Candidate Score & Option Direction
+ └───────────────────────┘
+             │
+             ▼
+ ┌───────────────────────┐
+ │ Risk & Guard Filters  │ ──▶ Enforce Liquidity, Lot Size, Max Loss & Capital Caps
+ └───────────────────────┘
+             │
+             ▼
+ ┌───────────────────────┐
+ │ Trade Prep & Gating   │ ──▶ Market Session Verification & ATM Strike Validation
+ └───────────────────────┘
+             │
+             ▼
+ ┌───────────────────────┐
+ │ Execution Engine      │ ──▶ Paper Trading / Multi-Broker Gateway (Upstox V3 API)
+ └───────────────────────┘
+             │
+             ▼
+ ┌───────────────────────┐
+ │ EOD Audit & Logging   │ ──▶ Store Signals, PnL, Latency, & Model Version Logs
+ └───────────────────────┘
+          </pre>
+        </div>
+
+        <!-- SECTION 2 -->
+        <h2 id="data-validation">2. Data Validation & Feature Pipeline</h2>
+        <p>
+          Machine learning inference is sensitive to noisy input. Raw candle data fetched from historical REST APIs undergoes validation before feature calculation:
+        </p>
+
+        <ul>
+          <li><strong>Stale Candle Detection:</strong> Verifies that historical candle timestamps match expected market interval sequences. Missing candles are backfilled via API requests.</li>
+          <li><strong>Outlier Removal:</strong> Filters out bad ticks where price movements exceed impossible single-candle thresholds (e.g., erroneous 50% price drops caused by broker feed errors).</li>
+          <li><strong>Feature Normalization:</strong> Technical indicators (EMA, RSI, ATR, Volume Spikes) are computed deterministically and scaled before model input.</li>
+        </ul>
+
+        <pre><code class="language-python">def validate_candle_data(df: pd.DataFrame) -> pd.DataFrame:
+    """Ensures candle data integrity before model feature extraction."""
+    if df.empty or len(df) < 50:
+        raise ValueError("Insufficient candle history for feature extraction")
+        
+    # Check for NaN or zero prices
+    if df[['open', 'high', 'low', 'close']].isna().any().any():
+        df = df.bfill().ffill()
+        
+    # Verify non-zero volume
+    df = df[df['volume'] > 0]
+    return df
+        </code></pre>
+
+        <!-- SECTION 3 -->
+        <h2 id="model-inference">3. Stock Selection Model & Direction Logic</h2>
+        <p>
+          The selection model scores candidate stocks based on momentum, price structure, and relative market strength.
+        </p>
+        <p>
+          In neutral market conditions, relying purely on binary directional signals can lead to over-trading whipsaws. To mitigate this, the engine uses a <strong>neutral sensitivity threshold (0.25%)</strong> combined with price structure verification to select Call (CE) or Put (PE) option directions only when momentum confirmation exists.
+        </p>
+
+        <!-- SECTION 4 -->
+        <h2 id="risk-filters">4. Deterministic Risk & Guard Filters</h2>
+        <p>
+          The most crucial architectural decision is placing a <strong>hard deterministic barrier</strong> between AI prediction outputs and order execution:
+        </p>
+
+        <pre><code class="language-python">class TradeRiskGuard:
+    def __init__(self, max_capital_per_trade: float, daily_loss_limit: float):
+        self.max_capital = max_capital_per_trade
+        self.daily_loss_limit = daily_loss_limit
+
+    def evaluate_candidate(self, candidate: TradeCandidate, account_status: AccountStatus) -> bool:
+        # Rule 1: Market Session Guard
+        if not self.is_market_open():
+            logger.warning("Trade rejected: Market session inactive")
+            return False
+
+        # Rule 2: Daily Drawdown Limit
+        if account_status.daily_pnl <= -self.daily_loss_limit:
+            logger.warning("Trade rejected: Daily loss limit reached")
+            return False
+
+        # Rule 3: Position Sizing & Margin Cap
+        if candidate.estimated_cost > self.max_capital:
+            logger.warning("Trade rejected: Capital requirement exceeds safety threshold")
+            return False
+
+        return True
+        </code></pre>
+
+        <!-- SECTION 5 -->
+        <h2 id="execution-safety">5. Execution Safety & Paper Trading Parity</h2>
+        <p>
+          To validate system stability without risking real capital, the execution handler defaults to a simulated <strong>Paper Trading Mode</strong>:
+        </p>
+        <ul>
+          <li><strong>Dynamic Balance Ledger:</strong> Tracks entry capital deductions and exit capital returns (investment + PnL) dynamically in PostgreSQL.</li>
+          <li><strong>Lot Size Resolution:</strong> Leverages active instrument registries to resolve broker lot sizes accurately, preventing order rejections.</li>
+          <li><strong>Single Exit Authority:</strong> Order status tracking and emergency exits are governed by a central authority to avoid double-exit races.</li>
+        </ul>
+
+        <!-- SECTION 6 -->
+        <h2 id="logging-eval">6. Observability, Logging, & End-of-Day Evaluation</h2>
+        <p>
+          For operational transparency, every trade candidate recommendation is logged alongside model version, input feature state, risk decision, execution status, and realized PnL.
+        </p>
+        <p>
+          An automated End-of-Day (EOD) evaluation job correlates model predictions against actual market outcomes, helping engineers identify model drift over time without compromising live execution safety.
+        </p>
+
+        <!-- REFERENCES -->
+        <h2 id="references">7. References & Further Reading</h2>
+        <ul>
+          <li><a href="https://upstox.com/developer/api-documentation/" target="_blank" rel="noopener noreferrer">Upstox Developer V3 API Reference</a></li>
+          <li><a href="https://scikit-learn.org/stable/modules/model_evaluation.html" target="_blank" rel="noopener noreferrer">Scikit-Learn Model Evaluation Metrics</a></li>
+          <li><a href="https://pandas.pydata.org/docs/" target="_blank" rel="noopener noreferrer">Pandas Technical Data Analysis Documentation</a></li>
+        </ul>
+
+        <h2 id="conclusion">Conclusion</h2>
+        <p>
+          Building a safe AI-assisted trading system requires treating machine learning outputs as untrusted proposals. Enforcing hard deterministic risk filters, session validation, and paper-trading verification ensures architectural safety and reliability.
+        </p>
+      </article>
+
+      <!-- Sidebar Table of Contents -->
+      <aside class="toc">
+        <div class="toc-header">On this page</div>
+        <div class="toc-links">
+          <a href="#pipeline-architecture" class="toc-link">1. Pipeline Architecture</a>
+          <a href="#data-validation" class="toc-link">2. Data Validation</a>
+          <a href="#model-inference" class="toc-link">3. Stock Selection Model</a>
+          <a href="#risk-filters" class="toc-link">4. Risk Filters</a>
+          <a href="#execution-safety" class="toc-link">5. Execution Safety</a>
+          <a href="#logging-eval" class="toc-link">6. Observability & Logging</a>
+          <a href="#references" class="toc-link">7. References</a>
+        </div>
+      </aside>
+    </div>
+
+    <footer class="footer">
+      <p>© <span id="year"></span> Brijesh Yadav</p>
+    </footer>
+
+    <script>
+      document.getElementById('year').textContent = new Date().getFullYear();
+
+      const themeBtn = document.getElementById('theme-toggle');
+      const sunIcon = themeBtn.querySelector('.sun-icon');
+      const moonIcon = themeBtn.querySelector('.moon-icon');
+
+      function updateIcons(theme) {
+          if (theme === 'light') {
+              sunIcon.style.display = 'none';
+              moonIcon.style.display = 'block';
+          } else {
+              sunIcon.style.display = 'block';
+              moonIcon.style.display = 'none';
+          }
+      }
+
+      const currentTheme = document.documentElement.getAttribute('data-theme');
+      updateIcons(currentTheme);
+
+      themeBtn.addEventListener('click', () => {
+          const current = document.documentElement.getAttribute('data-theme');
+          const next = current === 'light' ? 'dark' : 'light';
+          document.documentElement.setAttribute('data-theme', next);
+          localStorage.setItem('theme', next);
+          updateIcons(next);
+      });
+    </script>
+  </body>
+</html>

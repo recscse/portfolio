@@ -91,7 +91,7 @@
 
         <h2 id="challenge">The Architectural Challenge</h2>
         <p>
-          When processing live market feeds at 10,000+ ticks per second, tightly coupling your data ingestion layer with your strategy computation layer leads to disaster. If an RSI or MACD calculation blocks the thread for even 10 milliseconds, incoming WebSocket packets buffer, leading to stale price execution or connection drops.
+          When processing high-frequency live market feeds, tightly coupling your data ingestion layer with your strategy computation layer leads to disaster. If an indicator calculation blocks the execution thread, incoming WebSocket packets buffer, leading to stale price execution or connection drops.
         </p>
 
         <h2 id="decoupling">Decoupling via Redis Pub/Sub Bus</h2>

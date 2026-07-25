@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Designing a Real-Time Market Data Pipeline for an Algorithmic Trading Platform | Brijesh Yadav</title>
+    <link rel="stylesheet" href="blog.css" />
+    <meta
+      name="description"
+      content="System design case study on building a real-time market data pipeline using FastAPI, WebSockets, Redis Pub/Sub, and event-driven architecture."
+    />
+    
+    <!-- Structured Data for SEO -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "BlogPosting",
+      "headline": "Designing a Real-Time Market Data Pipeline for an Algorithmic Trading Platform",
+      "description": "System design case study on building a real-time market data pipeline using FastAPI, WebSockets, Redis Pub/Sub, and event-driven architecture.",
+      "author": {
+        "@type": "Person",
+        "name": "Brijesh Yadav",
+        "url": "https://recscse.github.io"
+      },
+      "datePublished": "2026-02-18",
+      "image": "https://recscse.github.io/assets/banner.svg"
+    }
+    </script>
+
+    <script>
+        const savedTheme = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+        document.documentElement.setAttribute('data-theme', savedTheme);
+    </script>
+  </head>
+  <body>
+    <!-- Navbar -->
+    <nav class="nav-bar">
+      <div class="nav-left">
+        <a href="../index.html" class="nav-brand">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+            </svg>
+            Brijesh Yadav
+        </a>
+      </div>
+      <div style="display: flex; gap: 12px; align-items: center;">
+          <a href="index.html" class="nav-link">← All Posts</a>
+          <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme">
+            <svg class="sun-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display: none;">
+                <circle cx="12" cy="12" r="5"></circle>
+                <line x1="12" y1="1" x2="12" y2="3"></line>
+                <line x1="12" y1="21" x2="12" y2="23"></line>
+                <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                <line x1="1" y1="12" x2="3" y2="12"></line>
+                <line x1="21" y1="12" x2="23" y2="12"></line>
+                <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+            </svg>
+            <svg class="moon-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+            </svg>
+          </button>
+      </div>
+    </nav>
+
+    <div class="layout">
+      <!-- Main Article -->
+      <article class="prose">
+        <header class="post-header">
+          <div class="post-meta">
+            <span>February 18, 2026</span>
+            <span>·</span>
+            <span>14 min read</span>
+          </div>
+          <h1 class="post-title">Designing a Real-Time Market Data Pipeline for an Algorithmic Trading Platform</h1>
+          <div class="tags-container">
+            <span class="tag">System Design</span>
+            <span class="tag">FastAPI</span>
+            <span class="tag">Redis</span>
+            <span class="tag">WebSockets</span>
+            <span class="tag">Event-Driven Architecture</span>
+          </div>
+        </header>
+
+        <!-- DISCLAIMER BOX -->
+        <div style="background: rgba(59, 130, 246, 0.08); border-left: 4px solid #3b82f6; padding: 14px 18px; margin-bottom: 24px; border-radius: 4px; font-size: 0.88rem; color: var(--text-muted);">
+          <strong>Engineering Context:</strong> This case study describes the underlying backend architecture of <strong>Growth Quantix</strong>. It focuses on streaming data design, concurrency, and broker abstraction rather than financial strategy performance or sub-microsecond HFT latency claims.
+        </div>
+
+        <!-- INTRO -->
+        <p class="lead">
+          Real-time algorithmic trading engines rely on continuous feeds of market ticks to compute technical indicators, evaluate entry/exit rules, and broadcast live price changes to user dashboards. In a multi-user, multi-strategy system, connecting strategy execution logic directly to a single broker WebSocket connection introduces severe architectural coupling.
+        </p>
+        <p>
+          If a strategy worker blocks on heavy calculations or database writes, the main WebSocket connection drops ticks, triggers TCP backpressure, or crashes due to buffer overflows.
+        </p>
+        <p>
+          To ensure reliability, fault tolerance, and clear operational boundaries, I designed an event-driven market data pipeline for <strong>Growth Quantix</strong> using FastAPI, Asyncio, Redis Pub/Sub, PostgreSQL, and WebSockets.
+        </p>
+
+        <!-- SECTION 1 -->
+        <h2 id="end-to-end-architecture">1. End-to-End Pipeline Architecture</h2>
+        <p>
+          The architecture cleanly separates raw data ingestion from signal generation, order execution, and UI streaming:
+        </p>
+
+        <!-- DIAGRAM -->
+        <div class="diagram-box">
+          <div class="diagram-header">
+            <div class="window-controls">
+              <div class="control red"></div>
+              <div class="control yellow"></div>
+              <div class="control green"></div>
+            </div>
+            <div class="diagram-title">Growth Quantix Real-Time Data Pipeline</div>
+          </div>
+          <pre class="diagram-content">
+ ┌──────────────────────┐
+ │ Upstox Market Feed V3│ (Binary WebSockets)
+ └──────────────────────┘
+            │
+            ▼
+ ┌──────────────────────┐
+ │ WebSocket Ingestion  │ (Asyncio Feed Handler & Protobuf Decoder)
+ └──────────────────────┘
+            │
+            ▼
+ ┌──────────────────────┐
+ │  Data Normalization  │ (Standardized Tick Schema)
+ └──────────────────────┘
+            │
+            ▼
+ ┌──────────────────────┐
+ │   Redis Pub/Sub Bus  │ (Low-latency Data Distribution)
+ └──────────────────────┘
+      │            │                                  │
+      ▼            ▼                                  ▼
+┌───────────┐┌───────────┐                     ┌──────────────┐
+│ Strategy  ││ Indicator │                     │ Dashboard    │
+│ Engine    ││ Aggregator│                     │ WebSocket    │
+└───────────┘└───────────┘                     │ Server       │
+      │            │                           └──────────────┘
+      ▼            ▼                                  │
+┌─────────────────────────┐                           ▼
+│ Risk & Execution Module │                    ┌──────────────┐
+│ (Paper / Live Broker)   │                    │ React UI     │
+└─────────────────────────┘                    └──────────────┘
+          </pre>
+        </div>
+
+        <!-- SECTION 2 -->
+        <h2 id="ingestion-normalization">2. Upstox Market Feed V3 & Ingestion Layer</h2>
+        <p>
+          Upstox Market Feed V3 streams tick data encoded in binary Protocol Buffers (Protobuf) over WebSocket connections. The ingestion service handles connection setup, heartbeat ping-pongs, and binary decoding:
+        </p>
+        <ol>
+          <li><strong>Authorized Handshake:</strong> Establishes WebSocket connection using a valid <code>access_token</code> obtained via the OAuth2 service.</li>
+          <li><strong>Dynamic Subscriptions:</strong> Sends subscription frames containing lists of instrument keys (e.g., <code>NSE_EQ|INE002A01018</code>) and subscription modes (Full LTP, Market Depth).</li>
+          <li><strong>Binary Protobuf Decoding:</strong> Deserializes raw binary payloads into structured Python dictionaries.</li>
+          <li><strong>Tick Normalization:</strong> Maps broker-specific field names into a unified, platform-agnostic schema containing <code>instrument_token</code>, <code>last_price</code>, <code>volume</code>, <code>open_interest</code>, and <code>timestamp</code>.</li>
+        </ol>
+
+        <pre><code class="language-python"># Example Normalized Tick Schema
+class NormalizedTick(BaseModel):
+    instrument_key: str
+    last_price: float
+    volume: int
+    open: float
+    high: float
+    low: float
+    close: float
+    timestamp: datetime
+    feed_mode: str = "full"
+        </code></pre>
+
+        <!-- SECTION 3 -->
+        <h2 id="redis-event-bus">3. Redis Event Bus & Strategy Decoupling</h2>
+        <p>
+          Publishing normalized ticks directly to a Redis Pub/Sub topic decouples data ingestion from downstream strategy execution:
+        </p>
+        <ul>
+          <li><strong>Non-Blocking Ingestion:</strong> The ingestion service immediately pushes ticks into Redis channels (e.g., <code>ticks:NSE_EQ:RELIANCE</code>) without waiting for strategy completion.</li>
+          <li><strong>Fan-Out Distribution:</strong> Multiple independent strategy workers can subscribe to the same Redis channel simultaneously without increasing load on the upstream broker WebSocket.</li>
+          <li><strong>Buffer Isolation:</strong> If a strategy crashes or experiences CPU lag, the ingestion service continues operating without interruption.</li>
+        </ul>
+
+        <pre><code class="language-python">import redis.asyncio as aioredis
+import json
+
+class RedisTickPublisher:
+    def __init__(self, redis_url: str):
+        self.redis = aioredis.from_url(redis_url)
+
+    async def publish_tick(self, tick: NormalizedTick):
+        channel = f"ticks:{tick.instrument_key}"
+        payload = tick.json()
+        await self.redis.publish(channel, payload)
+        </code></pre>
+
+        <!-- SECTION 4 -->
+        <h2 id="execution-boundaries">4. Paper vs Live Execution Boundaries</h2>
+        <p>
+          A critical architectural pattern in Growth Quantix is the enforcement of a strict boundary between trading signals and order execution:
+        </p>
+
+        <div class="diagram-box">
+          <div class="diagram-header">
+            <div class="window-controls">
+              <div class="control red"></div>
+              <div class="control yellow"></div>
+              <div class="control green"></div>
+            </div>
+            <div class="diagram-title">Execution Safety Control Flow</div>
+          </div>
+          <pre class="diagram-content">
+   [ Signal Generated (BUY RELIANCE) ]
+                   │
+                   ▼
+     ┌──────────────────────────┐
+     │ Risk & Validation Filter │ ──▶ Validate Margin, Session, Max Order Size
+     └──────────────────────────┘
+                   │
+           (Validation Pass)
+                   ▼
+     ┌──────────────────────────┐
+     │   Mode Selector Switch   │
+     └──────────────────────────┘
+        │                    │
+        ▼ (Paper Mode)       ▼ (Live Mode)
+┌──────────────────────┐  ┌──────────────────────┐
+│ Simulated Account    │  │ Broker API Handler   │
+│ - Virtual Balance    │  │ - Upstox Order V3    │
+│ - Instant Fill / Slip│  │ - Dynamic Product    │
+└──────────────────────┘  └──────────────────────┘
+        │                    │
+        └──────────┬─────────┘
+                   ▼
+      ┌─────────────────────────┐
+      │  Unified Audit Ledger   │
+      └─────────────────────────┘
+          </pre>
+        </div>
+
+        <p>
+          Features of the execution layer include:
+        </p>
+        <ul>
+          <li><strong>Pre-Trade Safety Checks:</strong> Verifies active market sessions, account funds, and max risk limits before allowing order placement.</li>
+          <li><strong>Symmetric Paper Trading Parity:</strong> Paper trading simulates 0.05% slippage and broker fee deductions to mirror real market execution realistically.</li>
+          <li><strong>Single Exit Authority:</strong> Order status tracking and emergency exit handlers operate with single-authority locking to prevent duplicate order submissions.</li>
+        </ul>
+
+        <!-- SECTION 5 -->
+        <h2 id="reconnection-resilience">5. Reconnection Lifecycle & Fault Tolerance</h2>
+        <p>
+          Internet connectivity hiccups can cause WebSocket drops. The system implements an automatic reconnection engine:
+        </p>
+        <ul>
+          <li><strong>Exponential Backoff with Jitter:</strong> Retries dropped connections using randomized exponential delays to avoid thundering herd problems on reconnect.</li>
+          <li><strong>Historical Candle Backfill:</strong> Upon reconnecting after an outage, the strategy engine fetches missing historical candles via Upstox REST APIs to restore technical indicator states before resuming live tick processing.</li>
+          <li><strong>Heartbeat Monitoring:</strong> Monitors connection ping/pong signals every 10 seconds; forces socket reset if pong frames are missed for over 30 seconds.</li>
+        </ul>
+
+        <!-- SECTION 6 -->
+        <h2 id="future-scaling">6. Future Scaling & Technical Tradeoffs</h2>
+        <p>
+          While the current setup using FastAPI, Redis Pub/Sub, and PostgreSQL easily handles real-time needs for multi-instrument monitoring, scaling to thousands of concurrent instruments presents clear design evolution paths:
+        </p>
+        <ol>
+          <li><strong>Redis Streams over Pub/Sub:</strong> Switching to Redis Streams provides message persistence and consumer groups for guaranteed at-least-once processing across strategy worker clusters.</li>
+          <li><strong>Time-Series Database Integration:</strong> Moving historical tick storage from PostgreSQL to TimescaleDB or ClickHouse enables faster time-bucket aggregation for backtesting.</li>
+        </ol>
+
+        <!-- REFERENCES -->
+        <h2 id="references">7. References & Project Links</h2>
+        <ul>
+          <li><a href="https://upstox.com/developer/api-documentation/#tag/Market-quote" target="_blank" rel="noopener noreferrer">Upstox Market Data API Documentation</a></li>
+          <li><a href="https://fastapi.tiangolo.com/advanced/websockets/" target="_blank" rel="noopener noreferrer">FastAPI WebSockets Documentation</a></li>
+          <li><a href="https://redis.io/docs/manual/pubsub/" target="_blank" rel="noopener noreferrer">Redis Pub/Sub Documentation</a></li>
+          <li><a href="https://protobuf.dev/" target="_blank" rel="noopener noreferrer">Protocol Buffers Developer Guide</a></li>
+        </ul>
+
+        <h2 id="conclusion">Conclusion</h2>
+        <p>
+          Architecting a decoupled, event-driven market data pipeline using WebSockets and Redis ensures stability, modularity, and clean isolation between data streaming and strategy execution.
+        </p>
+      </article>
+
+      <!-- Sidebar Table of Contents -->
+      <aside class="toc">
+        <div class="toc-header">On this page</div>
+        <div class="toc-links">
+          <a href="#end-to-end-architecture" class="toc-link">1. Architecture</a>
+          <a href="#ingestion-normalization" class="toc-link">2. Ingestion & Protocols</a>
+          <a href="#redis-event-bus" class="toc-link">3. Redis Event Bus</a>
+          <a href="#execution-boundaries" class="toc-link">4. Execution Boundaries</a>
+          <a href="#reconnection-resilience" class="toc-link">5. Reconnection & Recovery</a>
+          <a href="#future-scaling" class="toc-link">6. Future Scaling</a>
+          <a href="#references" class="toc-link">7. References</a>
+        </div>
+      </aside>
+    </div>
+
+    <footer class="footer">
+      <p>© <span id="year"></span> Brijesh Yadav</p>
+    </footer>
+
+    <script>
+      document.getElementById('year').textContent = new Date().getFullYear();
+
+      const themeBtn = document.getElementById('theme-toggle');
+      const sunIcon = themeBtn.querySelector('.sun-icon');
+      const moonIcon = themeBtn.querySelector('.moon-icon');
+
+      function updateIcons(theme) {
+          if (theme === 'light') {
+              sunIcon.style.display = 'none';
+              moonIcon.style.display = 'block';
+          } else {
+              sunIcon.style.display = 'block';
+              moonIcon.style.display = 'none';
+          }
+      }
+
+      const currentTheme = document.documentElement.getAttribute('data-theme');
+      updateIcons(currentTheme);
+
+      themeBtn.addEventListener('click', () => {
+          const current = document.documentElement.getAttribute('data-theme');
+          const next = current === 'light' ? 'dark' : 'light';
+          document.documentElement.setAttribute('data-theme', next);
+          localStorage.setItem('theme', next);
+          updateIcons(next);
+      });
+    </script>
+  </body>
+</html>

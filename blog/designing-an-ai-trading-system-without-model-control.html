@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Designing an AI Trading System Without Letting the Model Control Everything | Brijesh Yadav</title>
+    <link rel="stylesheet" href="blog.css" />
+    <meta
+      name="description"
+      content="An architectural deep dive into gating machine learning signal outputs behind deterministic risk filters, safety boundaries, paper-trading verification, and emergency kill switches."
+    />
+    
+    <!-- Structured Data for SEO -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "BlogPosting",
+      "headline": "Designing an AI Trading System Without Letting the Model Control Everything",
+      "description": "An architectural deep dive into gating machine learning signal outputs behind deterministic risk filters and safety boundaries.",
+      "author": {
+        "@type": "Person",
+        "name": "Brijesh Yadav",
+        "url": "https://recscse.github.io"
+      },
+      "datePublished": "2026-02-24",
+      "image": "https://recscse.github.io/assets/banner.svg"
+    }
+    </script>
+
+    <script>
+        const savedTheme = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+        document.documentElement.setAttribute('data-theme', savedTheme);
+    </script>
+  </head>
+  <body>
+    <!-- Navbar -->
+    <nav class="nav-bar">
+      <div class="nav-left">
+        <a href="../index.html" class="nav-brand">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+            </svg>
+            Brijesh Yadav
+        </a>
+      </div>
+      <div style="display: flex; gap: 12px; align-items: center;">
+          <a href="index.html" class="nav-link">← All Posts</a>
+          <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme">
+            <svg class="sun-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display: none;">
+                <circle cx="12" cy="12" r="5"></circle>
+                <line x1="12" y1="1" x2="12" y2="3"></line>
+                <line x1="12" y1="21" x2="12" y2="23"></line>
+                <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                <line x1="1" y1="12" x2="3" y2="12"></line>
+                <line x1="21" y1="12" x2="23" y2="12"></line>
+                <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+            </svg>
+            <svg class="moon-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+            </svg>
+          </button>
+      </div>
+    </nav>
+
+    <div class="layout">
+      <!-- Main Article -->
+      <article class="prose">
+        <header class="post-header">
+          <div class="post-meta">
+            <span>February 24, 2026</span>
+            <span>·</span>
+            <span>14 min read</span>
+          </div>
+          <h1 class="post-title">Designing an AI Trading System Without Letting the Model Control Everything</h1>
+          <div class="tags-container">
+            <span class="tag">AI Systems Architecture</span>
+            <span class="tag">Risk Engine</span>
+            <span class="tag">Trading Safety</span>
+            <span class="tag">FastAPI</span>
+            <span class="tag">Deterministic Boundaries</span>
+          </div>
+        </header>
+
+        <!-- DISCLAIMER BOX -->
+        <div style="background: rgba(245, 158, 11, 0.08); border-left: 4px solid #f59e0b; padding: 14px 18px; margin-bottom: 24px; border-radius: 4px; font-size: 0.88rem; color: var(--text-muted);">
+          <strong>Disclaimer:</strong> This article discusses software architecture and experimental research. It does NOT constitute financial advice, trading signals, or investment recommendations.
+        </div>
+
+        <!-- INTRO -->
+        <p class="lead">
+          When integrating artificial intelligence into trading software, a dangerous temptation is to connect model inference outputs directly to order execution endpoints. Promoters of "AI-driven trading" often imagine an end-to-end model that reads ticks, predicts price direction, and submits live broker orders autonomously.
+        </p>
+        <p>
+          In production software engineering, this design is unacceptably fragile. Machine learning models are probabilistic function approximators. They suffer from distribution drift, hallucinated signals during market volatility, and zero awareness of account risk limits or active trading sessions.
+        </p>
+        <p>
+          The correct architectural pattern treats machine learning outputs as <strong>untrusted candidate proposals</strong> that must pass through deterministic risk filters and safety barriers before any order is submitted.
+        </p>
+
+        <!-- SECTION 1 -->
+        <h2 id="safety-architecture">1. Deterministic Safety Architecture</h2>
+        <p>
+          The AITOS framework establishes a clear separation between statistical prediction and execution authority:
+        </p>
+
+        <!-- DIAGRAM -->
+        <div class="diagram-box">
+          <div class="diagram-header">
+            <div class="window-controls">
+              <div class="control red"></div>
+              <div class="control yellow"></div>
+              <div class="control green"></div>
+            </div>
+            <div class="diagram-title">AI Signal Gating & Execution Safety Pipeline</div>
+          </div>
+          <pre class="diagram-content">
+ ┌──────────────────────┐
+ │ Market Data Feed V3  │ (WebSockets / Historical REST)
+ └──────────────────────┘
+            │
+            ▼
+ ┌──────────────────────┐
+ │ Data Validation      │ ──▶ Filter Outliers, Missing Ticks, Stale Data
+ └──────────────────────┘
+            │
+            ▼
+ ┌──────────────────────┐
+ │ Feature Pipeline     │ ──▶ Extract Technical Indicators & Sequence Embeddings
+ └──────────────────────┘
+            │
+            ▼
+ ┌──────────────────────┐
+ │ AI Model Inference   │ ──▶ Generates Candidate Proposal (e.g. Score: 0.82)
+ └──────────────────────┘
+            │
+            ▼
+ ┌────────────────────────────────────────────────────────┐
+ │            DETERMINISTIC SAFETY BOUNDARY               │
+ └────────────────────────────────────────────────────────┘
+            │
+            ▼
+ ┌──────────────────────┐
+ │ Risk Engine Filters  │ ──▶ Max Capital Cap, Daily Loss Limit, Session Check
+ └──────────────────────┘
+            │
+            ▼
+ ┌──────────────────────┐
+ │ Single-Exit & Switch │ ──▶ Emergency Kill-Switch Check & Audit Lock
+ └──────────────────────┘
+            │
+            ▼
+ ┌──────────────────────┐
+ │ Execution Engine     │ ──▶ Paper Trading Simulation / Broker API Gateway
+ └──────────────────────┘
+          </pre>
+        </div>
+
+        <!-- SECTION 2 -->
+        <h2 id="failure-modes">2. Common AI Failure Modes in Financial Systems</h2>
+        <p>
+          To design effective safety boundaries, we must explicitly account for AI failure modes:
+        </p>
+        <ul>
+          <li><strong>Out-of-Distribution Data:</strong> During sudden news shocks or earnings announcements, historical pattern correlations break down, causing models to generate high-confidence invalid signals.</li>
+          <li><strong>Stale Data Feed Replay:</strong> If a WebSocket drops packets and re-submits old price ticks, the model may perceive a fake momentum breakout.</li>
+          <li><strong>Off-Market Hours Generation:</strong> Models lacking explicit clock constraints will happily generate "BUY" signals at 2:00 AM on Sunday.</li>
+        </ul>
+
+        <!-- SECTION 3 -->
+        <h2 id="risk-guard-implementation">3. Implementing the Risk Engine Barrier</h2>
+        <p>
+          The risk engine evaluates every model recommendation against hard rules. If any check fails, the trade proposal is dropped and logged with a rejection code:
+        </p>
+
+        <pre><code class="language-python">class SystemKillSwitchException(Exception):
+    pass
+
+class SafetyRiskEngine:
+    def __init__(self, daily_pnl_limit: float, max_order_val: float):
+        self.daily_pnl_limit = daily_pnl_limit
+        self.max_order_val = max_order_val
+        self.kill_switch_active = False
+
+    def validate_proposal(self, proposal: TradeProposal, current_pnl: float) -> bool:
+        # Rule 1: Emergency Kill Switch
+        if self.kill_switch_active:
+            raise SystemKillSwitchException("Trading halted: Emergency Kill Switch is ACTIVE")
+
+        # Rule 2: Daily Max Drawdown Guard
+        if current_pnl <= -self.daily_pnl_limit:
+            logger.error(f"Proposal rejected: Daily PnL {current_pnl} breached limit {-self.daily_pnl_limit}")
+            return False
+
+        # Rule 3: Session Time Check (Indian Market Hours 9:15 - 15:30 IST)
+        now_ist = datetime.now(pytz.timezone("Asia/Kolkata")).time()
+        if not (time(9, 15) <= now_ist <= time(15, 25)):
+            logger.warning(f"Proposal rejected: Inactive market hours ({now_ist})")
+            return False
+
+        # Rule 4: Capital Limit Guard
+        if proposal.estimated_cost > self.max_order_val:
+            logger.warning("Proposal rejected: Order value exceeds capital threshold")
+            return False
+
+        return True
+        </code></pre>
+
+        <!-- SECTION 4 -->
+        <h2 id="paper-trading-verification">4. Paper Trading Verification & Auditability</h2>
+        <p>
+          Before any model recommendation is enabled for live broker execution, it runs in a <strong>Paper Trading Sandbox</strong> for an evaluation period. The paper sandbox applies:
+        </p>
+        <ul>
+          <li><strong>Slippage Simulation:</strong> Adds 0.05% adverse price movement to entry/exit execution prices.</li>
+          <li><strong>Brokerage & STT Deduction:</strong> Subtracts real brokerage charges and Securities Transaction Tax (STT) from PnL calculations.</li>
+          <li><strong>Versioned Audit Logs:</strong> Records model version, feature state snapshot, risk decision, execution fill price, and realized PnL in PostgreSQL tables.</li>
+        </ul>
+
+        <!-- REFERENCES -->
+        <h2 id="references">5. References & Software Reading</h2>
+        <ul>
+          <li><a href="https://upstox.com/developer/api-documentation/" target="_blank" rel="noopener noreferrer">Upstox Developer V3 API Guidelines</a></li>
+          <li><a href="https://pytz.sourceforge.net/" target="_blank" rel="noopener noreferrer">Python Timezone Handling with pytz</a></li>
+          <li><a href="https://www.postgresql.org/docs/current/explicit-locking.html" target="_blank" rel="noopener noreferrer">PostgreSQL Explicit Locking & Concurrency Control</a></li>
+        </ul>
+
+        <h2 id="conclusion">Conclusion</h2>
+        <p>
+          AI models are valuable tools for signal extraction and candidate scoring, but they must never exercise unrestricted execution authority. Gating model proposals behind deterministic risk filters, session checks, and paper-trading verifiers ensures system resilience and financial safety.
+        </p>
+      </article>
+
+      <!-- Sidebar Table of Contents -->
+      <aside class="toc">
+        <div class="toc-header">On this page</div>
+        <div class="toc-links">
+          <a href="#safety-architecture" class="toc-link">1. Safety Architecture</a>
+          <a href="#failure-modes" class="toc-link">2. AI Failure Modes</a>
+          <a href="#risk-guard-implementation" class="toc-link">3. Risk Engine Implementation</a>
+          <a href="#paper-trading-verification" class="toc-link">4. Paper Verification</a>
+          <a href="#references" class="toc-link">5. References</a>
+        </div>
+      </aside>
+    </div>
+
+    <footer class="footer">
+      <p>© <span id="year"></span> Brijesh Yadav</p>
+    </footer>
+
+    <script>
+      document.getElementById('year').textContent = new Date().getFullYear();
+
+      const themeBtn = document.getElementById('theme-toggle');
+      const sunIcon = themeBtn.querySelector('.sun-icon');
+      const moonIcon = themeBtn.querySelector('.moon-icon');
+
+      function updateIcons(theme) {
+          if (theme === 'light') {
+              sunIcon.style.display = 'none';
+              moonIcon.style.display = 'block';
+          } else {
+              sunIcon.style.display = 'block';
+              moonIcon.style.display = 'none';
+          }
+      }
+
+      const currentTheme = document.documentElement.getAttribute('data-theme');
+      updateIcons(currentTheme);
+
+      themeBtn.addEventListener('click', () => {
+          const current = document.documentElement.getAttribute('data-theme');
+          const next = current === 'light' ? 'dark' : 'light';
+          document.documentElement.setAttribute('data-theme', next);
+          localStorage.setItem('theme', next);
+          updateIcons(next);
+      });
+    </script>
+  </body>
+</html>

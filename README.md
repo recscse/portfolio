@@ -10,48 +10,47 @@
 
 ## 🚀 About Me
 
-Hi, I’m **Brijesh Yadav**. I'm a **Backend Engineer** with 3+ years of experience building reliable, scalable microservices. I specialize in turning complex requirements into clean APIs and production-grade systems using **Java, Spring Boot, and AWS**.
+Hi, I’m **Brijesh Yadav**. I'm a **Backend Software Engineer** with **4+ years of experience** building scalable microservices, distributed systems, and real-time applications. I specialize in turning complex enterprise requirements into robust APIs, event-driven pipelines, and cloud-native backend systems using **Java, Spring Boot, Python, FastAPI, PostgreSQL, Redis, and WebSockets**.
 
-Currently, I'm building **Growth Quantix**, a high-frequency trading and analytics platform.
-
+- **💼 Current Role:** Software Engineer @ ArisGlobal (Oct 2021 – Present)
 - **📍 Location:** Mysore, India
 - **📧 Email:** brijeshyadav30599@gmail.com
-- **🔭 Focus:** Distributed Systems, Event-Driven Architecture, Low-Latency Data
+- **🔭 Technical Focus:** Distributed Systems, Microservices, Event-Driven Architecture, Real-Time Data Pipelines
 
 ---
 
-## 🛠️ Tech Stack
+## 🛠️ Technical Stack
 
-**Backend & Systems**
+**Backend & Core Systems**
 ![Java](https://img.shields.io/badge/Java-ED8B00?style=for-the-badge&logo=openjdk&logoColor=white)
 ![Spring Boot](https://img.shields.io/badge/Spring_Boot-6DB33F?style=for-the-badge&logo=spring-boot&logoColor=white)
 ![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white)
-![Node.js](https://img.shields.io/badge/Node.js-43853D?style=for-the-badge&logo=node.js&logoColor=white)
-![Kafka](https://img.shields.io/badge/Apache_Kafka-231F20?style=for-the-badge&logo=apache-kafka&logoColor=white)
-![Redis](https://img.shields.io/badge/redis-%23DD0031.svg?style=for-the-badge&logo=redis&logoColor=white)
+![FastAPI](https://img.shields.io/badge/FastAPI-009688?style=for-the-badge&logo=fastapi&logoColor=white)
+![Apache Kafka](https://img.shields.io/badge/Apache_Kafka-231F20?style=for-the-badge&logo=apache-kafka&logoColor=white)
+![Redis](https://img.shields.io/badge/Redis-%23DD0031.svg?style=for-the-badge&logo=redis&logoColor=white)
 
-**Frontend & Web**
+**Databases & Storage**
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-%23316192.svg?style=for-the-badge&logo=postgresql&logoColor=white)
+![MySQL](https://img.shields.io/badge/MySQL-%2300f.svg?style=for-the-badge&logo=mysql&logoColor=white)
+
+**Cloud & DevOps**
+![AWS](https://img.shields.io/badge/AWS-%23FF9900.svg?style=for-the-badge&logo=amazon-aws&logoColor=white)
+![Docker](https://img.shields.io/badge/Docker-%230db7ed.svg?style=for-the-badge&logo=docker&logoColor=white)
+![Git](https://img.shields.io/badge/Git-F05032?style=for-the-badge&logo=git&logoColor=white)
+
+**Frontend (Secondary)**
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
 ![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
-![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
-
-**Infrastructure & Databases**
-![AWS](https://img.shields.io/badge/AWS-%23FF9900.svg?style=for-the-badge&logo=amazon-aws&logoColor=white)
-![Docker](https://img.shields.io/badge/docker-%230db7ed.svg?style=for-the-badge&logo=docker&logoColor=white)
-![PostgreSQL](https://img.shields.io/badge/postgres-%23316192.svg?style=for-the-badge&logo=postgresql&logoColor=white)
-![MySQL](https://img.shields.io/badge/mysql-%2300f.svg?style=for-the-badge&logo=mysql&logoColor=white)
 
 ---
 
-## 🎨 Portfolio Features
+## 🎨 Portfolio Architecture
 
-This portfolio is built as a static site with a focus on modern design and developer experience.
-
-*   **✨ Glassmorphism Design:** A premium dark/light aesthetic with frosted glass effects and cinematic lighting.
-*   **🌗 Dark/Light Mode:** System-aware theme toggling with local storage persistence.
-*   **📱 Fully Responsive:** Optimized for desktop, tablet, and mobile.
-*   **📝 Engineering Blog:** A dedicated section for technical deep dives with syntax highlighting and ASCII diagrams.
-*   **📂 Detailed Projects:** A filterable showcase of my work with technical highlights and status indicators.
+* **✨ Glassmorphism Interface:** Modern dark/light UI with CSS variables and responsive glassmorphism aesthetic.
+* **🌗 System Theme Persistence:** System-aware theme switcher stored in `localStorage`.
+* **📱 Mobile-First Layout:** Responsive across mobile, tablet, and desktop breakpoints.
+* **📝 Deep-Dive Engineering Case Studies:** Technical blog section featuring architecture diagrams, system design breakdowns, and code snippets.
+* **📂 Filterable Project Showcase:** Categorized project gallery highlighting core technical accomplishments, status badges, PyPI metadata, and verified links.
 
 ---
 
@@ -60,60 +59,61 @@ This portfolio is built as a static site with a focus on modern design and devel
 ```bash
 portfolio/
 ├── index.html          # Main Landing Page
-├── projects.html       # Detailed Project Showcase (Filterable)
-├── skills.html         # Full Technical Skills List
-├── mystyle.css         # Main Global Styles (Variables, Theming)
-├── assets/             # Images and Icons
-└── blog/               # Engineering Blog Section
-    ├── index.html      # Blog Home (Grid Layout)
-    ├── blog.css        # Blog-Specific Styles (Typography, Diagrams)
-    ├── _template.html  # Master Template for new posts
-    └── ...             # Individual blog post HTML files
+├── projects.html       # Filterable Project Showcase
+├── skills.html         # Full Technical Stack & Capabilities
+├── mystyle.css         # Main Global Styles (Variables, Glassmorphism)
+├── assets/             # Resume PDF & SVGs
+└── blog/               # Engineering Case Studies & Notes
+    ├── index.html      # Blog Index Page
+    ├── blog.css        # Blog Typography & Terminal Box Styles
+    └── ...             # Individual Case Study HTML Pages
 ```
 
 ---
 
-## 🧪 Featured Projects
+## 🧪 Featured Systems & Open-Source Projects
 
-### [Upstox Auth Pro](https://github.com/growthquantix/upstox-auth-pro)
-**Stack:** Python, Playwright, pyotp, OAuth2, PyPI
-*   Published Python SDK for automating Upstox OAuth2 login, TOTP 2FA, and token storage.
-*   Available on PyPI: `pip install upstox-auth-pro`.
-*   PyPI downloads: **2.65k total** and **436 in the last 30 days**.
-*   [PyPI Package](https://pypi.org/project/upstox-auth-pro/) · [Documentation](https://growthquantix.github.io/upstox-auth-pro/)
+### 1. [Upstox Auth Pro (Python SDK)](https://github.com/growthquantix/upstox-auth-pro)
+**Stack:** Python, Playwright, pyotp, OAuth2, PyPI, GitHub Actions
+* Published open-source Python SDK automating Upstox OAuth2 login, Playwright 2FA automation, and TOTP key calculation.
+* Available on PyPI: `pip install upstox-auth-pro`.
+* Features pluggable token storage, IST-aware expiration checks, and diagnostic screenshot capturing.
+* [PyPI Package](https://pypi.org/project/upstox-auth-pro/) · [GitHub Repo](https://github.com/growthquantix/upstox-auth-pro) · [Documentation](https://growthquantix.github.io/upstox-auth-pro/)
 
-### [Growth Quantix (WIP)](blog/scalable-market-data-architecture.html)
-**Stack:** Python FastAPI, Redis Pub/Sub, WebSockets, React
-*   Real-time trading platform handling 10k+ ticks/sec.
-*   Decoupled signal engine using event-driven architecture.
-*   [Read Case Study](blog/scalable-market-data-architecture.html)
+### 2. [Growth Quantix](blog/designing-real-time-market-data-pipeline-algorithmic-trading.html)
+**Stack:** Python, FastAPI, PostgreSQL, Redis Pub/Sub, WebSockets, React
+* Algorithmic trading and real-time market data infrastructure supporting multi-broker integrations (Upstox V3 APIs, Dhan, Fyers).
+* Engineered a decoupled Redis Pub/Sub data bus for tick distribution, risk isolation barriers, and paper-trading parity.
+* [Read System Architecture Case Study](blog/designing-real-time-market-data-pipeline-algorithmic-trading.html)
 
-### [Document Sharing System](https://github.com/recscse/project-repo)
-**Stack:** Java, Spring Boot, PostgreSQL, AWS S3
-*   Secure QR-based physical-to-digital document handoff.
-*   Audit logs and RBAC for enterprise security.
+### 3. [Upstox Auth Pro Java](https://github.com/growthquantix/upstox-auth-pro-java)
+**Stack:** Java, Maven, OAuth2, REST APIs
+* Open-source Java SDK automating Upstox OAuth2 authentication and token management for trading applications.
+* Features strongly-typed OAuth2 models and Spring Boot integration interfaces.
+* [GitHub Repository](https://github.com/growthquantix/upstox-auth-pro-java)
 
-### [PDF Extraction Service](https://github.com/recscse/project-repo)
-**Stack:** Python, TensorFlow, Java
-*   AI-powered data extraction from unstructured PDFs.
-*   Custom rule engine and validation pipelines.
-
----
-
-## ✍️ Latest Engineering Notes
-
-I write about system design, scalability, and backend engineering.
-
-*   **[Designing a Scalable Market Data Streaming Architecture](blog/scalable-market-data-architecture.html)** — *Dec 27, 2025*
-*   **[Building a Real-Time Market Data Generator](blog/market-data-generator.html)** — *Oct 17, 2025*
-
-[Read all posts →](blog/index.html)
+### 4. [Prindox](https://github.com/recscse/prindox)
+**Stack:** Python, FastAPI, PostgreSQL, REST APIs
+* Online document processing platform supporting document uploads, print-order workflows, and async background validation.
+* [GitHub Repository](https://github.com/recscse/prindox)
 
 ---
 
-## 📊 GitHub Stats
+## ✍️ Featured Engineering Case Studies
+
+I write in-depth case studies about backend software engineering, real-time data pipelines, and system security.
+
+* **[Building a Production-Ready OAuth2 Automation SDK for Upstox](blog/building-production-ready-oauth2-automation-sdk-upstox.html)** — *Feb 15, 2026*
+* **[Designing a Real-Time Market Data Pipeline for an Algorithmic Trading Platform](blog/designing-real-time-market-data-pipeline-algorithmic-trading.html)** — *Feb 18, 2026*
+* **[Designing a Safe AI-Assisted Trading System: From Stock Selection to Execution](blog/designing-safe-ai-assisted-trading-system.html)** — *Feb 20, 2026*
+
+[Read all engineering notes →](blog/index.html)
+
+---
+
+## 📊 GitHub Dashboard
 
 <p align="center">
-  <img src="https://github-readme-stats.vercel.app/api?username=recscse&show_icons=true&theme=transparent&bg_color=0a0c10&text_color=f1f5f9&title_color=3b82f6&icon_color=8b5cf6" alt="GitHub stats" height="150"/>
-  <img src="https://github-readme-stats.vercel.app/api/top-langs/?username=recscse&layout=compact&theme=transparent&bg_color=0a0c10&text_color=f1f5f9&title_color=3b82f6" alt="Top Languages" height="150"/>
+  <img src="https://github-readme-stats.vercel.app/api?username=recscse&show_icons=true&theme=dark&hide_border=true&bg_color=0d1117" alt="GitHub stats" height="160"/>
+  <img src="https://github-readme-stats.vercel.app/api/top-langs/?username=recscse&layout=compact&theme=dark&hide_border=true&bg_color=0d1117" alt="Top Languages" height="160"/>
 </p>
