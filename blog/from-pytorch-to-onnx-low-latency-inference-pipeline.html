@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="blog.css" />
     <meta
       name="description"
-      content="An engineering case study on exporting PyTorch deep learning models to ONNX format and building high-performance ONNX Runtime inference microservices."
+      content="An engineering case study on exporting PyTorch deep learning models to static ONNX format and building pre-warmed ONNX Runtime inference microservices."
     />
     
     <!-- Structured Data for SEO -->
@@ -25,6 +25,19 @@
       "datePublished": "2026-02-25",
       "image": "https://recscse.github.io/assets/banner.svg"
     }
+    </script>
+
+    <!-- Mermaid.js -->
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+          mermaid.initialize({
+            startOnLoad: true,
+            theme: 'dark',
+            securityLevel: 'loose',
+            fontFamily: 'JetBrains Mono, monospace'
+          });
+        });
     </script>
 
     <script>
@@ -83,72 +96,82 @@
           </div>
         </header>
 
+        <!-- DECISION CALLOUT -->
+        <div class="callout callout-decision">
+          <strong>[DECISION NOTE: TRAINING VS INFERENCE DECOUPLING]</strong><br />
+          To maximize backend responsiveness, model training and model serving are strictly decoupled. Deep learning frameworks (PyTorch) are used offline for training, while optimized engines (ONNX Runtime) execute inference inside production microservices.
+        </div>
+
         <!-- INTRO -->
+        <h2 id="the-problem">1. The Problem with PyTorch in Production</h2>
         <p class="lead">
-          Training deep learning models in PyTorch provides maximum flexibility for research, rapid experimentation, and gradient exploration. However, deploying raw PyTorch models into low-latency production backend services introduces unnecessary overhead: heavy GPU dependency, large Python runtime footprints, and sluggish single-sample inference latency.
+          Training models in PyTorch offers flexibility during experimentation. However, serving raw PyTorch models inside backend microservices introduces heavy dependencies (CUDNN/PyTorch binary footprint), CPU overhead, and single-sample inference latency.
         </p>
         <p>
-          To serve neural models efficiently inside backend microservices, modern ML engineering decouples <strong>model training</strong> from <strong>production inference</strong>.
-        </p>
-        <p>
-          In this case study, I walk through the architecture of converting PyTorch models into <strong>ONNX (Open Neural Network Exchange)</strong> format and serving them using <strong>ONNX Runtime</strong> inside FastAPI microservices.
+          Converting trained PyTorch weights into static <strong>ONNX (Open Neural Network Exchange)</strong> computational graphs allows models to execute via C++-backed <strong>ONNX Runtime</strong> sessions without loading Python ML frameworks.
         </p>
 
-        <!-- SECTION 1 -->
-        <h2 id="pipeline-architecture">1. End-to-End Inference Pipeline</h2>
-        <p>
-          The pipeline establishes a clean build and deployment flow:
-        </p>
+        <!-- DIAGRAM 1: LIFECYCLE FLOW -->
+        <h2 id="pipeline-architecture">2. Model Lifecycle Architecture</h2>
 
-        <!-- DIAGRAM -->
-        <div class="diagram-box">
+        <div class="architecture-diagram">
           <div class="diagram-header">
             <div class="window-controls">
               <div class="control red"></div>
               <div class="control yellow"></div>
               <div class="control green"></div>
             </div>
-            <div class="diagram-title">PyTorch to ONNX Deployment Pipeline</div>
+            <div class="diagram-title">Training vs Inference Pipeline Lifecycle</div>
           </div>
-          <pre class="diagram-content">
- [ PyTorch Training Loop ]
-            │
-            ▼
- [ Model Checkpoint (.pt) ]
-            │
-            ▼
- [ ONNX Export Script ] ──▶ Convert Operations to Static Graph (model.onnx)
-            │
-            ▼
- [ Model Validation Step] ──▶ Verify Output Numeric Parity (PyTorch vs ONNX)
-            │
-            ▼
- [ ONNX Runtime Server  ] ──▶ Pre-Warmed Session Engine (FastAPI Service)
-            │
-            ▼
- [ Backend Consumer App ] ──▶ Low-Latency REST / gRPC API Consumption
-          </pre>
+          <div class="mermaid-wrapper">
+            <pre class="mermaid">
+flowchart TD
+    subgraph TRAINING_PATH["OFFLINE TRAINING PATH"]
+        A[Chronological Data Split] --> B[Feature Dataset Pipeline]
+        B --> C[PyTorch Training Loop]
+        C --> D[Model Checkpoint .pt]
+    end
+
+    subgraph EXPORT_VERIFICATION["EXPORT & VERIFICATION"]
+        D --> E[ONNX Graph Export<br/>torch.onnx.export]
+        E --> F[Numerical Parity Validation<br/>assert_allclose PyTorch vs ONNX]
+        F --> G[Model Artifact Registry .onnx]
+    end
+
+    subgraph INFERENCE_PATH["ONLINE SERVING PATH"]
+        G --> H[FastAPI Startup Hook]
+        H --> I[Pre-Warmed ONNX Session Engine]
+        I --> J[Live Inference Request]
+        J --> K[Low-Latency Output Tensor]
+    end
+            </pre>
+          </div>
         </div>
 
-        <!-- SECTION 2 -->
-        <h2 id="export-validation">2. Exporting PyTorch to ONNX</h2>
         <p>
-          Exporting a PyTorch model requires tracing sample input tensors through the neural computational graph to generate a standardized graph format:
+          <em>Diagram 1: Decoupled workflow separating offline PyTorch model training from online ONNX Runtime serving.</em>
         </p>
 
-        <pre><code class="language-python">import torch
+        <!-- CODE EXAMPLES -->
+        <h2 id="export-validation">3. Exporting & Verifying Numerical Parity</h2>
+        <p>
+          Exporting PyTorch models requires tracing sample inputs through computational graphs and verifying numerical parity within strict thresholds:
+        </p>
+
+        <pre><code class="language-python"># export_pipeline.py
+import torch
 import onnxruntime as ort
 import numpy as np
 
-def export_model_to_onnx(model: torch.nn.Module, input_shape: tuple, export_path: str):
+def export_and_verify(model: torch.nn.Module, sample_shape: tuple, onnx_path: str):
     model.eval()
-    dummy_input = torch.randn(*input_shape)
+    dummy_input = torch.randn(*sample_shape)
     
-    # Export to static ONNX graph
+    # Step 1: Export to static ONNX graph
     torch.onnx.export(
         model,
         dummy_input,
-        export_path,
+        onnx_path,
         export_params=True,
         opset_version=14,
         do_constant_folding=True,
@@ -156,77 +179,72 @@ def export_model_to_onnx(model: torch.nn.Module, input_shape: tuple, export_path
         output_names=["output"],
         dynamic_axes={"input": {0: "batch_size"}, "output": {0: "batch_size"}}
     )
-    print(f"Model exported successfully to {export_path}")
-        </code></pre>
-
-        <!-- SECTION 3 -->
-        <h2 id="parity-verification">3. Verifying Numerical Parity</h2>
-        <p>
-          Before deploying an exported ONNX model, we verify that ONNX Runtime inference outputs match PyTorch outputs within a strict numerical tolerance (`np.testing.assert_allclose`):
-        </p>
-
-        <pre><code class="language-python">def verify_parity(torch_model, onnx_path, input_data: np.ndarray):
-    # PyTorch Inference
-    torch_model.eval()
+    
+    # Step 2: Numerical Parity Verification
     with torch.no_grad():
-        torch_out = torch_model(torch.from_numpy(input_data)).numpy()
+        torch_out = model(dummy_input).numpy()
         
-    # ONNX Runtime Inference
     ort_session = ort.InferenceSession(onnx_path, providers=["CPUExecutionProvider"])
-    ort_inputs = {ort_session.get_inputs()[0].name: input_data}
-    ort_out = ort_session.run(None, ort_inputs)[0]
+    ort_out = ort_session.run(None, {"input": dummy_input.numpy()})[0]
     
-    # Check numeric parity
     np.testing.assert_allclose(torch_out, ort_out, rtol=1e-03, atol=1e-05)
-    print("Numerical parity check passed!")
+    print("Export successful: Numerical parity verified!")
         </code></pre>
 
-        <!-- SECTION 4 -->
-        <h2 id="inference-service">4. Pre-Warmed ONNX Runtime Service</h2>
-        <p>
-          In a backend FastAPI microservice, ONNX sessions are loaded during application startup. Running a "warmup" inference query initializes internal memory pools and execution graphs before live traffic arrives:
-        </p>
+        <!-- DESIGN TRADEOFFS TABLE -->
+        <h2 id="engineering-decisions">4. Engineering Decisions & Tradeoffs</h2>
 
-        <pre><code class="language-python">from fastapi import FastAPI
-import onnxruntime as ort
-import numpy as np
+        <div style="overflow-x: auto; margin: 24px 0;">
+          <table style="width: 100%; border-collapse: collapse; font-size: 0.88rem;">
+            <thead>
+              <tr style="background: rgba(255,255,255,0.04); border-bottom: 2px solid var(--glass-border); text-align: left;">
+                <th style="padding: 10px;">Decision</th>
+                <th style="padding: 10px;">Rationale</th>
+                <th style="padding: 10px;">Tradeoff</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr style="border-bottom: 1px solid var(--glass-border);">
+                <td style="padding: 10px;"><strong>ONNX Graph Export</strong></td>
+                <td style="padding: 10px;">Eliminates PyTorch framework dependency in production server builds.</td>
+                <td style="padding: 10px;">Requires explicit dynamic axis definitions for variable batch inputs.</td>
+              </tr>
+              <tr style="border-bottom: 1px solid var(--glass-border);">
+                <td style="padding: 10px;"><strong>Session Pre-Warming</strong></td>
+                <td style="padding: 10px;">Initializes CPU memory allocations during FastAPI startup.</td>
+                <td style="padding: 10px;">Adds 100-200ms startup delay to microservice initialization.</td>
+              </tr>
+              <tr style="border-bottom: 1px solid var(--glass-border);">
+                <td style="padding: 10px;"><strong>Numerical Parity Assertion</strong></td>
+                <td style="padding: 10px;">Ensures exported model outputs match PyTorch outputs within 1e-05 tolerance.</td>
+                <td style="padding: 10px;">Requires sample verification step in CI release build.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
 
-app = FastAPI()
-session = None
-
-@app.on_event("startup")
-async def load_onnx_model():
-    global session
-    session = ort.InferenceSession("model.onnx", providers=["CPUExecutionProvider"])
-    
-    # Session Warmup
-    dummy = np.zeros((1, 30, 10), dtype=np.float32)
-    session.run(None, {session.get_inputs()[0].name: dummy})
-    print("ONNX Session loaded and warmed up.")
-        </code></pre>
-
-        <!-- REFERENCES -->
-        <h2 id="references">5. References & Engineering Reading</h2>
+        <h2 id="related-articles">Related Engineering Articles</h2>
         <ul>
-          <li><a href="https://onnxruntime.ai/docs/" target="_blank" rel="noopener noreferrer">ONNX Runtime Official Documentation</a></li>
-          <li><a href="https://pytorch.org/docs/stable/onnx.html" target="_blank" rel="noopener noreferrer">PyTorch ONNX Export Documentation</a></li>
-          <li><a href="https://onnx.ai/" target="_blank" rel="noopener noreferrer">Open Neural Network Exchange (ONNX) Standards</a></li>
+          <li><a href="designing-an-ai-trading-system-without-model-control.html">Designing an AI Trading System Without Letting the Model Control Everything</a></li>
+          <li><a href="why-an-ai-system-is-more-than-a-model.html">Why an AI System Is More Than a Model</a></li>
         </ul>
 
-        <h2 id="conclusion">Conclusion</h2>
-        <p>
-          Exporting PyTorch models to ONNX and serving them via ONNX Runtime yields significant inference speedups, eliminates bulky deep learning framework dependencies in production, and provides a clean separation between ML research and backend microservice engineering.
-        </p>
+        <!-- REFERENCES -->
+        <h2 id="references">5. References</h2>
+        <ul>
+          <li><a href="https://onnxruntime.ai/docs/" target="_blank" rel="noopener noreferrer">ONNX Runtime Documentation</a></li>
+          <li><a href="https://pytorch.org/docs/stable/onnx.html" target="_blank" rel="noopener noreferrer">PyTorch ONNX Export Manual</a></li>
+        </ul>
       </article>
 
       <!-- Sidebar Table of Contents -->
       <aside class="toc">
         <div class="toc-header">On this page</div>
         <div class="toc-links">
-          <a href="#pipeline-architecture" class="toc-link">1. Pipeline Architecture</a>
-          <a href="#export-validation" class="toc-link">2. ONNX Exporting</a>
-          <a href="#parity-verification" class="toc-link">3. Numerical Parity</a>
-          <a href="#inference-service" class="toc-link">4. Pre-Warmed Service</a>
+          <a href="#the-problem" class="toc-link">1. The Problem</a>
+          <a href="#pipeline-architecture" class="toc-link">2. Pipeline Architecture</a>
+          <a href="#export-validation" class="toc-link">3. Export & Verification</a>
+          <a href="#engineering-decisions" class="toc-link">4. Design Tradeoffs</a>
           <a href="#references" class="toc-link">5. References</a>
         </div>
       </aside>

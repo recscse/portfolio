@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="blog.css" />
     <meta
       name="description"
-      content="An architectural deep dive into gating machine learning signal outputs behind deterministic risk filters, safety boundaries, paper-trading verification, and emergency kill switches."
+      content="An architectural case study gating machine learning signal outputs behind deterministic risk filters, safety boundaries, paper-trading verification, and emergency kill switches."
     />
     
     <!-- Structured Data for SEO -->
@@ -16,7 +16,7 @@
       "@context": "https://schema.org",
       "@type": "BlogPosting",
       "headline": "Designing an AI Trading System Without Letting the Model Control Everything",
-      "description": "An architectural deep dive into gating machine learning signal outputs behind deterministic risk filters and safety boundaries.",
+      "description": "An architectural case study gating machine learning signal outputs behind deterministic risk filters and safety boundaries.",
       "author": {
         "@type": "Person",
         "name": "Brijesh Yadav",
@@ -25,6 +25,19 @@
       "datePublished": "2026-02-24",
       "image": "https://recscse.github.io/assets/banner.svg"
     }
+    </script>
+
+    <!-- Mermaid.js -->
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+          mermaid.initialize({
+            startOnLoad: true,
+            theme: 'dark',
+            securityLevel: 'loose',
+            fontFamily: 'JetBrains Mono, monospace'
+          });
+        });
     </script>
 
     <script>
@@ -50,7 +63,6 @@
                 <circle cx="12" cy="12" r="5"></circle>
                 <line x1="12" y1="1" x2="12" y2="3"></line>
                 <line x1="12" y1="21" x2="12" y2="23"></line>
-                <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
                 <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
                 <line x1="1" y1="12" x2="3" y2="12"></line>
                 <line x1="21" y1="12" x2="23" y2="12"></line>
@@ -83,98 +95,76 @@
           </div>
         </header>
 
-        <!-- DISCLAIMER BOX -->
-        <div style="background: rgba(245, 158, 11, 0.08); border-left: 4px solid #f59e0b; padding: 14px 18px; margin-bottom: 24px; border-radius: 4px; font-size: 0.88rem; color: var(--text-muted);">
-          <strong>Disclaimer:</strong> This article discusses software architecture and experimental research. It does NOT constitute financial advice, trading signals, or investment recommendations.
+        <!-- DISCLAIMER CALLOUT -->
+        <div class="callout callout-limitation">
+          <strong>[DISCLAIMER & RESEARCH NOTE]</strong><br />
+          This article discusses software architecture and system safety patterns. It does NOT constitute financial advice, trading signals, or investment recommendations.
         </div>
 
         <!-- INTRO -->
+        <h2 id="the-problem">1. The Problem with Direct Model Execution</h2>
         <p class="lead">
-          When integrating artificial intelligence into trading software, a dangerous temptation is to connect model inference outputs directly to order execution endpoints. Promoters of "AI-driven trading" often imagine an end-to-end model that reads ticks, predicts price direction, and submits live broker orders autonomously.
+          When integrating machine learning into automated systems, a dangerous anti-pattern is connecting model inference outputs directly to execution endpoints. Promoters of "AI-driven trading" often imagine an end-to-end model that reads ticks, predicts price direction, and submits live broker orders autonomously.
         </p>
         <p>
-          In production software engineering, this design is unacceptably fragile. Machine learning models are probabilistic function approximators. They suffer from distribution drift, hallucinated signals during market volatility, and zero awareness of account risk limits or active trading sessions.
-        </p>
-        <p>
-          The correct architectural pattern treats machine learning outputs as <strong>untrusted candidate proposals</strong> that must pass through deterministic risk filters and safety barriers before any order is submitted.
+          In production software engineering, this design is unacceptably fragile. Machine learning models are probabilistic function approximators. They suffer from distribution drift, high-confidence invalid predictions during market shocks, and zero internal awareness of account drawdown limits or market session boundaries.
         </p>
 
-        <!-- SECTION 1 -->
-        <h2 id="safety-architecture">1. Deterministic Safety Architecture</h2>
+        <!-- ARCHITECTURE DIAGRAM -->
+        <h2 id="safety-architecture">2. Deterministic Safety Architecture</h2>
         <p>
-          The AITOS framework establishes a clear separation between statistical prediction and execution authority:
+          The AITOS architecture establishes a strict boundary separating statistical AI prediction from execution authority:
         </p>
 
-        <!-- DIAGRAM -->
-        <div class="diagram-box">
+        <div class="architecture-diagram">
           <div class="diagram-header">
             <div class="window-controls">
               <div class="control red"></div>
               <div class="control yellow"></div>
               <div class="control green"></div>
             </div>
-            <div class="diagram-title">AI Signal Gating & Execution Safety Pipeline</div>
+            <div class="diagram-title">AI Signal Gating & Deterministic Execution Pipeline</div>
           </div>
-          <pre class="diagram-content">
- ┌──────────────────────┐
- │ Market Data Feed V3  │ (WebSockets / Historical REST)
- └──────────────────────┘
-            │
-            ▼
- ┌──────────────────────┐
- │ Data Validation      │ ──▶ Filter Outliers, Missing Ticks, Stale Data
- └──────────────────────┘
-            │
-            ▼
- ┌──────────────────────┐
- │ Feature Pipeline     │ ──▶ Extract Technical Indicators & Sequence Embeddings
- └──────────────────────┘
-            │
-            ▼
- ┌──────────────────────┐
- │ AI Model Inference   │ ──▶ Generates Candidate Proposal (e.g. Score: 0.82)
- └──────────────────────┘
-            │
-            ▼
- ┌────────────────────────────────────────────────────────┐
- │            DETERMINISTIC SAFETY BOUNDARY               │
- └────────────────────────────────────────────────────────┘
-            │
-            ▼
- ┌──────────────────────┐
- │ Risk Engine Filters  │ ──▶ Max Capital Cap, Daily Loss Limit, Session Check
- └──────────────────────┘
-            │
-            ▼
- ┌──────────────────────┐
- │ Single-Exit & Switch │ ──▶ Emergency Kill-Switch Check & Audit Lock
- └──────────────────────┘
-            │
-            ▼
- ┌──────────────────────┐
- │ Execution Engine     │ ──▶ Paper Trading Simulation / Broker API Gateway
- └──────────────────────┘
-          </pre>
+          <div class="mermaid-wrapper">
+            <pre class="mermaid">
+flowchart TD
+    subgraph PROBABILISTIC_AI["AI Signal Scoring (Probabilistic)"]
+        A[Market Feed V3] --> B[Data Validation Engine<br/>Outliers & Stale Ticks]
+        B --> C[Feature Engineering Pipeline<br/>Technical Indicators]
+        C --> D[PyTorch / ONNX Model<br/>Candidate Signal Scoring]
+    end
+
+    subgraph DETERMINISTIC_SAFETY["DETERMINISTIC SAFETY BOUNDARY"]
+        D -->|Candidate Proposal Score| E[Risk Engine Gate]
+        E -->|Check 1| F{Emergency Kill Switch?}
+        F -->|Active| G[HALT & LOG REJECTION]
+        F -->|Inactive| H{Daily Drawdown Breached?}
+        H -->|Yes| G
+        H -->|No| I{Market Hours 09:15-15:25 IST?}
+        I -->|No| G
+        I -->|Valid| J[Approved Order Payload]
+    end
+
+    subgraph EXECUTION_GATEWAY["Execution Gateway"]
+        J --> K[Paper Trading Sandbox<br/>Simulated 0.05% Slippage]
+        J --> L[Broker API Gateway<br/>Upstox V3 Order API]
+    end
+            </pre>
+          </div>
         </div>
 
-        <!-- SECTION 2 -->
-        <h2 id="failure-modes">2. Common AI Failure Modes in Financial Systems</h2>
         <p>
-          To design effective safety boundaries, we must explicitly account for AI failure modes:
-        </p>
-        <ul>
-          <li><strong>Out-of-Distribution Data:</strong> During sudden news shocks or earnings announcements, historical pattern correlations break down, causing models to generate high-confidence invalid signals.</li>
-          <li><strong>Stale Data Feed Replay:</strong> If a WebSocket drops packets and re-submits old price ticks, the model may perceive a fake momentum breakout.</li>
-          <li><strong>Off-Market Hours Generation:</strong> Models lacking explicit clock constraints will happily generate "BUY" signals at 2:00 AM on Sunday.</li>
-        </ul>
-
-        <!-- SECTION 3 -->
-        <h2 id="risk-guard-implementation">3. Implementing the Risk Engine Barrier</h2>
-        <p>
-          The risk engine evaluates every model recommendation against hard rules. If any check fails, the trade proposal is dropped and logged with a rejection code:
+          <em>Diagram 1: Stage-gated execution pipeline enforcing a hard boundary between AI signal proposal scoring and deterministic risk checks.</em>
         </p>
 
-        <pre><code class="language-python">class SystemKillSwitchException(Exception):
+        <!-- IMPLEMENTATION CODE -->
+        <h2 id="risk-guard-implementation">3. Risk Engine Implementation</h2>
+        <p>
+          The risk engine evaluates every model recommendation against hard rules. If any check fails, the trade proposal is dropped and logged:
+        </p>
+
+        <pre><code class="language-python"># services/trading_execution/safety_risk_engine.py
+class SystemKillSwitchException(Exception):
     pass
 
 class SafetyRiskEngine:
@@ -184,22 +174,18 @@ class SafetyRiskEngine:
         self.kill_switch_active = False
 
     def validate_proposal(self, proposal: TradeProposal, current_pnl: float) -> bool:
-        # Rule 1: Emergency Kill Switch
         if self.kill_switch_active:
             raise SystemKillSwitchException("Trading halted: Emergency Kill Switch is ACTIVE")
 
-        # Rule 2: Daily Max Drawdown Guard
         if current_pnl <= -self.daily_pnl_limit:
             logger.error(f"Proposal rejected: Daily PnL {current_pnl} breached limit {-self.daily_pnl_limit}")
             return False
 
-        # Rule 3: Session Time Check (Indian Market Hours 9:15 - 15:30 IST)
         now_ist = datetime.now(pytz.timezone("Asia/Kolkata")).time()
         if not (time(9, 15) <= now_ist <= time(15, 25)):
             logger.warning(f"Proposal rejected: Inactive market hours ({now_ist})")
             return False
 
-        # Rule 4: Capital Limit Guard
         if proposal.estimated_cost > self.max_order_val:
             logger.warning("Proposal rejected: Order value exceeds capital threshold")
             return False
@@ -207,39 +193,60 @@ class SafetyRiskEngine:
         return True
         </code></pre>
 
-        <!-- SECTION 4 -->
-        <h2 id="paper-trading-verification">4. Paper Trading Verification & Auditability</h2>
-        <p>
-          Before any model recommendation is enabled for live broker execution, it runs in a <strong>Paper Trading Sandbox</strong> for an evaluation period. The paper sandbox applies:
-        </p>
+        <!-- DESIGN TRADEOFFS TABLE -->
+        <h2 id="engineering-decisions">4. Engineering Decisions & Tradeoffs</h2>
+
+        <div style="overflow-x: auto; margin: 24px 0;">
+          <table style="width: 100%; border-collapse: collapse; font-size: 0.88rem;">
+            <thead>
+              <tr style="background: rgba(255,255,255,0.04); border-bottom: 2px solid var(--glass-border); text-align: left;">
+                <th style="padding: 10px;">Decision</th>
+                <th style="padding: 10px;">Rationale</th>
+                <th style="padding: 10px;">Tradeoff</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr style="border-bottom: 1px solid var(--glass-border);">
+                <td style="padding: 10px;"><strong>Deterministic Safety Boundary</strong></td>
+                <td style="padding: 10px;">Prevents probabilistic AI models from executing orders during market volatility shocks.</td>
+                <td style="padding: 10px;">Strict risk filters may drop candidate trades during rapid market breakouts.</td>
+              </tr>
+              <tr style="border-bottom: 1px solid var(--glass-border);">
+                <td style="padding: 10px;"><strong>Paper Trading Parity</strong></td>
+                <td style="padding: 10px;">Evaluates signals under simulated 0.05% slippage and brokerage charges before live routing.</td>
+                <td style="padding: 10px;">Requires real-time position state tracking synchronization in memory and DB.</td>
+              </tr>
+              <tr style="border-bottom: 1px solid var(--glass-border);">
+                <td style="padding: 10px;"><strong>Single Exit Authority</strong></td>
+                <td style="padding: 10px;">Centralized exit execution handler preventing concurrent duplicate order placement.</td>
+                <td style="padding: 10px;">Creates a single thread lock bottleneck requiring careful mutex scope management.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h2 id="related-articles">Related Engineering Articles</h2>
         <ul>
-          <li><strong>Slippage Simulation:</strong> Adds 0.05% adverse price movement to entry/exit execution prices.</li>
-          <li><strong>Brokerage & STT Deduction:</strong> Subtracts real brokerage charges and Securities Transaction Tax (STT) from PnL calculations.</li>
-          <li><strong>Versioned Audit Logs:</strong> Records model version, feature state snapshot, risk decision, execution fill price, and realized PnL in PostgreSQL tables.</li>
+          <li><a href="from-pytorch-to-onnx-low-latency-inference-pipeline.html">From PyTorch to ONNX: Designing a Low-Latency Model Inference Pipeline</a></li>
+          <li><a href="designing-real-time-market-data-pipeline-algorithmic-trading.html">Designing a Real-Time Market Data Pipeline for Algorithmic Trading</a></li>
         </ul>
 
         <!-- REFERENCES -->
-        <h2 id="references">5. References & Software Reading</h2>
+        <h2 id="references">5. References</h2>
         <ul>
-          <li><a href="https://upstox.com/developer/api-documentation/" target="_blank" rel="noopener noreferrer">Upstox Developer V3 API Guidelines</a></li>
+          <li><a href="https://upstox.com/developer/api-documentation/" target="_blank" rel="noopener noreferrer">Upstox Developer V3 API Specification</a></li>
           <li><a href="https://pytz.sourceforge.net/" target="_blank" rel="noopener noreferrer">Python Timezone Handling with pytz</a></li>
-          <li><a href="https://www.postgresql.org/docs/current/explicit-locking.html" target="_blank" rel="noopener noreferrer">PostgreSQL Explicit Locking & Concurrency Control</a></li>
         </ul>
-
-        <h2 id="conclusion">Conclusion</h2>
-        <p>
-          AI models are valuable tools for signal extraction and candidate scoring, but they must never exercise unrestricted execution authority. Gating model proposals behind deterministic risk filters, session checks, and paper-trading verifiers ensures system resilience and financial safety.
-        </p>
       </article>
 
       <!-- Sidebar Table of Contents -->
       <aside class="toc">
         <div class="toc-header">On this page</div>
         <div class="toc-links">
-          <a href="#safety-architecture" class="toc-link">1. Safety Architecture</a>
-          <a href="#failure-modes" class="toc-link">2. AI Failure Modes</a>
-          <a href="#risk-guard-implementation" class="toc-link">3. Risk Engine Implementation</a>
-          <a href="#paper-trading-verification" class="toc-link">4. Paper Verification</a>
+          <a href="#the-problem" class="toc-link">1. The Problem</a>
+          <a href="#safety-architecture" class="toc-link">2. Safety Architecture</a>
+          <a href="#risk-guard-implementation" class="toc-link">3. Risk Engine</a>
+          <a href="#engineering-decisions" class="toc-link">4. Design Tradeoffs</a>
           <a href="#references" class="toc-link">5. References</a>
         </div>
       </aside>

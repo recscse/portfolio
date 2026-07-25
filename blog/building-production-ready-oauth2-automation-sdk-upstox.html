@@ -16,7 +16,7 @@
       "@context": "https://schema.org",
       "@type": "BlogPosting",
       "headline": "Building a Production-Ready OAuth2 Automation SDK for Upstox",
-      "description": "A comprehensive engineering case study on architecting an open-source Python SDK for automated OAuth2 login, TOTP 2FA, token storage, and failure recovery.",
+      "description": "A comprehensive engineering case study on architecting an open-source Python SDK (upstox-auth-pro).",
       "author": {
         "@type": "Person",
         "name": "Brijesh Yadav",
@@ -25,6 +25,19 @@
       "datePublished": "2026-02-15",
       "image": "https://recscse.github.io/assets/banner.svg"
     }
+    </script>
+
+    <!-- Mermaid.js -->
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+          mermaid.initialize({
+            startOnLoad: true,
+            theme: 'dark',
+            securityLevel: 'loose',
+            fontFamily: 'JetBrains Mono, monospace'
+          });
+        });
     </script>
 
     <script>
@@ -75,7 +88,7 @@
           </div>
           <h1 class="post-title">Building a Production-Ready OAuth2 Automation SDK for Upstox</h1>
           <div class="tags-container">
-            <span class="tag">Python</span>
+            <span class="tag">Python SDK</span>
             <span class="tag">OAuth2</span>
             <span class="tag">Playwright</span>
             <span class="tag">SDK Architecture</span>
@@ -83,233 +96,146 @@
           </div>
         </header>
 
-        <!-- DISCLAIMER BOX -->
-        <div style="background: rgba(239, 68, 68, 0.08); border-left: 4px solid #ef4444; padding: 14px 18px; margin-bottom: 24px; border-radius: 4px; font-size: 0.88rem; color: var(--text-muted);">
-          <strong>Disclaimer:</strong> <code>upstox-auth-pro</code> is an independent open-source developer tool published on PyPI. It is not affiliated with, endorsed by, or official software of Upstox or RKSV Securities India Pvt. Ltd. Never log credentials or commit secrets to public version control.
+        <!-- STATUS CALLOUT -->
+        <div class="callout callout-experimental" style="border-left-color: #10b981; background: rgba(16,185,129,0.08);">
+          <strong>[STATUS: PUBLISHED OPEN SOURCE LIBRARY]</strong><br />
+          <code>upstox-auth-pro</code> (v1.1.3) is published on PyPI. It automates Upstox OAuth2 authentication, Playwright TOTP 2FA, token persistence, and retry diagnostics.
         </div>
 
         <!-- INTRO -->
+        <h2 id="the-problem">1. The Problem: Daily Interactive Authentication Breakage</h2>
         <p class="lead">
-          Automated trading infrastructure requires seamless, unattended authentication before the Indian stock market opens at 9:15 AM IST. However, Indian brokerage APIs like Upstox enforce daily access token expiration and mandatory 2FA authentication flows. Manually launching a browser every morning to log in and update access tokens destroys the operational autonomy of algorithmic systems.
-        </p>
-        <p>
-          To solve this problem cleanly and reliably, I architected and published <a href="https://pypi.org/project/upstox-auth-pro/" target="_blank" rel="noopener noreferrer"><strong>Upstox Auth Pro</strong></a>, an open-source Python SDK designed to automate the OAuth2 login flow, calculate Time-Based One-Time Passwords (TOTP), handle secure token persistence, and recover gracefully from network glitches.
+          Financial regulations mandate daily OAuth2 token expiry for trading APIs. Automated trading systems require fresh authorization codes every morning before market open (09:15 IST). Requiring manual browser logins every 24 hours breaks automated scheduling.
         </p>
 
-        <!-- SECTION 1 -->
-        <h2 id="the-problem">1. The Operational Challenge</h2>
-        <p>
-          Standard OAuth2 authorization code flows are built with human interactions in mind:
-        </p>
-        <ol>
-          <li>The user is redirected to a browser login page.</li>
-          <li>The user enters mobile number/user ID, password/PIN, and dynamic OTP.</li>
-          <li>The authorization server redirects back to a <code>redirect_uri</code> with a temporary <code>code</code>.</li>
-          <li>The client application exchanges the authorization <code>code</code> for an <code>access_token</code> via a POST request.</li>
-        </ol>
-        <p>
-          In an automated trading context, requiring manual daily browser logins introduces single points of failure. If the login process fails or stalls due to network timeouts, scheduled algorithmic jobs miss the morning market opening.
-        </p>
+        <!-- SEQUENCE DIAGRAM -->
+        <h2 id="sdk-architecture">2. OAuth2 Automation Sequence Architecture</h2>
 
-        <!-- DIAGRAM -->
-        <div class="diagram-box">
+        <div class="architecture-diagram">
           <div class="diagram-header">
             <div class="window-controls">
               <div class="control red"></div>
               <div class="control yellow"></div>
               <div class="control green"></div>
             </div>
-            <div class="diagram-title">SDK Architecture & Token Flow</div>
+            <div class="diagram-title">Upstox Auth Pro Automation Sequence</div>
           </div>
-          <pre class="diagram-content">
- ┌────────────────┐     ┌──────────────────┐     ┌───────────────────┐
- │ Scheduled Job  │───▶ │ UpstoxAuthManager│───▶ │ Headless Browser  │
- └────────────────┘     └──────────────────┘     └───────────────────┘
-                                  │                        │
-                 Cache Hit?       │ (No Cache)             ▼
-             ┌────────────────────┴────────────┐    ┌────────────────┐
-             ▼                                 ▼    │ Upstox 2FA Page│
-  ┌───────────────────┐             ┌──────────────┐└────────────────┘
-  │ Load Stored Token │             │ Calculate    │        │
-  └───────────────────┘             │ TOTP Code    │───────┘
-            │                       └──────────────┘
-            ▼                              │
-  ┌───────────────────┐                    ▼
-  │ Validate Expiry   │             ┌──────────────┐     ┌───────────────┐
-  │  (IST Timezone)   │             │ Exchange Code│───▶ │ Save Token to │
-  └───────────────────┘             │ for Token    │     │ File / Cache  │
-            │                       └──────────────┘     └───────────────┘
-            ▼                                                   │
-  ┌───────────────────┐                                         │
-  │ Return Valid Token│ ◀───────────────────────────────────────┘
-  └───────────────────┘
-          </pre>
+          <div class="mermaid-wrapper">
+            <pre class="mermaid">
+sequenceDiagram
+    autonumber
+    participant App as Client Application
+    participant SDK as UpstoxAuthPro SDK
+    participant Browser as Playwright Headless Engine
+    participant Upstox as Upstox Auth Server
+    participant Storage as Pluggable Token Store
+
+    App->>SDK: get_valid_token()
+    SDK->>Storage: Read Cached Token
+    alt Token Cached & Valid (< 24h IST)
+        Storage-->>SDK: Active Access Token
+        SDK-->>App: Return Access Token
+    else Token Expired / Missing
+        SDK->>Browser: Launch Headless Chromium Session
+        Browser->>Upstox: Navigate OAuth Login URL
+        Upstox-->>Browser: Prompt Mobile / PIN
+        Browser->>Upstox: Input Mobile & PIN
+        SDK->>SDK: Calculate TOTP 2FA via pyotp
+        Browser->>Upstox: Submit 6-digit TOTP
+        Upstox-->>Browser: Redirect with Auth Code
+        Browser-->>SDK: Extract Authorization Code
+        SDK->>Upstox: Exchange Code for Access Token
+        Upstox-->>SDK: Return Token Payload & Expiry
+        SDK->>Storage: Save Token & IST Expiry Metadata
+        SDK-->>App: Return Valid Access Token
+    end
+            </pre>
+          </div>
         </div>
 
-        <!-- SECTION 2 -->
-        <h2 id="architecture">2. SDK Architecture & Components</h2>
         <p>
-          The SDK is structured into decoupled modules to ensure high maintainability and flexibility:
-        </p>
-        <ul>
-          <li><code>UpstoxAuthenticator</code>: Core orchestration class for handling authentication state.</li>
-          <li><code>BrowserAutomator</code>: Playwright wrapper that handles headless UI interaction, input filling, DOM wait events, and screenshot diagnostics.</li>
-          <li><code>TOTPManager</code>: Crypto helper leveraging <code>pyotp</code> to generate 6-digit 2FA tokens on the fly from a base32 secret key.</li>
-          <li><code>TokenStorageManager</code>: Pluggable storage abstraction (supporting JSON file storage, environment variables, or custom adapters).</li>
-          <li><code>CLI Entrypoint</code>: Standalone command-line interface (<code>upstox-auth</code>) for cron jobs and continuous integration pipelines.</li>
-        </ul>
-
-        <!-- SECTION 3 -->
-        <h3 id="totp-automation">2FA / TOTP Generation</h3>
-        <p>
-          To complete the 2FA prompt automatically, the system uses the user's registered TOTP secret key. Generating the current valid OTP code in Python requires high clock synchronization accuracy:
+          <em>Diagram 1: Interactive sequence flow during automated daily OAuth2 token acquisition.</em>
         </p>
 
-        <pre><code class="language-python">import pyotp
-import time
+        <!-- CODE IMPLEMENTATION -->
+        <h2 id="implementation">3. SDK Usage & Installation</h2>
 
-class TOTPManager:
-    def __init__(self, totp_secret: str):
-        self.totp = pyotp.TOTP(totp_secret)
-        
-    def generate_code(5):
-        """Generates current 6-digit TOTP token."""
-        return self.totp.now()
+        <pre><code class="language-bash">pip install upstox-auth-pro</code></pre>
 
-    def seconds_remaining(self):
-        """Returns time remaining before current TOTP expires."""
-        return 30 - (int(time.time()) % 30)
+        <pre><code class="language-python">from upstox_auth_pro import UpstoxAuthManager, JSONTokenStorage
+
+storage = JSONTokenStorage("tokens.json")
+auth_manager = UpstoxAuthManager(
+    api_key="YOUR_API_KEY",
+    api_secret="YOUR_API_SECRET",
+    redirect_uri="https://127.0.0.1:5000/callback",
+    mobile_no="YOUR_MOBILE",
+    pin="YOUR_PIN",
+    totp_secret="YOUR_TOTP_SECRET",
+    storage=storage
+)
+
+# Returns active cached token or executes automated login if expired
+access_token = auth_manager.get_valid_token()
+print(f"Active Token: {access_token[:10]}...")
         </code></pre>
 
-        <!-- SECTION 4 -->
-        <h2 id="browser-automation">3. Headless Browser Automation with Playwright</h2>
-        <p>
-          Playwright was chosen over Selenium due to its modern async event model, robust auto-waiting capabilities, and isolated context isolation. Selenium often suffers from race conditions when dynamic UI elements shift during DOM rendering.
-        </p>
-        <p>
-          The login flow performs the following automated DOM steps:
-        </p>
-        <ol>
-          <li>Navigates to the official Upstox OAuth URL constructed with <code>client_id</code> and <code>redirect_uri</code>.</li>
-          <li>Waits for the mobile number input selector and types credentials using human-like delays.</li>
-          <li>Submits the form and awaits the 2FA input box.</li>
-          <li>Calculates the current TOTP via <code>pyotp</code>. If the remaining window is under 3 seconds, it waits for the next TOTP cycle to prevent authorization rejection during transit.</li>
-          <li>Types the 6-digit TOTP and 6-digit PIN into respective input fields.</li>
-          <li>Intercepts the final <code>HTTP 302 Redirect</code> to extract the authorization <code>code</code> query parameter directly from the browser response header before rendering finishes.</li>
-        </ol>
+        <!-- DESIGN TRADEOFFS TABLE -->
+        <h2 id="engineering-decisions">4. Engineering Decisions & Tradeoffs</h2>
 
-        <pre><code class="language-python"># Direct code extraction via URL interception
-async def extract_auth_code(page, redirect_uri: str) -> str:
-    async with page.expect_navigation(url=lambda u: redirect_uri in u, timeout=20000):
-        await page.click("#submit-btn")
-    
-    current_url = page.url
-    parsed_url = urllib.parse.urlparse(current_url)
-    query_params = urllib.parse.parse_qs(parsed_url.query)
-    
-    if "code" not in query_params:
-        raise AuthenticationError(f"Authorization code missing in URL: {current_url}")
-        
-    return query_params["code"][0]
-        </code></pre>
-
-        <!-- SECTION 5 -->
-        <h2 id="token-management">4. Token Storage Abstraction & Timezone Awareness</h2>
-        <p>
-          Upstox access tokens are valid until 3:30 AM IST of the following day. To avoid making redundant headless login calls during restarts or strategy executions throughout the day, the SDK checks existing tokens against an IST timezone threshold before initiating a browser session.
-        </p>
-        <p>
-          Token metadata is persisted along with explicit expiration timestamps formatted in ISO-8601 with Asia/Kolkata timezone offset:
-        </p>
-
-        <pre><code class="language-json">{
-  "access_token": "eyJhbGciOiJSUzI1NiIs...",
-  "token_type": "Bearer",
-  "generated_at": "2026-02-15T08:30:00+05:30",
-  "expires_at": "2026-02-16T03:30:00+05:30"
-}
-        </code></pre>
-
-        <!-- SECTION 6 -->
-        <h2 id="resilience">5. Error Handling, Retry Strategy, & Screenshots</h2>
-        <p>
-          Production automation must survive unexpected UI layout updates, network latency spikes, and cloud deployment cold-starts.
-        </p>
-        <p>
-          To guarantee operational reliability:
-        </p>
-        <ul>
-          <li><strong>Exponential Backoff:</strong> Retries browser interaction up to 3 times with exponential delays (2s, 4s, 8s).</li>
-          <li><strong>Diagnostic Screenshots:</strong> On any uncaught selector exception or navigation timeout, the SDK captures a PNG screenshot saved with a timestamp identifier (e.g., <code>auth_failure_20260215_083012.png</code>) to aid root-cause analysis.</li>
-          <li><strong>Stealth Mode Options:</strong> Masks browser automation flags (<code>navigator.webdriver</code>) to avoid false-positive bot protection blocks during legitimate login sequences.</li>
-        </ul>
-
-        <!-- SECTION 7 -->
-        <h2 id="packaging">6. Packaging for PyPI & CI/CD Release Workflow</h2>
-        <p>
-          The project is packaged as a standard Python distribution using <code>setuptools</code> and published to PyPI via GitHub Actions:
-        </p>
-
-        <div class="diagram-box">
-          <div class="diagram-header">
-            <div class="window-controls">
-              <div class="control red"></div>
-              <div class="control yellow"></div>
-              <div class="control green"></div>
-            </div>
-            <div class="diagram-title">GitHub Actions PyPI Release Pipeline</div>
-          </div>
-          <pre class="diagram-content">
-[ Git Tag Release (v1.1.3) ]
-            │
-            ▼
-[ GitHub Actions Trigger ]
-            │
-            ├──▶ Run Unit & Integration Tests (pytest)
-            ├──▶ Install Playwright & Test Headless Drivers
-            ├──▶ Build Source Dist & Wheel (python -m build)
-            │
-            ▼
-[ Publish to PyPI via Trusted Publisher / Twine ]
-          </pre>
+        <div style="overflow-x: auto; margin: 24px 0;">
+          <table style="width: 100%; border-collapse: collapse; font-size: 0.88rem;">
+            <thead>
+              <tr style="background: rgba(255,255,255,0.04); border-bottom: 2px solid var(--glass-border); text-align: left;">
+                <th style="padding: 10px;">Decision</th>
+                <th style="padding: 10px;">Rationale</th>
+                <th style="padding: 10px;">Tradeoff</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr style="border-bottom: 1px solid var(--glass-border);">
+                <td style="padding: 10px;"><strong>Playwright Headless Browser</strong></td>
+                <td style="padding: 10px;">Automates full browser JS rendering and TOTP form submit.</td>
+                <td style="padding: 10px;">Requires headless browser binary installation (~150MB).</td>
+              </tr>
+              <tr style="border-bottom: 1px solid var(--glass-border);">
+                <td style="padding: 10px;"><strong>Pluggable Storage Strategy</strong></td>
+                <td style="padding: 10px;">Abstract interface supporting JSON file, Redis, or DB token persistence.</td>
+                <td style="padding: 10px;">Requires explicit storage class injection during initialization.</td>
+              </tr>
+              <tr style="border-bottom: 1px solid var(--glass-border);">
+                <td style="padding: 10px;"><strong>Stealth Mode & Retries</strong></td>
+                <td style="padding: 10px;">Masks `navigator.webdriver` and captures diagnostic screenshots on fail.</td>
+                <td style="padding: 10px;">Slightly increases authentication execution time by 500ms.</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
 
-        <!-- LESSONS -->
-        <h2 id="lessons">7. Key Tradeoffs & Technical Lessons</h2>
-        <ol>
-          <li><strong>Headless Browser vs Native HTTP Requests:</strong> Upstox authorization pages utilize heavy dynamic client-side JS. Simulating raw HTTP POST requests to login endpoints breaks whenever UI anti-CSRF tokens update. Using Playwright provides maximum resilience against frontend DOM changes at the cost of a slightly larger memory footprint during initial login (~150MB for Chromium).</li>
-          <li><strong>Token Caching Isolation:</strong> Decoupling the storage mechanism using interface classes allows downstream applications to store tokens in Redis, AWS Secrets Manager, or local encrypted disk stores without altering authentication logic.</li>
-        </ol>
+        <h2 id="related-articles">Related Engineering Articles</h2>
+        <ul>
+          <li><a href="designing-real-time-market-data-pipeline-algorithmic-trading.html">Designing a Real-Time Market Data Pipeline for Algorithmic Trading</a></li>
+          <li><a href="designing-an-ai-trading-system-without-model-control.html">Designing an AI Trading System Without Letting the Model Control Everything</a></li>
+        </ul>
 
         <!-- REFERENCES -->
-        <h2 id="references">8. References & Project Links</h2>
+        <h2 id="references">5. References</h2>
         <ul>
           <li><a href="https://pypi.org/project/upstox-auth-pro/" target="_blank" rel="noopener noreferrer">PyPI Package: upstox-auth-pro</a></li>
-          <li><a href="https://github.com/growthquantix/upstox-auth-pro" target="_blank" rel="noopener noreferrer">GitHub Repository: growthquantix/upstox-auth-pro</a></li>
-          <li><a href="https://growthquantix.github.io/upstox-auth-pro/" target="_blank" rel="noopener noreferrer">Official Documentation & API Reference</a></li>
-          <li><a href="https://upstox.com/developer/api-documentation/" target="_blank" rel="noopener noreferrer">Upstox Developer Documentation (V2/V3 APIs)</a></li>
-          <li><a href="https://playwright.dev/python/docs/intro" target="_blank" rel="noopener noreferrer">Playwright for Python Documentation</a></li>
+          <li><a href="https://github.com/growthquantix/upstox-auth-pro" target="_blank" rel="noopener noreferrer">GitHub Repository</a></li>
+          <li><a href="https://growthquantix.github.io/upstox-auth-pro/" target="_blank" rel="noopener noreferrer">Official Documentation Site</a></li>
         </ul>
-
-        <h2 id="conclusion">Conclusion</h2>
-        <p>
-          By combining headless browser automation, TOTP calculation, and robust timezone-aware token caching, <code>upstox-auth-pro</code> provides a reliable solution for automated trading infrastructure. The library is actively maintained and published on PyPI.
-        </p>
       </article>
 
       <!-- Sidebar Table of Contents -->
       <aside class="toc">
         <div class="toc-header">On this page</div>
         <div class="toc-links">
-          <a href="#the-problem" class="toc-link">1. Operational Challenge</a>
-          <a href="#architecture" class="toc-link">2. Architecture</a>
-          <a href="#totp-automation" class="toc-link">3. TOTP Generation</a>
-          <a href="#browser-automation" class="toc-link">4. Playwright Automation</a>
-          <a href="#token-management" class="toc-link">5. Token Storage & Timezone</a>
-          <a href="#resilience" class="toc-link">6. Resilience & Screenshots</a>
-          <a href="#packaging" class="toc-link">7. PyPI & CI/CD</a>
-          <a href="#lessons" class="toc-link">8. Lessons & Tradeoffs</a>
-          <a href="#references" class="toc-link">9. References</a>
+          <a href="#the-problem" class="toc-link">1. The Problem</a>
+          <a href="#sdk-architecture" class="toc-link">2. SDK Architecture</a>
+          <a href="#implementation" class="toc-link">3. SDK Usage</a>
+          <a href="#engineering-decisions" class="toc-link">4. Design Tradeoffs</a>
+          <a href="#references" class="toc-link">5. References</a>
         </div>
       </aside>
     </div>

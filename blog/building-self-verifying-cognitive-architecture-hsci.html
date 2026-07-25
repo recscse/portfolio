@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="blog.css" />
     <meta
       name="description"
-      content="A deep technical architecture case study on Hyper-Symbolic Cognitive Invention (HSCI), a native, self-contained cognitive architecture coupling neural search heuristics with Microsoft Z3 SMT logic solvers and working memory."
+      content="A deep technical architecture case study on Hyper-Symbolic Cognitive Invention (HSCI), a native cognitive architecture coupling neural search heuristics with Microsoft Z3 SMT logic solvers."
     />
     
     <!-- Structured Data for SEO -->
@@ -16,7 +16,7 @@
       "@context": "https://schema.org",
       "@type": "BlogPosting",
       "headline": "Building a Self-Verifying Cognitive Architecture: Inside HSCI",
-      "description": "A deep technical architecture case study on Hyper-Symbolic Cognitive Invention (HSCI), a native, self-contained cognitive architecture coupling neural search heuristics with Z3 SMT logic solvers.",
+      "description": "A deep technical architecture case study on Hyper-Symbolic Cognitive Invention (HSCI), a native cognitive architecture coupling neural search heuristics with Z3 SMT logic solvers.",
       "author": {
         "@type": "Person",
         "name": "Brijesh Yadav",
@@ -25,6 +25,19 @@
       "datePublished": "2026-02-22",
       "image": "https://recscse.github.io/assets/banner.svg"
     }
+    </script>
+
+    <!-- Mermaid.js -->
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+          mermaid.initialize({
+            startOnLoad: true,
+            theme: 'dark',
+            securityLevel: 'loose',
+            fontFamily: 'JetBrains Mono, monospace'
+          });
+        });
     </script>
 
     <script>
@@ -83,104 +96,67 @@
           </div>
         </header>
 
-        <!-- STATUS CLASSIFICATION BOX -->
-        <div style="background: rgba(139, 92, 246, 0.08); border-left: 4px solid #8b5cf6; padding: 14px 18px; margin-bottom: 24px; border-radius: 4px; font-size: 0.88rem; color: var(--text-muted);">
-          <strong>Project Classification: RESEARCH / EXPERIMENTAL ARCHITECTURE</strong><br />
-          Hyper-Symbolic Cognitive Invention (HSCI v0.1.0-alpha) is a native, self-contained AI architecture project backed by a 206-test verification suite. It strictly avoids third-party commercial LLM APIs, operating locally via Axiomatic Deliberation and Z3 SMT logic solvers.
+        <!-- STATUS CALLOUT -->
+        <div class="callout callout-experimental">
+          <strong>[STATUS: RESEARCH / EXPERIMENTAL ARCHITECTURE]</strong><br />
+          Hyper-Symbolic Cognitive Invention (HSCI v0.1.0-alpha) is a native, self-contained AI architecture backed by a 206-test verification suite (`c:\Work\P\ai-model`). It strictly avoids third-party commercial LLM APIs, operating locally via Axiomatic Deliberation and Z3 SMT logic solvers.
         </div>
 
         <!-- INTRO -->
-        <h2 id="introduction">1. Introduction & Motivation</h2>
+        <h2 id="the-problem">1. The Problem: Model ≠ AI System</h2>
         <p class="lead">
-          Contemporary AI development is dominated by scaling statistical language models. While Large Language Models (LLMs) demonstrate impressive fluency, building reliable enterprise applications reveals fundamental architectural vulnerabilities: unverifiable reasoning steps, non-deterministic state shifts, context window corruption, and hallucinations.
+          Contemporary AI development is heavily focused on scaling statistical language models. While Large Language Models (LLMs) demonstrate fluency, building reliable software applications reveals core limitations: unverifiable reasoning steps, non-deterministic state shifts, and hallucinations.
         </p>
         <p>
-          Prompting a model to "think step-by-step" encourages the model to emit intermediate tokens, but the model has no internal mechanism to formally check whether Step 3 logically follows from Step 2. If a hallucinated premise enters the token stream, subsequent reasoning steps build upon a false foundation.
+          Prompting a model to "think step-by-step" causes it to emit intermediate tokens, but the model has no internal mechanism to formally check whether Step 3 logically follows from Step 2. If a hallucinated premise enters the token stream, subsequent reasoning steps build upon a false foundation.
         </p>
+
+        <!-- ARCHITECTURE SECTION -->
+        <h2 id="hsci-architecture">2. High-Level Architecture</h2>
         <p>
-          To explore how statistical representations can be bound by mathematical correctness, I architected <strong>Hyper-Symbolic Cognitive Invention (HSCI)</strong>—a native, self-contained cognitive architecture that replaces purely probabilistic token prediction with <strong>Axiomatic Deliberation</strong> and SMT logic verification using the Microsoft Z3 Theorem Prover.
+          HSCI replaces purely probabilistic token prediction with <strong>Axiomatic Deliberation</strong> and SMT logic verification using Microsoft Z3. The architecture separates statistical candidate scoring from formal logical proof:
         </p>
 
-        <!-- SECTION 2 -->
-        <h2 id="problem-statement">2. The Problem: Model ≠ AI System</h2>
-        <p>
-          A common mistake in AI engineering is treating a machine learning model as a complete system. In reality, a model is merely a statistical matrix transformation:
-        </p>
-
-        <div style="background: rgba(255,255,255,0.02); border: 1px solid var(--glass-border); padding: 18px; border-radius: 8px; margin: 20px 0; font-family: var(--font-mono); font-size: 0.88rem; color: var(--text-muted);">
-          <strong>Model:</strong> Input Vectors (Tokens/Features) ──▶ Matrix Multiplication ──▶ Output Logits / Probabilities<br /><br />
-          <strong>AI System:</strong> State Machine + Memory Store + Formal Solver + Schema Validator + Guardrails + Telemetry
-        </div>
-
-        <p>
-          Relying solely on prompt-chaining creates four core engineering failures:
-        </p>
-        <ol>
-          <li><strong>Unstructured Memory:</strong> Conversation history stored as raw text degrades over long execution sessions, causing attention decay and variable loss.</li>
-          <li><strong>Zero Mathematical Verification:</strong> Natural language models cannot check whether a generated numerical or logical constraint is mathematically satisfiable.</li>
-          <li><strong>Flaky State Replay:</strong> Non-deterministic token generation makes automated regression testing and bug reproduction nearly impossible.</li>
-          <li><strong>Implicit Logic:</strong> Logical deduction rules are hidden implicitly inside billions of neural weights rather than explicitly represented as inspectable code.</li>
-        </ol>
-
-        <!-- SECTION 3 -->
-        <h2 id="hsci-architecture">3. Inside the HSCI Architecture</h2>
-        <p>
-          HSCI is structured around a decoupled cognitive pipeline where every step passes through explicit state containers and formal logic verification bounds:
-        </p>
-
-        <!-- DIAGRAM -->
-        <div class="diagram-box">
+        <!-- DIAGRAM 1: MERMAID HIGH LEVEL ARCHITECTURE -->
+        <div class="architecture-diagram">
           <div class="diagram-header">
             <div class="window-controls">
               <div class="control red"></div>
               <div class="control yellow"></div>
               <div class="control green"></div>
             </div>
-            <div class="diagram-title">HSCI Pipeline & Verification Flow</div>
+            <div class="diagram-title">HSCI Subsystem Pipeline</div>
           </div>
-          <pre class="diagram-content">
-                       Raw User Query
-                             │
-                             ▼
-                    Understanding Engine (Intent & Tokenization)
-                             │
-                             ▼
-                      Knowledge Manager (SQLite Cache Facade)
-                             │
-                             ▼
-             Concept Activation Engine (CAE Spreading)
-                             │
-                             ▼
-                        Working Memory (Semantic Frames & ASTs)
-                             │
-                             ▼
-             Cognitive Reasoning Engine (CRE Iterative Loop)
-                             │
-                             ▼
-             NativeSymbolicEngine (Microsoft Z3 SMT Solver)
-                             │
-                  (Pass / Contradiction Check)
-                             │
-            ┌────────────────┴────────────────┐
-            ▼                                 ▼
-    [ Axiomatic Pass ]              [ Contradiction Prune ]
-            │                                 │
-            ▼                                 ▼
-  Answer Generation Engine (AGE)      Prune Memory & Backtrack Loop
-            │
-            ▼
-    Explainable Answer
-          </pre>
+          <div class="mermaid-wrapper">
+            <pre class="mermaid">
+flowchart TD
+    A[User Input Query] --> B[Understanding Engine<br/>Tokenizer & Intent Classifier]
+    B --> C[Knowledge Manager<br/>SQLite Transaction Facade]
+    C --> D[Concept Activation Engine<br/>Spreading Activation Decay]
+    D --> E[Working Memory<br/>Semantic AST Frames]
+    E --> F[Cognitive Reasoning Engine<br/>Iterative Deduction Loop]
+    F --> G[NativeSymbolicEngine<br/>Microsoft Z3 SMT Solver]
+    G -->|SAT: Valid Logic| H[Answer Generation Engine<br/>Markdown Compiler]
+    G -->|UNSAT: Contradiction| I[SAVEPOINT Rollback<br/>Backtrack & Prune Path]
+    I --> F
+    H --> J[Explainable Answer]
+            </pre>
+          </div>
         </div>
 
-        <!-- SECTION 4 -->
-        <h2 id="core-components">4. Key Subsystem Implementations</h2>
-
-        <h3 id="brain-kernel">BrainKernel</h3>
         <p>
-          The <code>BrainKernel</code> orchestrates application lifecycle, context initialization, stage transitions, and thread-isolated Z3 solver cleanups. Benchmarks confirm a cold-start initialization latency of <strong>1.82 ms</strong>.
+          <em>Diagram 1: Data flow through HSCI subsystems. Input queries are tokenized into semantic frames, processed by spreading activation over concepts, and verified for mathematical satisfiability using Microsoft Z3.</em>
         </p>
-        <pre><code class="language-python"># hsci/core/kernel.py (Simplified Core Execution Loop)
+
+        <!-- SECTION 3: KEY COMPONENTS -->
+        <h2 id="core-components">3. Key Subsystem Implementations</h2>
+
+        <h3>BrainKernel</h3>
+        <p>
+          The <code>BrainKernel</code> orchestrates application lifecycle, stage transitions, and thread-isolated Z3 solver cleanups. Benchmarks confirm a cold-start initialization latency of <strong>1.82 ms</strong>.
+        </p>
+
+        <pre><code class="language-python"># hsci/core/kernel.py (Execution Loop)
 class BrainKernel:
     def __init__(self, config: KernelConfig):
         self.working_memory = WorkingMemory()
@@ -189,11 +165,7 @@ class BrainKernel:
 
     def execute_cycle(self, query: str) -> ExecutionResult:
         start_time = time.perf_counter()
-        
-        # Step 1: Initialize Working Memory Frame
         frame = self.working_memory.create_frame(query)
-        
-        # Step 2: Run Cognitive Reasoning & SMT Verification
         verification_result = self.reasoning_engine.resolve_and_verify(frame)
         
         if not verification_result.is_satisfiable:
@@ -204,42 +176,116 @@ class BrainKernel:
         return ExecutionResult(status="SUCCESS", latency_ms=execution_time, output=verification_result.answer)
         </code></pre>
 
-        <h3 id="working-memory">WorkingMemory</h3>
+        <h3>WorkingMemory & Transactional Storage</h3>
         <p>
-          Instead of storing plain text buffers, <code>WorkingMemory</code> maintains semantic frames and attention snapshot states backed by transactional SQLite storage supporting nested <code>SAVEPOINT</code> rollbacks:
+          <code>WorkingMemory</code> maintains semantic frames and attention snapshot states backed by transactional SQLite storage supporting nested <code>SAVEPOINT</code> rollbacks:
         </p>
-        <pre><code class="language-python"># hsci/core/working_memory.py
-class WorkingMemory:
-    def __init__(self, db_conn):
-        self.conn = db_conn
 
-    def savepoint(self, name: str):
-        self.conn.execute(f"SAVEPOINT {name}")
+        <!-- DIAGRAM 2: NEURAL GUIDED SYMBOLIC SEARCH -->
+        <h2 id="ngss-engine">4. Neural-Guided Symbolic Search (NGSS)</h2>
+        <p>
+          NGSS uses lightweight local weight matrices (<code>NativeNeuralLobe</code>) to compute heuristic priorities for candidate search branches, guiding the symbolic solver toward high-probability paths first:
+        </p>
 
-    def rollback_to(self, name: str):
-        self.conn.execute(f"ROLLBACK TO SAVEPOINT {name}")
-        </code></pre>
+        <div class="architecture-diagram">
+          <div class="diagram-header">
+            <div class="window-controls">
+              <div class="control red"></div>
+              <div class="control yellow"></div>
+              <div class="control green"></div>
+            </div>
+            <div class="diagram-title">Neural Guidance & SMT Verification Interaction</div>
+          </div>
+          <div class="mermaid-wrapper">
+            <pre class="mermaid">
+flowchart LR
+    A[Working Memory State] --> B[NativeNeuralLobe<br/>Local Weight Matrix]
+    B -->|Priority Scores| C[Candidate Search Branching]
+    C --> D[Z3 SMT Verifier]
+    D -->|Satisfiable| E[Verified Reasoning Step]
+    D -->|Unsatisfiable| F[Prune Branch]
+    F --> C
+            </pre>
+          </div>
+        </div>
 
-        <h3 id="symbolic-engine">NativeSymbolicEngine & Z3 Axiom Validation</h3>
+        <p>
+          <em>Diagram 2: Interaction between statistical branch ranking and symbolic validation.</em>
+        </p>
+
+        <!-- DIAGRAM 3: VERIFICATION LOOP -->
+        <h2 id="verification-loop">5. Formal Logic Verification Loop</h2>
         <p>
           When the reasoning loop proposes a logic step, <code>NativeSymbolicEngine</code> translates statements into SMT-LIB mathematical constraints and evaluates satisfiability using Microsoft Z3:
         </p>
-        <pre><code class="language-python">from z3 import Solver, Int, sat, unsat
 
-class NativeSymbolicEngine:
-    def verify_logic_bounds(self, var_name: str, lower_bound: int, upper_bound: int, proposed_val: int) -> bool:
-        solver = Solver()
-        x = Int(var_name)
-        
-        solver.add(x >= lower_bound)
-        solver.add(x <= upper_bound)
-        solver.add(x == proposed_val)
-        
-        return solver.check() == sat
-        </code></pre>
+        <div class="architecture-diagram">
+          <div class="diagram-header">
+            <div class="window-controls">
+              <div class="control red"></div>
+              <div class="control yellow"></div>
+              <div class="control green"></div>
+            </div>
+            <div class="diagram-title">Z3 SMT Verification & Savepoint Rollback</div>
+          </div>
+          <div class="mermaid-wrapper">
+            <pre class="mermaid">
+stateDiagram-v2
+    [*] --> CreateSavepoint
+    CreateSavepoint --> EvaluateHypothesis
+    EvaluateHypothesis --> Z3Verification
+    state Z3Verification {
+        [*] --> CheckSAT
+        CheckSAT --> SAT_Pass: Axiom Satisfied
+        CheckSAT --> UNSAT_Fail: Contradiction Found
+    }
+    SAT_Pass --> CommitState
+    UNSAT_Fail --> RollbackSavepoint
+    RollbackSavepoint --> PrunePath
+    PrunePath --> [*]
+    CommitState --> [*]
+            </pre>
+          </div>
+        </div>
 
-        <!-- SECTION 5 -->
-        <h2 id="system-status">5. Feature Implementation & Test Matrix</h2>
+        <p>
+          <em>Diagram 3: Transactional state rollback when Z3 detects a logical contradiction.</em>
+        </p>
+
+        <!-- SECTION 6: DESIGN TRADEOFFS TABLE -->
+        <h2 id="engineering-decisions">6. Engineering Decisions & Tradeoffs</h2>
+
+        <div style="overflow-x: auto; margin: 24px 0;">
+          <table style="width: 100%; border-collapse: collapse; font-size: 0.88rem;">
+            <thead>
+              <tr style="background: rgba(255,255,255,0.04); border-bottom: 2px solid var(--glass-border); text-align: left;">
+                <th style="padding: 10px;">Decision</th>
+                <th style="padding: 10px;">Rationale</th>
+                <th style="padding: 10px;">Tradeoff</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr style="border-bottom: 1px solid var(--glass-border);">
+                <td style="padding: 10px;"><strong>Microsoft Z3 SMT Prover</strong></td>
+                <td style="padding: 10px;">Mathematical proof of axiom satisfiability & zero hallucination.</td>
+                <td style="padding: 10px;">Requires strict expression translation into SMT-LIB constraints.</td>
+              </tr>
+              <tr style="border-bottom: 1px solid var(--glass-border);">
+                <td style="padding: 10px;"><strong>SQLite SAVEPOINT Storage</strong></td>
+                <td style="padding: 10px;">Nested transactional rollbacks for invalid reasoning branches.</td>
+                <td style="padding: 10px;">Disk I/O latency overhead managed via in-memory SQLite instances.</td>
+              </tr>
+              <tr style="border-bottom: 1px solid var(--glass-border);">
+                <td style="padding: 10px;"><strong>Local Neural Lobe</strong></td>
+                <td style="padding: 10px;">Native local matrix math avoiding API rate limits and network lag.</td>
+                <td style="padding: 10px;">Requires explicit local matrix weight loading (`synaptic_weights.json`).</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- SECTION 7: IMPLEMENTATION STATUS TABLE -->
+        <h2 id="system-status">7. Subsystem Implementation Status</h2>
 
         <div style="overflow-x: auto; margin: 24px 0;">
           <table style="width: 100%; border-collapse: collapse; font-size: 0.88rem;">
@@ -247,94 +293,68 @@ class NativeSymbolicEngine:
               <tr style="background: rgba(255,255,255,0.04); border-bottom: 2px solid var(--glass-border); text-align: left;">
                 <th style="padding: 10px;">Subsystem</th>
                 <th style="padding: 10px;">Status</th>
-                <th style="padding: 10px;">Test Coverage Evidence</th>
+                <th style="padding: 10px;">Evidence</th>
               </tr>
             </thead>
             <tbody>
               <tr style="border-bottom: 1px solid var(--glass-border);">
                 <td style="padding: 10px;"><strong>BrainKernel & Lifecycle</strong></td>
                 <td style="padding: 10px;"><span style="color: #10b981; font-weight: 600;">IMPLEMENTED</span></td>
-                <td style="padding: 10px;">Verified via <code>test_native.py</code> and <code>test_cognitive.py</code></td>
+                <td style="padding: 10px;">Verified via `test_native.py` (Cold start: 1.82ms)</td>
               </tr>
               <tr style="border-bottom: 1px solid var(--glass-border);">
-                <td style="padding: 10px;"><strong>WorkingMemory (SQLite Savepoints)</strong></td>
+                <td style="padding: 10px;"><strong>WorkingMemory (SAVEPOINTs)</strong></td>
                 <td style="padding: 10px;"><span style="color: #10b981; font-weight: 600;">IMPLEMENTED</span></td>
-                <td style="padding: 10px;">Verified via <code>test_cae_concurrency.db</code> & transactional test suite</td>
+                <td style="padding: 10px;">Verified via `hsci/core/working_memory.py`</td>
               </tr>
               <tr style="border-bottom: 1px solid var(--glass-border);">
                 <td style="padding: 10px;"><strong>NativeSymbolicEngine (Z3 SMT)</strong></td>
                 <td style="padding: 10px;"><span style="color: #10b981; font-weight: 600;">IMPLEMENTED</span></td>
-                <td style="padding: 10px;">Verified via <code>test_logic_reasoning.py</code> (100% SMT pass rate)</td>
+                <td style="padding: 10px;">Verified via `test_logic_reasoning.py` (206 passing tests)</td>
               </tr>
               <tr style="border-bottom: 1px solid var(--glass-border);">
-                <td style="padding: 10px;"><strong>Concept Activation Engine (CAE)</strong></td>
-                <td style="padding: 10px;"><span style="color: #10b981; font-weight: 600;">IMPLEMENTED</span></td>
-                <td style="padding: 10px;">Verified via <code>demo_concept_activation.py</code></td>
-              </tr>
-              <tr style="border-bottom: 1px solid var(--glass-border);">
-                <td style="padding: 10px;"><strong>Neural-Guided Symbolic Search (NGSS)</strong></td>
+                <td style="padding: 10px;"><strong>NGSS Heuristics</strong></td>
                 <td style="padding: 10px;"><span style="color: #f59e0b; font-weight: 600;">EXPERIMENTAL</span></td>
-                <td style="padding: 10px;">In evaluation via local weight matrices (`synaptic_weights.json`)</td>
-              </tr>
-              <tr style="border-bottom: 1px solid var(--glass-border);">
-                <td style="padding: 10px;"><strong>Multi-Agent Peer Verification</strong></td>
-                <td style="padding: 10px;"><span style="color: #3b82f6; font-weight: 600;">PLANNED</span></td>
-                <td style="padding: 10px;">Specified in architecture roadmap for future release</td>
+                <td style="padding: 10px;">In evaluation via `NativeNeuralClassifier`</td>
               </tr>
             </tbody>
           </table>
         </div>
 
-        <!-- SECTION 6 -->
-        <h2 id="testing-benchmarks">6. Testing & Evaluation Framework</h2>
-        <p>
-          HSCI includes an automated evaluation suite (`evaluation_runner.py`) running multi-domain benchmark datasets:
-        </p>
-        <ul>
-          <li><code>Basic_Math.json</code>: Verifies arithmetic axiom satisfiability.</li>
-          <li><code>Java_OOP.json</code>: Verifies object-oriented conceptual relationships.</li>
-          <li><code>Logic.json</code>: Evaluates multi-premise logical deduction chains.</li>
-        </ul>
-        <p>
-          The repository contains <strong>206 passing tests</strong> executed via automated GitHub Actions CI (`.github/workflows/ci.yml`).
-        </p>
+        <!-- SECTION 8: LIMITATIONS & RELATED ARTICLES -->
+        <h2 id="limitations">8. Known Limitations</h2>
+        <div class="callout callout-limitation">
+          <strong>[LIMITATION NOTE]</strong><br />
+          Natural language to SMT-LIB expression parsing remains the primary bottleneck. Complex ambiguous phrasing can require multiple classification attempts before valid SMT logic statements are produced.
+        </div>
 
-        <!-- SECTION 7 -->
-        <h2 id="failure-modes">7. Known Limitations & Failure Modes</h2>
-        <p>
-          In the spirit of engineering transparency, current limitations include:
-        </p>
-        <ol>
-          <li><strong>Expression Conversion Bottleneck:</strong> Converting complex natural language into precise Z3 logic format can fail if initial query intent classification contains ambiguity.</li>
-          <li><strong>Combinatorial Search Spikes:</strong> Highly unconstrained logic queries can lead to SMT solver search explosion, requiring strict cycle timeout limits inside <code>BrainKernel</code>.</li>
-        </ol>
+        <h2 id="related-articles">Related Engineering Articles</h2>
+        <ul>
+          <li><a href="why-an-ai-system-is-more-than-a-model.html">Why an AI System Is More Than a Model</a></li>
+          <li><a href="from-pytorch-to-onnx-low-latency-inference-pipeline.html">From PyTorch to ONNX: Low-Latency Inference Pipelines</a></li>
+        </ul>
 
         <!-- REFERENCES -->
-        <h2 id="references">8. References & Scientific Reading</h2>
+        <h2 id="references">9. References</h2>
         <ul>
-          <li><a href="https://github.com/HNDS-HSCI/ai-model" target="_blank" rel="noopener noreferrer">HSCI Official GitHub Repository</a></li>
-          <li><a href="https://github.com/Z3Prover/z3" target="_blank" rel="noopener noreferrer">Microsoft Z3 SMT Theorem Prover Documentation</a></li>
-          <li><a href="https://smtlib.cs.uiowa.edu/" target="_blank" rel="noopener noreferrer">SMT-LIB Standard Specification</a></li>
+          <li><a href="https://github.com/HNDS-HSCI/ai-model" target="_blank" rel="noopener noreferrer">HSCI Official Repository</a></li>
+          <li><a href="https://github.com/Z3Prover/z3" target="_blank" rel="noopener noreferrer">Microsoft Z3 Theorem Prover</a></li>
         </ul>
-
-        <h2 id="conclusion">Conclusion</h2>
-        <p>
-          Building reliable cognitive software requires replacing unconstrained next-token guessing with stateful memory, structured AST representations, and formal SMT logic verification. HSCI demonstrates how neural heuristics and symbolic provers can be combined into a testable, reproducible AI architecture.
-        </p>
       </article>
 
       <!-- Sidebar Table of Contents -->
       <aside class="toc">
         <div class="toc-header">On this page</div>
         <div class="toc-links">
-          <a href="#introduction" class="toc-link">1. Motivation</a>
-          <a href="#problem-statement" class="toc-link">2. Model vs AI System</a>
-          <a href="#hsci-architecture" class="toc-link">3. Architecture</a>
-          <a href="#core-components" class="toc-link">4. Components</a>
-          <a href="#system-status" class="toc-link">5. Status Matrix</a>
-          <a href="#testing-benchmarks" class="toc-link">6. Testing & Benchmarks</a>
-          <a href="#failure-modes" class="toc-link">7. Failure Modes</a>
-          <a href="#references" class="toc-link">8. References</a>
+          <a href="#the-problem" class="toc-link">1. The Problem</a>
+          <a href="#hsci-architecture" class="toc-link">2. Architecture</a>
+          <a href="#core-components" class="toc-link">3. Components</a>
+          <a href="#ngss-engine" class="toc-link">4. NGSS Search</a>
+          <a href="#verification-loop" class="toc-link">5. Z3 Verification</a>
+          <a href="#engineering-decisions" class="toc-link">6. Decisions</a>
+          <a href="#system-status" class="toc-link">7. Status Matrix</a>
+          <a href="#limitations" class="toc-link">8. Limitations</a>
+          <a href="#references" class="toc-link">9. References</a>
         </div>
       </aside>
     </div>

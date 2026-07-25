@@ -325,7 +325,19 @@ a { text-decoration: none; color: inherit; transition: all 0.2s ease; }
   font-family: var(--font-mono);
 }
 
-.diagram-box {
+/* 6. Code & Diagrams */
+/* NOTE: We keep code/diagrams DARK even in light mode for contrast/cool factor */
+
+:not(pre) > code {
+  background: rgba(125, 125, 125, 0.1);
+  color: var(--primary);
+  padding: 2px 6px;
+  border-radius: 6px;
+  font-size: 0.85em;
+  font-family: var(--font-mono);
+}
+
+.diagram-box, .architecture-diagram {
   background: var(--bg-terminal);
   border: 1px solid var(--terminal-border);
   border-radius: 12px;
@@ -368,6 +380,60 @@ a { text-decoration: none; color: inherit; transition: all 0.2s ease; }
     linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px),
     linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px);
   background-size: 100% 100%, 20px 20px, 20px 20px;
+}
+
+.mermaid-wrapper {
+  padding: 24px;
+  overflow-x: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: var(--bg-terminal);
+}
+
+.mermaid {
+  width: 100%;
+  max-width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+/* Callout Components */
+.callout {
+  padding: 16px 20px;
+  border-radius: 8px;
+  margin: 1.5rem 0;
+  font-size: 0.92rem;
+  line-height: 1.6;
+}
+.callout strong {
+  display: inline-block;
+  margin-bottom: 4px;
+}
+.callout-experimental {
+  background: rgba(139, 92, 246, 0.08);
+  border-left: 4px solid #8b5cf6;
+  color: var(--text-muted);
+}
+.callout-decision {
+  background: rgba(59, 130, 246, 0.08);
+  border-left: 4px solid #3b82f6;
+  color: var(--text-muted);
+}
+.callout-limitation {
+  background: rgba(245, 158, 11, 0.08);
+  border-left: 4px solid #f59e0b;
+  color: var(--text-muted);
+}
+.callout-security {
+  background: rgba(239, 68, 68, 0.08);
+  border-left: 4px solid #ef4444;
+  color: var(--text-muted);
+}
+.callout-tradeoff {
+  background: rgba(16, 185, 129, 0.08);
+  border-left: 4px solid #10b981;
+  color: var(--text-muted);
 }
 
 pre:not(.diagram-content) {

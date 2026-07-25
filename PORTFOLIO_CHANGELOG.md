@@ -60,6 +60,27 @@
 
 ---
 
+## Phase 3 — Engineering Blog UX & Architecture Visualization
+
+**Date:** July 2026  
+**Scope:** Mermaid.js Integration, Architecture Diagrams, CSS Callout Components, Design Decision Tables, Reading Width Audit.  
+
+### Key Upgrades
+1. **Mermaid.js Integration**: Added CDN-based Mermaid.js (`v10`) initialization supporting flowcharts, sequence diagrams, and state diagrams across light and dark themes.
+2. **7 Flagship Engineering Articles Enhanced**:
+   - `building-self-verifying-cognitive-architecture-hsci.html`: Added 3 Mermaid diagrams (Subsystems Flowchart, NGSS Search, Z3 Verification State Machine), status callouts, and design tradeoffs table.
+   - `designing-an-ai-trading-system-without-model-control.html`: Added AI Signal vs Deterministic Risk Gate flowchart, disclaimers, and tradeoffs table.
+   - `from-pytorch-to-onnx-low-latency-inference-pipeline.html`: Added Training Path vs Inference Serving Path flowchart and decision callouts.
+   - `building-production-ready-oauth2-automation-sdk-upstox.html`: Added OAuth2 interactive sequence diagram (App → SDK → Browser → Upstox → TOTP → Storage).
+   - `designing-real-time-market-data-pipeline-algorithmic-trading.html`: Added Redis Pub/Sub stream flowchart and WebSocket Reconnection state machine.
+   - `why-an-ai-system-is-more-than-a-model.html`: Added Layered Production AI System flowchart and schema validation snippets.
+   - `designing-safe-ai-assisted-trading-system.html`: Added Stock Selection to Risk Gate flowchart.
+3. **CSS Callout Components**: Created `.callout-experimental`, `.callout-decision`, `.callout-limitation`, `.callout-security`, and `.callout-tradeoff` in `blog/blog.css`.
+4. **Typography & Layout**: Standardized reading width (`.prose` max-width 780px for 70-85 characters per line), removed emoji headings, and added 2-3 cross-links per article.
+5. **Audits & Documentation**: Created `BLOG_UX_AUDIT.md`.
+
+---
+
 ## 4. Final Links & Verification Checklist
 
 - PyPI Package (`upstox-auth-pro`): **Verified**
