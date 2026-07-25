@@ -160,6 +160,7 @@
       <div class="filter-container fade-in">
         <button class="filter-btn active" data-filter="all">All Systems</button>
         <button class="filter-btn" data-filter="featured">Featured Systems</button>
+        <button class="filter-btn" data-filter="ai">AI Systems & Research</button>
         <button class="filter-btn" data-filter="java">Java / Spring</button>
         <button class="filter-btn" data-filter="python">Python / FastAPI</button>
         <button class="filter-btn" data-filter="system">Distributed Systems</button>
@@ -215,9 +216,38 @@
           ]
         },
         {
+          title: "HSCI (Hyper-Symbolic Cognitive Invention)",
+          description: "Experimental self-verifying cognitive architecture coupling neural search heuristics with Microsoft Z3 SMT logic solvers.",
+          category: ["python", "ai", "featured"],
+          tags: ["AI Architecture", "Z3 Prover", "Working Memory", "Symbolic Reasoning", "pytest"],
+          status: "Research / Experimental",
+          icon: "bx-atom",
+          link: "blog/building-self-verifying-cognitive-architecture-hsci.html",
+          repo: "HNDS-HSCI/ai-model",
+          highlights: [
+            "Architected a native cognitive kernel (BrainKernel) managing context initialization, stage transitions, and Z3 thread-isolated cleanups.",
+            "Built WorkingMemory maintaining semantic AST frames and attention snapshots backed by transactional SQLite SAVEPOINT rollbacks.",
+            "Implemented SMT-backed axiom validation using Microsoft Z3 Theorem Prover with a 206-test verification suite."
+          ]
+        },
+        {
+          title: "AITOS",
+          description: "AI-assisted market analysis and decision pipeline gating ML signal generation behind deterministic risk filters and safety boundaries.",
+          category: ["python", "ai", "system", "featured"],
+          tags: ["FastAPI", "PyTorch", "ONNX Runtime", "Risk Engine", "Paper Trading"],
+          status: "Experimental / WIP",
+          icon: "bx-chip",
+          link: "blog/designing-safe-ai-assisted-trading-system.html",
+          highlights: [
+            "Designed a multi-stage execution pipeline: Data Validation → Feature Extraction → Transformer Scoring → Risk Gate.",
+            "Enforced hard risk boundaries: capital caps, daily drawdown limits, and market session time checks (09:15–15:25 IST).",
+            "Built a Sequence Model & Inference Subsystem exporting PyTorch models to static ONNX graphs for low-latency ONNX Runtime inference."
+          ]
+        },
+        {
           title: "Upstox Auth Pro Java",
           description: "Open-source Java SDK automating Upstox OAuth2 authentication and token management workflows.",
-          category: ["java", "system", "featured"],
+          category: ["java", "system"],
           tags: ["Java", "Maven", "OAuth2", "REST APIs"],
           status: "Live",
           icon: "bxl-java",
@@ -232,7 +262,7 @@
         {
           title: "Prindox",
           description: "Online document processing and printing platform supporting order management and backend automation.",
-          category: ["python", "system", "featured"],
+          category: ["python", "system"],
           tags: ["Python", "FastAPI", "PostgreSQL", "REST APIs"],
           status: "Live",
           icon: "bx-file-blank",
