@@ -1,0 +1,122 @@
+{
+  "generatedAt": "2026-07-25T13:05:53.026Z",
+  "owner": "Brijesh Yadav (recscse)",
+  "totalPublicRepos": 8,
+  "totalBytes": 542190,
+  "languages": [
+    {
+      "name": "Python",
+      "bytes": 245100,
+      "percentage": 45.2
+    },
+    {
+      "name": "Java",
+      "bytes": 185400,
+      "percentage": 34.2
+    },
+    {
+      "name": "JavaScript",
+      "bytes": 62400,
+      "percentage": 11.5
+    },
+    {
+      "name": "HTML",
+      "bytes": 28100,
+      "percentage": 5.18
+    },
+    {
+      "name": "CSS",
+      "bytes": 15300,
+      "percentage": 2.82
+    },
+    {
+      "name": "Shell",
+      "bytes": 5890,
+      "percentage": 1.1
+    }
+  ],
+  "featuredRepositories": [
+    {
+      "name": "upstox-auth-pro",
+      "fullName": "growthquantix/upstox-auth-pro",
+      "description": "Published open-source Python SDK automating Upstox OAuth2 login, Playwright TOTP 2FA, token storage, and diagnostic retries.",
+      "htmlUrl": "https://github.com/growthquantix/upstox-auth-pro",
+      "language": "Python",
+      "stargazersCount": 5,
+      "forksCount": 2,
+      "updatedAt": "2026-02-15T12:00:00Z",
+      "topics": [
+        "python-sdk",
+        "oauth2",
+        "playwright",
+        "totp",
+        "pypi"
+      ]
+    },
+    {
+      "name": "ai-model",
+      "fullName": "HNDS-HSCI/ai-model",
+      "description": "Hyper-Symbolic Cognitive Invention (HSCI) v0.1.0-alpha: Self-verifying cognitive architecture coupling neural search heuristics with Microsoft Z3 SMT logic solvers.",
+      "htmlUrl": "https://github.com/HNDS-HSCI/ai-model",
+      "language": "Python",
+      "stargazersCount": 8,
+      "forksCount": 3,
+      "updatedAt": "2026-02-22T10:00:00Z",
+      "topics": [
+        "cognitive-architecture",
+        "z3-prover",
+        "symbolic-reasoning",
+        "pytest"
+      ]
+    },
+    {
+      "name": "upstox-auth-pro-java",
+      "fullName": "growthquantix/upstox-auth-pro-java",
+      "description": "Open-source Java SDK automating Upstox OAuth2 authentication and token refresh handling.",
+      "htmlUrl": "https://github.com/growthquantix/upstox-auth-pro-java",
+      "language": "Java",
+      "stargazersCount": 3,
+      "forksCount": 1,
+      "updatedAt": "2026-02-14T09:00:00Z",
+      "topics": [
+        "java-sdk",
+        "oauth2",
+        "spring-boot",
+        "maven"
+      ]
+    },
+    {
+      "name": "prindox",
+      "fullName": "recscse/prindox",
+      "description": "Online document processing platform supporting order management and FastAPI REST backend automation.",
+      "htmlUrl": "https://github.com/recscse/prindox",
+      "language": "Python",
+      "stargazersCount": 2,
+      "forksCount": 1,
+      "updatedAt": "2025-11-10T14:00:00Z",
+      "topics": [
+        "fastapi",
+        "postgresql",
+        "python",
+        "rest-api"
+      ]
+    },
+    {
+      "name": "Document-Sharing-System",
+      "fullName": "recscse/Document-Sharing-System",
+      "description": "Microservice for physical-to-digital document handoffs using QR-code token verification and Spring Boot.",
+      "htmlUrl": "https://github.com/recscse/Document-Sharing-System",
+      "language": "Java",
+      "stargazersCount": 2,
+      "forksCount": 0,
+      "updatedAt": "2025-08-04T16:00:00Z",
+      "topics": [
+        "java",
+        "spring-boot",
+        "postgresql",
+        "rbac"
+      ]
+    }
+  ],
+  "allRepositories": []
+}

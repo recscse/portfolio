@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>HSCI — Hyper-Symbolic Cognitive Invention | Brijesh Yadav</title>
+    <link rel="stylesheet" href="../blog/blog.css" />
+    <meta
+      name="description"
+      content="Project Case Study: Hyper-Symbolic Cognitive Invention (HSCI) v0.1.0-alpha, an experimental self-verifying cognitive architecture coupling neural search heuristics with Microsoft Z3 SMT logic solvers."
+    />
+    
+    <!-- Mermaid.js -->
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+          mermaid.initialize({
+            startOnLoad: true,
+            theme: 'dark',
+            securityLevel: 'loose',
+            fontFamily: 'JetBrains Mono, monospace'
+          });
+        });
+    </script>
+
+    <script>
+        const savedTheme = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+        document.documentElement.setAttribute('data-theme', savedTheme);
+    </script>
+  </head>
+  <body>
+    <!-- Navbar -->
+    <nav class="nav-bar">
+      <div class="nav-left">
+        <a href="../index.html" class="nav-brand">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+            </svg>
+            Brijesh Yadav
+        </a>
+      </div>
+      <div style="display: flex; gap: 12px; align-items: center;">
+          <a href="../projects.html" class="nav-link">← All Projects</a>
+          <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme">
+            <svg class="sun-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display: none;">
+                <circle cx="12" cy="12" r="5"></circle>
+                <line x1="12" y1="1" x2="12" y2="3"></line>
+                <line x1="12" y1="21" x2="12" y2="23"></line>
+                <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                <line x1="1" y1="12" x2="3" y2="12"></line>
+                <line x1="21" y1="12" x2="23" y2="12"></line>
+                <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+            </svg>
+            <svg class="moon-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+            </svg>
+          </button>
+      </div>
+    </nav>
+
+    <div class="layout">
+      <!-- Main Project Document -->
+      <article class="prose">
+        <header class="post-header">
+          <div class="post-meta">
+            <span>Project Case Study</span>
+            <span>·</span>
+            <span>Research / Experimental (v0.1.0-alpha)</span>
+          </div>
+          <h1 class="post-title">HSCI — Hyper-Symbolic Cognitive Invention</h1>
+          <p class="lead">
+            An experimental self-verifying cognitive architecture coupling neural search heuristics with Microsoft Z3 SMT logic solvers, structured AST WorkingMemory, and zero third-party commercial LLM dependencies.
+          </p>
+          <div class="tags-container" style="margin-top: 16px;">
+            <span class="tag">AI Architecture</span>
+            <span class="tag">Python 3.11+</span>
+            <span class="tag">Microsoft Z3 SMT</span>
+            <span class="tag">SQLite SAVEPOINTs</span>
+            <span class="tag">pytest (206 tests)</span>
+          </div>
+
+          <div style="display: flex; gap: 12px; justify-content: center; margin-top: 24px; flex-wrap: wrap;">
+            <a href="https://github.com/HNDS-HSCI/ai-model" target="_blank" rel="noopener noreferrer" class="tag" style="background: var(--primary); color: #fff; text-decoration: none; padding: 8px 18px;">
+              GitHub Repository →
+            </a>
+            <a href="../blog/building-self-verifying-cognitive-architecture-hsci.html" class="tag" style="background: rgba(139, 92, 246, 0.2); color: var(--accent); text-decoration: none; padding: 8px 18px;">
+              Read Architecture Case Study →
+            </a>
+          </div>
+        </header>
+
+        <!-- STATUS CALLOUT -->
+        <div class="callout callout-experimental">
+          <strong>[PROJECT STATUS: RESEARCH / EXPERIMENTAL]</strong><br />
+          HSCI v0.1.0-alpha is a self-contained cognitive architecture backed by 206 passing `pytest` tests. It avoids 3rd-party commercial LLM APIs, utilizing local matrix operations and formal SMT theorem proving.
+        </div>
+
+        <!-- OVERVIEW -->
+        <h2 id="overview">1. Executive Overview</h2>
+        <p>
+          Unlike probabilistic language models that estimate tokens statistically, HSCI executes reasoning cycles through <strong>Axiomatic Deliberation</strong>. It converts user queries into structured semantic AST frames, spreads activation over concept networks, verifies logical constraints using Microsoft Z3 SMT solvers, and outputs explainable answers.
+        </p>
+
+        <!-- ARCHITECTURE DIAGRAM -->
+        <h2 id="architecture">2. System Architecture</h2>
+
+        <div class="architecture-diagram">
+          <div class="diagram-header">
+            <div class="window-controls">
+              <div class="control red"></div>
+              <div class="control yellow"></div>
+              <div class="control green"></div>
+            </div>
+            <div class="diagram-title">HSCI Component Execution Pipeline</div>
+          </div>
+          <div class="mermaid-wrapper">
+            <pre class="mermaid">
+flowchart TD
+    A[Input Query] --> B[Understanding Engine]
+    B --> C[Knowledge Manager Facade]
+    C --> D[Concept Activation Engine CAE]
+    D --> E[Working Memory AST Frames]
+    E --> F[Cognitive Reasoning Engine CRE]
+    F --> G[NativeSymbolicEngine Z3 SMT]
+    G -->|SAT: Valid| H[Answer Generation Engine AGE]
+    G -->|UNSAT: Contradiction| I[SQLite SAVEPOINT Rollback]
+    I --> F
+    H --> J[Explainable Answer Output]
+            </pre>
+          </div>
+        </div>
+
+        <!-- KEY COMPONENTS -->
+        <h2 id="components">3. Key Subsystems</h2>
+        <ul>
+          <li><strong>BrainKernel (Core):</strong> Manages initialization, stage transitions, and thread-isolated Z3 solver cleanups. (Startup: 1.82ms).</li>
+          <li><strong>WorkingMemory (State):</strong> Holds semantic frames and attention snapshots backed by SQLite `SAVEPOINT` rollbacks.</li>
+          <li><strong>NativeSymbolicEngine (Logic):</strong> SMT-backed axiom validator evaluating logic satisfiability via Microsoft Z3.</li>
+          <li><strong>Concept Activation Engine (CAE):</strong> Spreads activation values over conceptual graphs with decay algorithms.</li>
+          <li><strong>Evaluation Framework:</strong> Automated `evaluation_runner.py` testing `Basic_Math.json`, `Java_OOP.json`, and `Logic.json`.</li>
+        </ul>
+
+        <!-- TECH STACK BY ROLE -->
+        <h2 id="tech-stack">4. Technology Stack by Role</h2>
+        <div style="overflow-x: auto; margin: 24px 0;">
+          <table style="width: 100%; border-collapse: collapse; font-size: 0.88rem;">
+            <thead>
+              <tr style="background: rgba(255,255,255,0.04); border-bottom: 2px solid var(--glass-border); text-align: left;">
+                <th style="padding: 10px;">Layer / Role</th>
+                <th style="padding: 10px;">Technologies Used</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr style="border-bottom: 1px solid var(--glass-border);">
+                <td style="padding: 10px;"><strong>Core Language & Runtime</strong></td>
+                <td style="padding: 10px;">Python 3.11+, Asyncio</td>
+              </tr>
+              <tr style="border-bottom: 1px solid var(--glass-border);">
+                <td style="padding: 10px;"><strong>Theorem Proving & Logic</strong></td>
+                <td style="padding: 10px;">Microsoft Z3 Theorem Prover (SMT Solver)</td>
+              </tr>
+              <tr style="border-bottom: 1px solid var(--glass-border);">
+                <td style="padding: 10px;"><strong>State & Persistence</strong></td>
+                <td style="padding: 10px;">SQLite (Transactional SAVEPOINTs), JSONL Episode Storage</td>
+              </tr>
+              <tr style="border-bottom: 1px solid var(--glass-border);">
+                <td style="padding: 10px;"><strong>Testing & CI/CD</strong></td>
+                <td style="padding: 10px;">pytest (206 passed tests), GitHub Actions CI</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- RELATED WRITING -->
+        <h2 id="related-writing">5. Related Writing & References</h2>
+        <ul>
+          <li><a href="../blog/building-self-verifying-cognitive-architecture-hsci.html">Architecture Case Study: Inside HSCI</a></li>
+          <li><a href="https://github.com/HNDS-HSCI/ai-model" target="_blank" rel="noopener noreferrer">HSCI GitHub Repository</a></li>
+        </ul>
+      </article>
+
+      <!-- Sidebar Table of Contents -->
+      <aside class="toc">
+        <div class="toc-header">On this page</div>
+        <div class="toc-links">
+          <a href="#overview" class="toc-link">1. Executive Overview</a>
+          <a href="#architecture" class="toc-link">2. Architecture</a>
+          <a href="#components" class="toc-link">3. Key Subsystems</a>
+          <a href="#tech-stack" class="toc-link">4. Tech Stack</a>
+          <a href="#related-writing" class="toc-link">5. Related Writing</a>
+        </div>
+      </aside>
+    </div>
+
+    <footer class="footer">
+      <p>© <span id="year"></span> Brijesh Yadav</p>
+    </footer>
+
+    <script>
+      document.getElementById('year').textContent = new Date().getFullYear();
+
+      const themeBtn = document.getElementById('theme-toggle');
+      const sunIcon = themeBtn.querySelector('.sun-icon');
+      const moonIcon = themeBtn.querySelector('.moon-icon');
+
+      function updateIcons(theme) {
+          if (theme === 'light') {
+              sunIcon.style.display = 'none';
+              moonIcon.style.display = 'block';
+          } else {
+              sunIcon.style.display = 'block';
+              moonIcon.style.display = 'none';
+          }
+      }
+
+      const currentTheme = document.documentElement.getAttribute('data-theme');
+      updateIcons(currentTheme);
+
+      themeBtn.addEventListener('click', () => {
+          const current = document.documentElement.getAttribute('data-theme');
+          const next = current === 'light' ? 'dark' : 'light';
+          document.documentElement.setAttribute('data-theme', next);
+          localStorage.setItem('theme', next);
+          updateIcons(next);
+      });
+    </script>
+  </body>
+</html>

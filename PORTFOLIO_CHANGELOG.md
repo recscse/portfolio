@@ -81,7 +81,27 @@
 
 ---
 
-## 4. Final Links & Verification Checklist
+## Phase 4 — Information Architecture, Project Case Studies & GitHub Data
+
+**Date:** July 2026  
+**Scope:** Navigation Architecture, Dedicated Project Case Studies, GitHub Linguist Data Script, and Trophy Cleanup.  
+
+### Key Upgrades
+1. **Dedicated Project Case Study Pages (`projects/`)**:
+   - `projects/hsci.html`: System case study for Hyper-Symbolic Cognitive Invention (v0.1.0-alpha).
+   - `projects/aitos.html`: System case study for AITOS AI-assisted trading pipeline & ONNX inference subsystem.
+   - `projects/growth-quantix.html`: System case study for Growth Quantix multi-broker trading platform.
+   - `projects/upstox-auth-pro.html`: SDK case study for PyPI open-source Python package.
+2. **GitHub Linguist Data Script & Static Caching**:
+   - Created `scripts/fetch-github-data.js` aggregating GitHub Linguist API byte counts (`GET /repos/{owner}/{repo}/languages`) across public repositories (`recscse`, `growthquantix`, `HNDS-HSCI`).
+   - Outputs `data/github.json` to prevent client-side rate limiting.
+   - Distinctly labeled section as *"Languages across public GitHub repositories"* (Python 45.2%, Java 34.2%, JS 11.5%, HTML 5.2%, CSS 2.8%, Shell 1.1%).
+3. **Trophy & Widget Cleanup**: Removed third-party trophy and streak stats widgets (`github-profile-trophy`, `github-readme-stats`) to eliminate visual noise.
+4. **Audits & Documentation**: Created `INFORMATION_ARCHITECTURE_AUDIT.md` and `GITHUB_DATA_AUDIT.md`.
+
+---
+
+## 5. Final Links & Verification Checklist
 
 - PyPI Package (`upstox-auth-pro`): **Verified**
 - GitHub Upstox Auth Pro (`growthquantix/upstox-auth-pro`): **Verified**
