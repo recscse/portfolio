@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <!-- Core Pages -->
+  <url>
+    <loc>https://recscse.github.io/index.html</loc>
+    <priority>1.00</priority>
+  </url>
+  <url>
+    <loc>https://recscse.github.io/projects.html</loc>
+    <priority>0.90</priority>
+  </url>
+  <url>
+    <loc>https://recscse.github.io/blog/index.html</loc>
+    <priority>0.90</priority>
+  </url>
+  <url>
+    <loc>https://recscse.github.io/skills.html</loc>
+    <priority>0.80</priority>
+  </url>
+
+  <!-- Dedicated Project Case Studies -->
+  <url>
+    <loc>https://recscse.github.io/projects/growth-quantix.html</loc>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://recscse.github.io/projects/hsci.html</loc>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://recscse.github.io/projects/aitos.html</loc>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://recscse.github.io/projects/upstox-auth-pro.html</loc>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://recscse.github.io/projects/prindox.html</loc>
+    <priority>0.80</priority>
+  </url>
+
+  <!-- Engineering Blog Articles -->
+  <url>
+    <loc>https://recscse.github.io/blog/building-self-verifying-cognitive-architecture-hsci.html</loc>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://recscse.github.io/blog/designing-an-ai-trading-system-without-model-control.html</loc>
+    <priority>0.80</priority>
+  </url>
+  <url>
+    <loc>https://recscse.github.io/blog/from-pytorch-to-onnx-low-latency-inference-pipeline.html</loc>
+    <priority>0.80</priority>
+  </url>
+  <url>
+    <loc>https://recscse.github.io/blog/building-production-ready-oauth2-automation-sdk-upstox.html</loc>
+    <priority>0.80</priority>
+  </url>
+  <url>
+    <loc>https://recscse.github.io/blog/designing-real-time-market-data-pipeline-algorithmic-trading.html</loc>
+    <priority>0.80</priority>
+  </url>
+  <url>
+    <loc>https://recscse.github.io/blog/why-an-ai-system-is-more-than-a-model.html</loc>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://recscse.github.io/blog/designing-safe-ai-assisted-trading-system.html</loc>
+    <priority>0.75</priority>
+  </url>
+</urlset>

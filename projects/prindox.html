@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Prindox — Document Processing Platform | Brijesh Yadav</title>
+    <link rel="stylesheet" href="../blog/blog.css" />
+    <meta
+      name="description"
+      content="Project Case Study: Prindox, an online document processing and print-order platform featuring FastAPI REST APIs, PostgreSQL schema optimization, and async validation workflows."
+    />
+    
+    <!-- Mermaid.js -->
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+          mermaid.initialize({
+            startOnLoad: true,
+            theme: 'dark',
+            securityLevel: 'loose',
+            fontFamily: 'JetBrains Mono, monospace'
+          });
+        });
+    </script>
+
+    <script>
+        const savedTheme = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+        document.documentElement.setAttribute('data-theme', savedTheme);
+    </script>
+  </head>
+  <body>
+    <!-- Navbar -->
+    <nav class="nav-bar">
+      <div class="nav-left">
+        <a href="../index.html" class="nav-brand">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+            </svg>
+            Brijesh Yadav
+        </a>
+      </div>
+      <div style="display: flex; gap: 12px; align-items: center;">
+          <a href="../projects.html" class="nav-link">← All Projects</a>
+          <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme">
+            <svg class="sun-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display: none;">
+                <circle cx="12" cy="12" r="5"></circle>
+                <line x1="12" y1="1" x2="12" y2="3"></line>
+                <line x1="12" y1="21" x2="12" y2="23"></line>
+                <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                <line x1="1" y1="12" x2="3" y2="12"></line>
+                <line x1="21" y1="12" x2="23" y2="12"></line>
+                <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+            </svg>
+            <svg class="moon-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+            </svg>
+          </button>
+      </div>
+    </nav>
+
+    <div class="layout">
+      <article class="prose">
+        <header class="post-header">
+          <div class="post-meta">
+            <span>Project Case Study</span>
+            <span>·</span>
+            <span>Live Platform</span>
+          </div>
+          <h1 class="post-title">Prindox — Document Processing Platform</h1>
+          <p class="lead">
+            Online document processing and printing platform supporting order management, REST APIs, PostgreSQL schema optimization, and asynchronous background validation workflows.
+          </p>
+          <div class="tags-container" style="margin-top: 16px;">
+            <span class="tag">Python</span>
+            <span class="tag">FastAPI</span>
+            <span class="tag">PostgreSQL</span>
+            <span class="tag">REST APIs</span>
+            <span class="tag">Async Background Jobs</span>
+          </div>
+
+          <div style="display: flex; gap: 12px; justify-content: center; margin-top: 24px; flex-wrap: wrap;">
+            <a href="https://github.com/recscse/prindox" target="_blank" rel="noopener noreferrer" class="tag" style="background: var(--primary); color: #fff; text-decoration: none; padding: 8px 18px;">
+              GitHub Source Repository →
+            </a>
+          </div>
+        </header>
+
+        <h2 id="overview">1. System Overview</h2>
+        <p>
+          Prindox handles automated document uploads, print option calculations, order queuing, and fulfillment tracking. The system features a FastAPI REST backend with asynchronous validation workers and an indexed PostgreSQL database.
+        </p>
+
+        <!-- ARCHITECTURE DIAGRAM -->
+        <h2 id="architecture">2. Architecture & Data Flow</h2>
+
+        <div class="architecture-diagram">
+          <div class="diagram-header">
+            <div class="window-controls">
+              <div class="control red"></div>
+              <div class="control yellow"></div>
+              <div class="control green"></div>
+            </div>
+            <div class="diagram-title">Prindox Document Ingestion Topology</div>
+          </div>
+          <div class="mermaid-wrapper">
+            <pre class="mermaid">
+flowchart TD
+    A[Client Web Request] --> B[FastAPI REST API Gateway]
+    B --> C[Pydantic Schema Validation]
+    C --> D[Async Document Storage Engine]
+    D --> E[PostgreSQL Database]
+    D --> F[Background Order Validation Worker]
+    F --> G[Fulfillment Queue]
+            </pre>
+          </div>
+        </div>
+
+        <p>
+          <strong>How the flow works:</strong>
+        </p>
+        <ol>
+          <li>Client submits document upload request and print parameters to FastAPI endpoint.</li>
+          <li>Pydantic schemas validate input payload, file extension, and sizing constraints.</li>
+          <li>Async storage worker persists document metadata in PostgreSQL and streams file payload.</li>
+          <li>Background order validation worker calculates page counts and pricing before queuing fulfillment.</li>
+        </ol>
+
+        <h2 id="components-table">3. Subsystem Component Responsibilities</h2>
+
+        <div style="overflow-x: auto; margin: 24px 0;">
+          <table style="width: 100%; border-collapse: collapse; font-size: 0.88rem;">
+            <thead>
+              <tr style="background: rgba(255,255,255,0.04); border-bottom: 2px solid var(--glass-border); text-align: left;">
+                <th style="padding: 10px;">Component</th>
+                <th style="padding: 10px;">Responsibility</th>
+                <th style="padding: 10px;">Technology</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr style="border-bottom: 1px solid var(--glass-border);">
+                <td style="padding: 10px;"><strong>FastAPI Gateway</strong></td>
+                <td style="padding: 10px;">REST endpoints for document upload, order creation, and status tracking.</td>
+                <td style="padding: 10px;">Python / FastAPI</td>
+              </tr>
+              <tr style="border-bottom: 1px solid var(--glass-border);">
+                <td style="padding: 10px;"><strong>Database Layer</strong></td>
+                <td style="padding: 10px;">Relational schema for user accounts, document metadata, and order state.</td>
+                <td style="padding: 10px;">PostgreSQL</td>
+              </tr>
+              <tr style="border-bottom: 1px solid var(--glass-border);">
+                <td style="padding: 10px;"><strong>Validation Engine</strong></td>
+                <td style="padding: 10px;">Async background worker computing page dimensions and file safety constraints.</td>
+                <td style="padding: 10px;">Pydantic / Python Asyncio</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h2 id="tech-stack">4. Technology Stack</h2>
+        <ul>
+          <li><strong>Backend Framework:</strong> Python 3.10+, FastAPI, Pydantic</li>
+          <li><strong>Database & Storage:</strong> PostgreSQL, SQLModel / SQLAlchemy</li>
+          <li><strong>API Standard:</strong> OpenAPI / REST</li>
+        </ul>
+
+        <h2 id="related-links">5. Links & References</h2>
+        <ul>
+          <li><a href="https://github.com/recscse/prindox" target="_blank" rel="noopener noreferrer">Prindox GitHub Repository</a></li>
+        </ul>
+      </article>
+
+      <aside class="toc">
+        <div class="toc-header">On this page</div>
+        <div class="toc-links">
+          <a href="#overview" class="toc-link">1. Overview</a>
+          <a href="#architecture" class="toc-link">2. Architecture</a>
+          <a href="#components-table" class="toc-link">3. Components</a>
+          <a href="#tech-stack" class="toc-link">4. Tech Stack</a>
+          <a href="#related-links" class="toc-link">5. Links</a>
+        </div>
+      </aside>
+    </div>
+
+    <footer class="footer">
+      <p>© <span id="year"></span> Brijesh Yadav</p>
+    </footer>
+
+    <script>
+      document.getElementById('year').textContent = new Date().getFullYear();
+
+      const themeBtn = document.getElementById('theme-toggle');
+      const sunIcon = themeBtn.querySelector('.sun-icon');
+      const moonIcon = themeBtn.querySelector('.moon-icon');
+
+      function updateIcons(theme) {
+          if (theme === 'light') {
+              sunIcon.style.display = 'none';
+              moonIcon.style.display = 'block';
+          } else {
+              sunIcon.style.display = 'block';
+              moonIcon.style.display = 'none';
+          }
+      }
+
+      const currentTheme = document.documentElement.getAttribute('data-theme');
+      updateIcons(currentTheme);
+
+      themeBtn.addEventListener('click', () => {
+          const current = document.documentElement.getAttribute('data-theme');
+          const next = current === 'light' ? 'dark' : 'light';
+          document.documentElement.setAttribute('data-theme', next);
+          localStorage.setItem('theme', next);
+          updateIcons(next);
+      });
+    </script>
+  </body>
+</html>
