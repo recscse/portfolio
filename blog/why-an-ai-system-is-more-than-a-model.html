@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Why an AI System Is More Than a Model | Brijesh Yadav</title>
     <link rel="stylesheet" href="blog.css" />
+    <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml" />
     <meta
       name="description"
       content="An engineering case study analyzing why production AI applications require robust software infrastructure—context management, memory, deterministic validation, tool isolation, and observability—far beyond model weights."
@@ -44,6 +45,13 @@
         const savedTheme = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
         document.documentElement.setAttribute('data-theme', savedTheme);
     </script>
+      <meta property="og:type" content="article" />
+    <meta property="og:title" content="Why an AI System Is More Than a Model" />
+    <meta property="og:description" content="An engineering case study analyzing why production AI applications require robust software infrastructure—context management, memory, deterministic validation, tool isolation, and observability—far beyond model weights." />
+    <meta property="og:image" content="https://recscse.github.io/assets/banner.svg" />
+    <meta property="og:url" content="https://recscse.github.io/blog/why-an-ai-system-is-more-than-a-model.html" />
+    <link rel="canonical" href="https://recscse.github.io/blog/why-an-ai-system-is-more-than-a-model.html" />
+      <script defer data-domain="recscse.github.io" src="https://plausible.io/js/script.js"></script>
   </head>
   <body>
     <!-- Navbar -->
@@ -63,6 +71,7 @@
                 <circle cx="12" cy="12" r="5"></circle>
                 <line x1="12" y1="1" x2="12" y2="3"></line>
                 <line x1="12" y1="21" x2="12" y2="23"></line>
+                <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
                 <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
                 <line x1="1" y1="12" x2="3" y2="12"></line>
                 <line x1="21" y1="12" x2="23" y2="12"></line>
@@ -145,14 +154,15 @@ flowchart TD
           Raw model outputs are non-deterministic text or tensor arrays. Production systems enforce strict typing using validation libraries to deserialize outputs into strongly-typed objects:
         </p>
 
-        <pre><code class="language-python">from pydantic import BaseModel, Field, validator
+        <pre><code class="language-python">from pydantic import BaseModel, Field, field_validator
 
 class DecisionPayload(BaseModel):
     action: str = Field(..., description="Action name, e.g. BUY, SELL, HOLD")
     confidence: float = Field(..., ge=0.0, le=1.0)
     reasoning_summary: str
-    
-    @validator("action")
+
+    @field_validator("action")
+    @classmethod
     def validate_action(cls, v):
         allowed = {"BUY", "SELL", "HOLD"}
         if v.upper() not in allowed:

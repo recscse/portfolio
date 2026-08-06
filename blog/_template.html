@@ -5,8 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Post Title | Brijesh Yadav</title>
     <link rel="stylesheet" href="blog.css" />
+    <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml" />
     <meta name="description" content="Brief summary of the post for SEO." />
-    
+
+    <!-- Open Graph / Social Sharing -->
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content="Post Title" />
+    <meta property="og:description" content="Brief summary of the post for SEO." />
+    <meta property="og:image" content="https://recscse.github.io/assets/banner.svg" />
+    <meta property="og:url" content="https://recscse.github.io/blog/REPLACE-WITH-FILENAME.html" />
+    <link rel="canonical" href="https://recscse.github.io/blog/REPLACE-WITH-FILENAME.html" />
+
     <!-- Structured Data for SEO -->
     <script type="application/ld+json">
     {
@@ -29,6 +38,7 @@
         const savedTheme = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
         document.documentElement.setAttribute('data-theme', savedTheme);
     </script>
+      <script defer data-domain="recscse.github.io" src="https://plausible.io/js/script.js"></script>
   </head>
   <body>
     <!-- Navbar -->

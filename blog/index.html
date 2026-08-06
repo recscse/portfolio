@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Brijesh Yadav — Engineering Blog</title>
     <link rel="stylesheet" href="blog.css" />
+    <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml" />
     <meta
       name="description"
       content="Engineering notes by Brijesh Yadav: Java, Spring Boot, AWS, FastAPI, real-time systems."
@@ -13,6 +14,13 @@
         const savedTheme = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
         document.documentElement.setAttribute('data-theme', savedTheme);
     </script>
+      <meta property="og:type" content="website" />
+    <meta property="og:title" content="Brijesh Yadav — Engineering Blog" />
+    <meta property="og:description" content="Engineering notes by Brijesh Yadav: Java, Spring Boot, AWS, FastAPI, real-time systems." />
+    <meta property="og:image" content="https://recscse.github.io/assets/banner.svg" />
+    <meta property="og:url" content="https://recscse.github.io/blog/index.html" />
+    <link rel="canonical" href="https://recscse.github.io/blog/index.html" />
+      <script defer data-domain="recscse.github.io" src="https://plausible.io/js/script.js"></script>
   </head>
   <body>
     <!-- Navigation -->
@@ -27,6 +35,7 @@
       </div>
       <div style="display: flex; gap: 12px; align-items: center;">
           <a href="../index.html" class="nav-link">← Back to Portfolio</a>
+          <a href="../hire.html" class="nav-link">Hire Me</a>
           <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme">
             <svg class="sun-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display: none;">
                 <circle cx="12" cy="12" r="5"></circle>
@@ -156,36 +165,12 @@
           url: "building-production-ready-oauth2-automation-sdk-upstox.html",
         },
         {
-          title: "Upstox Real-Time Market Data: WebSocket Implementation Guide",
-          date: "2026-02-12",
-          summary:
-            "A granular technical guide on implementing a low-latency, binary-encoded WebSocket client for real-time market data fetching.",
-          tags: ["WebSockets", "Python", "Protobuf", "Technical Guide"],
-          url: "upstox-websocket-implementation.html",
-        },
-        {
-          title: "The Math of Winning: Implementing the Kelly Criterion Risk Engine",
+          title: "The Math of Winning: Implementing the Kelly Criterion for Institutional Risk Management",
           date: "2026-02-11",
           summary:
             "A deep-dive into replacing fixed-lot trading with a mathematically optimal position sizing strategy to eliminate the risk of ruin.",
           tags: ["Risk Management", "Mathematics", "Quantitative Finance"],
           url: "kelly-criterion-risk-engine.html",
-        },
-        {
-          title: "Latency Kills: Building a High-Speed Market Data Engine",
-          date: "2026-02-10",
-          summary:
-            "A technical deep-dive into implementing Upstox V3 WebSockets and Protocol Buffers for near-zero lag market data streaming.",
-          tags: ["Python", "WebSockets", "Protobuf", "FinTech"],
-          url: "upstox-websocket-engine.html",
-        },
-        {
-          title: "Designing a Scalable Market Data Streaming Architecture",
-          date: "2025-12-27",
-          summary:
-            "A deep dive into my algo trading project's architecture: FastAPI, Redis Pub/Sub, and Socket.IO for real-time market data.",
-          tags: ["System Design", "FastAPI", "Redis"],
-          url: "scalable-market-data-architecture.html",
         },
         {
           title: "Server-Sent Events (SSE) for Live Analytics Feeds",
@@ -196,15 +181,7 @@
           url: "server-sent-events-analytics.html",
         },
         {
-          title: "Growth Quantix — Live Data to Signals",
-          date: "2025-08-20",
-          summary:
-            "How I wired a low-latency live market feed into a modular signal engine using FastAPI, Redis, and WebSockets.",
-          tags: ["FastAPI", "WebSockets", "Redis", "Trading"],
-          url: "growth-quantix-live-data.html",
-        },
-        {
-          title: "Spring Boot Email Pipeline: From Queue to Delivery",
+          title: "Spring Boot Email Pipeline: Idempotent Delivery at Scale",
           date: "2025-06-04",
           summary:
             "Designing a resilient email processing microservice with idempotent APIs, retries, and observability.",
@@ -212,7 +189,7 @@
           url: "spring-boot-email-pipeline.html",
         },
         {
-          title: "S3 + CloudFront for Low-Cost Static Hosting",
+          title: "S3 + CloudFront: Production-Grade Static Hosting for Pennies",
           date: "2025-03-18",
           summary:
             "Step-by-step notes on deploying a static portfolio with caching, invalidations, and HTTPS.",
@@ -220,7 +197,7 @@
           url: "s3-cloudfront-static-hosting.html",
         },
         {
-          title: "QR-based Document Handoffs with Audit Trails",
+          title: "QR-based Document Handoffs: Building a Verifiable Audit Trail in Spring Boot",
           date: "2024-11-10",
           summary:
             "Security and UX considerations for a QR-driven document sharing flow backed by PostgreSQL.",
@@ -228,7 +205,7 @@
           url: "qr-document-handoffs.html",
         },
         {
-          title: "Building a Real-Time Market Data Generator",
+          title: "Building a Real-Time Market Data Generator for Testing Algo Trading Systems",
           date: "2025-10-17",
           summary:
             "How I simulated live stock market ticks to test algo trading systems with deterministic replay and burst handling.",

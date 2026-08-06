@@ -5,21 +5,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>404 — Page Not Found | Brijesh Yadav</title>
     <link rel="stylesheet" href="mystyle.css" />
+    <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
     <meta name="robots" content="noindex, follow" />
     <script>
       const savedTheme = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
       document.documentElement.setAttribute('data-theme', savedTheme);
     </script>
+      <script defer data-domain="recscse.github.io" src="https://plausible.io/js/script.js"></script>
   </head>
   <body style="display: flex; flex-direction: column; min-height: 100vh; justify-content: space-between;">
-    <nav class="nav-bar">
-      <div class="nav-left">
-        <a href="index.html" class="nav-brand">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
-          </svg>
-          Brijesh Yadav
-        </a>
+    <nav id="navbar" class="nav" style="margin: 20px auto;">
+      <div class="nav__brand">
+        <span class="logo-dot" aria-hidden="true"></span>
+        <a href="index.html" class="brand">Brijesh Yadav</a>
       </div>
     </nav>
 

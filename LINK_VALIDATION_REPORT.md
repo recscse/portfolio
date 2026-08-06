@@ -1,8 +1,8 @@
 # Link Validation Audit Report
 
 **Date:** July 2026  
-**Total Pages Scanned:** 28  
-**Total Internal Links Checked:** 135  
+**Total Pages Scanned:** 25  
+**Total Internal Links Checked:** 166  
 **Broken Links Count:** 0  
 
 ## Status Summary

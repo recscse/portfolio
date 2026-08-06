@@ -17,6 +17,10 @@
     <loc>https://recscse.github.io/skills.html</loc>
     <priority>0.80</priority>
   </url>
+  <url>
+    <loc>https://recscse.github.io/hire.html</loc>
+    <priority>0.85</priority>
+  </url>
 
   <!-- Dedicated Project Case Studies -->
   <url>

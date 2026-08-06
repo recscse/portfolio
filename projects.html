@@ -22,7 +22,7 @@
       href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css"
     />
 
-    <link rel="icon" href="assets/banner.svg" type="image/svg+xml" />
+    <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
     
     <script>
         const savedTheme = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
@@ -114,6 +114,13 @@
             font-size: 0.8rem;
         }
     </style>
+      <meta property="og:type" content="website" />
+    <meta property="og:title" content="Projects — Brijesh Yadav | Backend Software Engineer" />
+    <meta property="og:description" content="Showcase of backend engineering projects, microservices, and distributed system architectures by Brijesh Yadav." />
+    <meta property="og:image" content="https://recscse.github.io/assets/banner.svg" />
+    <meta property="og:url" content="https://recscse.github.io/projects.html" />
+    <link rel="canonical" href="https://recscse.github.io/projects.html" />
+      <script defer data-domain="recscse.github.io" src="https://plausible.io/js/script.js"></script>
   </head>
   <body>
     <nav id="navbar" class="nav">
@@ -125,6 +132,7 @@
       <div class="nav__controls">
           <div id="navmenu" class="nav__links">
             <a href="index.html">← Back to Home</a>
+            <a href="hire.html">Hire Me</a>
           </div>
 
           <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme">
@@ -176,6 +184,7 @@
         <div style="display: flex; gap: 16px;">
             <a href="index.html">Home</a>
             <a href="blog/index.html">Blog</a>
+            <a href="hire.html">Hire Me</a>
         </div>
       </div>
     </footer>
