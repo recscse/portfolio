@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Designing a Safe AI-Assisted Trading System: From Stock Selection to Execution | Brijesh Yadav</title>
+    <link rel="stylesheet" href="blog.css" />
+    <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml" />
+    <meta
+      name="description"
+      content="An engineering deep dive into building an AI-assisted stock selection pipeline with strict risk filters, paper-trading verification, and execution safety boundaries."
+    />
+    
+    <!-- Structured Data for SEO -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "BlogPosting",
+      "headline": "Designing a Safe AI-Assisted Trading System: From Stock Selection to Execution",
+      "description": "An engineering deep dive into building an AI-assisted stock selection pipeline with strict risk filters.",
+      "author": {
+        "@type": "Person",
+        "name": "Brijesh Yadav",
+        "url": "https://recscse.github.io"
+      },
+      "datePublished": "2026-02-20",
+      "image": "https://recscse.github.io/portfolio/assets/banner.svg"
+    }
+    </script>
+
+    <!-- Mermaid.js -->
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+          mermaid.initialize({
+            startOnLoad: true,
+            theme: 'dark',
+            securityLevel: 'loose',
+            fontFamily: 'JetBrains Mono, monospace'
+          });
+        });
+    </script>
+
+    <script>
+        const savedTheme = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+        document.documentElement.setAttribute('data-theme', savedTheme);
+    </script>
+      <meta property="og:type" content="article" />
+    <meta property="og:title" content="Designing a Safe AI-Assisted Trading System: From Stock Selection to Execution" />
+    <meta property="og:description" content="An engineering deep dive into building an AI-assisted stock selection pipeline with strict risk filters, paper-trading verification, and execution safety boundaries." />
+    <meta property="og:image" content="https://recscse.github.io/portfolio/assets/banner.svg" />
+    <meta property="og:url" content="https://recscse.github.io/portfolio/blog/designing-safe-ai-assisted-trading-system.html" />
+    <link rel="canonical" href="https://recscse.github.io/portfolio/blog/designing-safe-ai-assisted-trading-system.html" />
+      <script defer data-domain="recscse.github.io" src="https://plausible.io/js/script.js"></script>
+  </head>
+  <body>
+    <!-- Navbar -->
+    <nav class="nav-bar">
+      <div class="nav-left">
+        <a href="../index.html" class="nav-brand">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+            </svg>
+            Brijesh Yadav
+        </a>
+      </div>
+      <div style="display: flex; gap: 12px; align-items: center;">
+          <a href="index.html" class="nav-link">← All Posts</a>
+          <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme">
+            <svg class="sun-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display: none;">
+                <circle cx="12" cy="12" r="5"></circle>
+                <line x1="12" y1="1" x2="12" y2="3"></line>
+                <line x1="12" y1="21" x2="12" y2="23"></line>
+                <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                <line x1="1" y1="12" x2="3" y2="12"></line>
+                <line x1="21" y1="12" x2="23" y2="12"></line>
+                <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+            </svg>
+            <svg class="moon-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+            </svg>
+          </button>
+      </div>
+    </nav>
+
+    <div class="layout">
+      <!-- Main Article -->
+      <article class="prose">
+        <header class="post-header">
+          <div class="post-meta">
+            <span>February 20, 2026</span>
+            <span>·</span>
+            <span>13 min read</span>
+          </div>
+          <h1 class="post-title">Designing a Safe AI-Assisted Trading System: From Stock Selection to Execution</h1>
+          <div class="tags-container">
+            <span class="tag">AI Architecture</span>
+            <span class="tag">Risk Management</span>
+            <span class="tag">FastAPI</span>
+            <span class="tag">Trading Infrastructure</span>
+          </div>
+        </header>
+
+        <!-- DISCLAIMER CALLOUT -->
+        <div class="callout callout-limitation">
+          <strong>[RESEARCH NOTE]</strong><br />
+          This article explains software system boundaries and stage-gated risk execution architectures. It is strictly for software engineering purposes.
+        </div>
+
+        <!-- INTRO -->
+        <h2 id="the-problem">1. Separating Prediction from Execution Authority</h2>
+        <p class="lead">
+          Building machine learning pipelines for automated decision systems requires strict isolation between probabilistic score generation and deterministic order execution.
+        </p>
+
+        <!-- MERMAID DIAGRAM -->
+        <h2 id="pipeline-architecture">2. Stage-Gated Selection & Risk Pipeline</h2>
+
+        <div class="architecture-diagram">
+          <div class="diagram-header">
+            <div class="window-controls">
+              <div class="control red"></div>
+              <div class="control yellow"></div>
+              <div class="control green"></div>
+            </div>
+            <div class="diagram-title">Stock Selection & Risk Execution Boundary</div>
+          </div>
+          <div class="mermaid-wrapper">
+            <pre class="mermaid">
+flowchart TD
+    A[NIFTY Stock Universe] --> B[Intelligent Stock Selection Service<br/>0.25% Neutral Threshold Check]
+    B --> C[Option Contract Enhancement<br/>Upstox Real Lot Size Resolver]
+    C --> D[Candidate Order Proposal]
+    D --> E[Deterministic Risk Gate<br/>Capital Cap & Session Check]
+    E -->|Approved| F[Paper Trading Sandbox<br/>Simulated 0.05% Slippage]
+    E -->|Rejected| G[Audit Rejection Log]
+    F --> H[PostgreSQL Trade History & PnL Ledger]
+            </pre>
+          </div>
+        </div>
+
+        <p>
+          <em>Diagram 1: End-to-end stage-gated execution pipeline.</em>
+        </p>
+
+        <!-- DESIGN TRADEOFFS TABLE -->
+        <h2 id="engineering-decisions">3. Engineering Decisions & Tradeoffs</h2>
+
+        <div style="overflow-x: auto; margin: 24px 0;">
+          <table style="width: 100%; border-collapse: collapse; font-size: 0.88rem;">
+            <thead>
+              <tr style="background: rgba(255,255,255,0.04); border-bottom: 2px solid var(--glass-border); text-align: left;">
+                <th style="padding: 10px;">Decision</th>
+                <th style="padding: 10px;">Rationale</th>
+                <th style="padding: 10px;">Tradeoff</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr style="border-bottom: 1px solid var(--glass-border);">
+                <td style="padding: 10px;"><strong>0.25% Market Neutrality Threshold</strong></td>
+                <td style="padding: 10px;">Prevents dynamic option contract selection on low-conviction range-bound price moves.</td>
+                <td style="padding: 10px;">Filters out low-volatility trading opportunities.</td>
+              </tr>
+              <tr style="border-bottom: 1px solid var(--glass-border);">
+                <td style="padding: 10px;"><strong>Dynamic Upstox Instrument Registry</strong></td>
+                <td style="padding: 10px;">Resolves true exchange lot sizes dynamically instead of relying on hardcoded defaults.</td>
+                <td style="padding: 10px;">Requires instrument token lookup before trade prep initialization.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h2 id="related-articles">Related Engineering Articles</h2>
+        <ul>
+          <li><a href="designing-an-ai-trading-system-without-model-control.html">Designing an AI Trading System Without Letting the Model Control Everything</a></li>
+          <li><a href="designing-real-time-market-data-pipeline-algorithmic-trading.html">Designing a Real-Time Market Data Pipeline for Algorithmic Trading</a></li>
+        </ul>
+
+        <!-- REFERENCES -->
+        <h2 id="references">4. References</h2>
+        <ul>
+          <li><a href="https://upstox.com/developer/api-documentation/" target="_blank" rel="noopener noreferrer">Upstox API Documentation</a></li>
+        </ul>
+      </article>
+
+      <!-- Sidebar Table of Contents -->
+      <aside class="toc">
+        <div class="toc-header">On this page</div>
+        <div class="toc-links">
+          <a href="#the-problem" class="toc-link">1. Prediction vs Execution</a>
+          <a href="#pipeline-architecture" class="toc-link">2. Pipeline Architecture</a>
+          <a href="#engineering-decisions" class="toc-link">3. Design Tradeoffs</a>
+          <a href="#references" class="toc-link">4. References</a>
+        </div>
+      </aside>
+    </div>
+
+    <footer class="footer">
+      <p>© <span id="year"></span> Brijesh Yadav</p>
+    </footer>
+
+    <script>
+      document.getElementById('year').textContent = new Date().getFullYear();
+
+      const themeBtn = document.getElementById('theme-toggle');
+      const sunIcon = themeBtn.querySelector('.sun-icon');
+      const moonIcon = themeBtn.querySelector('.moon-icon');
+
+      function updateIcons(theme) {
+          if (theme === 'light') {
+              sunIcon.style.display = 'none';
+              moonIcon.style.display = 'block';
+          } else {
+              sunIcon.style.display = 'block';
+              moonIcon.style.display = 'none';
+          }
+      }
+
+      const currentTheme = document.documentElement.getAttribute('data-theme');
+      updateIcons(currentTheme);
+
+      themeBtn.addEventListener('click', () => {
+          const current = document.documentElement.getAttribute('data-theme');
+          const next = current === 'light' ? 'dark' : 'light';
+          document.documentElement.setAttribute('data-theme', next);
+          localStorage.setItem('theme', next);
+          updateIcons(next);
+      });
+    </script>
+  </body>
+</html>

@@ -1,93 +1,34 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Building a Real-Time Market Data Generator | Brijesh Yadav</title>
-    <link rel="stylesheet" href="blog.css" />
-    <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml" />
-    <meta
-      name="description"
-      content="Designing a realistic market data generator to test trading systems under live conditions."
-    />
-    
-    <!-- Structured Data for SEO -->
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "BlogPosting",
-      "headline": "Building a Real-Time Market Data Generator",
-      "description": "Designing a realistic market data generator to test trading systems under live conditions.",
-      "author": {
-        "@type": "Person",
-        "name": "Brijesh Yadav",
-        "url": "https://recscse.github.io"
-      },
-      "datePublished": "2025-10-17"
-    }
-    </script>
-
-    <script>
-        const savedTheme = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
-        document.documentElement.setAttribute('data-theme', savedTheme);
-    </script>
-      <meta property="og:type" content="article" />
-    <meta property="og:title" content="Building a Real-Time Market Data Generator" />
-    <meta property="og:description" content="Designing a realistic market data generator to test trading systems under live conditions." />
-    <meta property="og:image" content="https://recscse.github.io/portfolio/assets/banner.svg" />
-    <meta property="og:url" content="https://recscse.github.io/portfolio/blog/market-data-generator.html" />
-    <link rel="canonical" href="https://recscse.github.io/portfolio/blog/market-data-generator.html" />
-      <script defer data-domain="recscse.github.io" src="https://plausible.io/js/script.js"></script>
-  </head>
-  <body>
-    <!-- Navbar -->
-    <nav class="nav-bar">
-      <div class="nav-left">
-        <a href="../index.html" class="nav-brand">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
-            </svg>
-            Brijesh Yadav
-        </a>
-      </div>
-      <div style="display: flex; gap: 12px; align-items: center;">
-          <a href="index.html" class="nav-link">← All Posts</a>
-          <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme">
-            <svg class="sun-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display: none;">
-                <circle cx="12" cy="12" r="5"></circle>
-                <line x1="12" y1="1" x2="12" y2="3"></line>
-                <line x1="12" y1="21" x2="12" y2="23"></line>
-                <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
-                <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
-                <line x1="1" y1="12" x2="3" y2="12"></line>
-                <line x1="21" y1="12" x2="23" y2="12"></line>
-                <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
-                <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
-            </svg>
-            <svg class="moon-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
-            </svg>
-          </button>
-      </div>
-    </nav>
-
-    <div class="layout">
-      <!-- Main Content -->
-      <article class="prose">
-        <header class="post-header">
-          <div class="post-meta">
-            <span>Oct 17, 2025</span>
-            <span>·</span>
-            <span>6 min read</span>
-          </div>
-          <h1 class="post-title">Building a Real-Time Market Data Generator for Testing Algo Trading Systems</h1>
-          <div class="tags-container">
-            <span class="tag">Trading</span>
-            <span class="tag">Simulation</span>
-            <span class="tag">FastAPI</span>
-            <span class="tag">Redis</span>
-          </div>
-        </header>
+<!doctype html>
+<html lang="en" class="scroll-smooth">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Building a Real-Time Market Data Generator for Testing Algo Trading Systems | Brijesh Yadav</title>
+<meta name="description" content="When building algorithmic trading systems, the hardest part to test reliably is the real-time market feed. Live markets are unpredictable, noisy, and expensive to test against. A lightweight, determin">
+<link rel="canonical" href="https://recscse.github.io/portfolio/blog/market-data-generator.html">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Brijesh Yadav">
+<meta property="og:title" content="Building a Real-Time Market Data Generator for Testing Algo Trading Systems | Brijesh Yadav">
+<meta property="og:description" content="When building algorithmic trading systems, the hardest part to test reliably is the real-time market feed. Live markets are unpredictable, noisy, and expensive to test against. A lightweight, determin">
+<meta property="og:url" content="https://recscse.github.io/portfolio/blog/market-data-generator.html">
+<meta property="og:image" content="https://recscse.github.io/portfolio/assets/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#0f172a">
+<link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="../assets/icon-192.png" sizes="192x192" type="image/png">
+<link rel="apple-touch-icon" href="../assets/icon-192.png">
+<link rel="manifest" href="../site.webmanifest">
+<link rel="stylesheet" href="../assets/site.css">
+<script defer data-domain="recscse.github.io" src="https://plausible.io/js/script.js"></script>
+</head>
+<body class="min-h-screen bg-white text-slate-800 antialiased dark:bg-slate-950 dark:text-slate-200 print:bg-white print:text-black">
+<a href="#main" class="sr-only focus:not-sr-only focus:absolute focus:left-2 focus:top-2 focus:z-20 focus:rounded focus:bg-white focus:px-3 focus:py-2 focus:text-slate-900">Skip to content</a>
+<header class="sticky top-0 z-10 border-b border-slate-200 bg-white/90 backdrop-blur dark:border-slate-800 dark:bg-slate-950/90"><div class="mx-auto flex max-w-5xl flex-wrap items-center justify-between gap-2 px-4 py-3"><a href="../index.html" class="text-base font-semibold text-slate-900 dark:text-white">Brijesh Yadav</a><nav aria-label="Main" class="flex flex-wrap gap-1"><a href="../index.html" class="rounded-md px-3 py-2 text-sm font-medium hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300">Home</a><a href="../projects.html" class="rounded-md px-3 py-2 text-sm font-medium hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300">Projects</a><a href="../blog/index.html" class="rounded-md px-3 py-2 text-sm font-medium hover:bg-slate-100 dark:hover:bg-slate-800 text-indigo-700 dark:text-indigo-300" aria-current="page">Writing</a><a href="../resume.html" class="rounded-md px-3 py-2 text-sm font-medium hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300">Resume</a><a href="../hire.html" class="rounded-md px-3 py-2 text-sm font-medium hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300">Hire me</a></nav></div></header>
+<main id="main" class="mx-auto max-w-5xl px-4">
+<article class="mx-auto max-w-3xl py-12"><p class="text-sm"><a class="text-indigo-700 underline decoration-indigo-300 underline-offset-2 hover:decoration-indigo-600 dark:text-indigo-300 dark:decoration-indigo-700" href="index.html">&larr; All posts</a></p><h1 class="mt-4 text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl dark:text-white">Building a Real-Time Market Data Generator for Testing Algo Trading Systems</h1><p class="mt-3 text-sm text-slate-500 dark:text-slate-400">Oct 17, 2025 &middot; 6 min read</p><ul class="mt-3 flex flex-wrap gap-1.5"><li class="rounded-full bg-slate-100 px-2.5 py-0.5 text-xs font-medium text-slate-700 dark:bg-slate-800 dark:text-slate-300">Trading</li><li class="rounded-full bg-slate-100 px-2.5 py-0.5 text-xs font-medium text-slate-700 dark:bg-slate-800 dark:text-slate-300">Simulation</li><li class="rounded-full bg-slate-100 px-2.5 py-0.5 text-xs font-medium text-slate-700 dark:bg-slate-800 dark:text-slate-300">FastAPI</li><li class="rounded-full bg-slate-100 px-2.5 py-0.5 text-xs font-medium text-slate-700 dark:bg-slate-800 dark:text-slate-300">Redis</li></ul><div class="post prose prose-slate mt-8 max-w-none dark:prose-invert prose-pre:overflow-x-auto prose-img:rounded-lg">
+        
 
         <p class="lead">
           When building algorithmic trading systems, the hardest part to test reliably is the <strong>real-time market feed</strong>. Live markets are unpredictable, noisy, and expensive to test against. A lightweight, deterministic <strong>market data generator</strong> that simulates realistic tick-level patterns lets you validate strategies, risk controls, and order routing without paying exchange fees or risking real money.
@@ -227,57 +168,8 @@ es.onmessage = (e) => {
         <p>
           For <strong>Growth Quantix</strong>, my goal is to use this generator to validate latency, signal accuracy, and trade execution logic before connecting to the real Upstox live feed. The same system can even run on weekends for regression testing or strategy dry-runs.
         </p>
-      </article>
-
-      <!-- Sidebar TOC -->
-      <aside class="toc">
-        <div class="toc-header">On this page</div>
-        <div class="toc-links">
-          <a href="#why-build" class="toc-link">Why Build a Generator?</a>
-          <a href="#requirements" class="toc-link">Core Requirements</a>
-          <a href="#architecture" class="toc-link">System Architecture</a>
-          <a href="#tick-model" class="toc-link">Tick Generation Model</a>
-          <a href="#implementation" class="toc-link">Implementation</a>
-          <a href="#fastapi-sse" class="toc-link">FastAPI + SSE</a>
-          <a href="#scenario-engine" class="toc-link">Scenario Engine</a>
-          <a href="#cicd" class="toc-link">CI/CD Integration</a>
-          <a href="#conclusion" class="toc-link">Closing Thoughts</a>
-        </div>
-      </aside>
-    </div>
-
-    <footer class="footer">
-      <p>© <span id="year"></span> Brijesh Yadav</p>
-    </footer>
-
-    <script>
-      document.getElementById('year').textContent = new Date().getFullYear();
-
-      const themeBtn = document.getElementById('theme-toggle');
-      const sunIcon = themeBtn.querySelector('.sun-icon');
-      const moonIcon = themeBtn.querySelector('.moon-icon');
-
-      function updateIcons(theme) {
-          if (theme === 'light') {
-              sunIcon.style.display = 'none';
-              moonIcon.style.display = 'block';
-          } else {
-              sunIcon.style.display = 'block';
-              moonIcon.style.display = 'none';
-          }
-      }
-
-      const currentTheme = document.documentElement.getAttribute('data-theme');
-      updateIcons(currentTheme);
-
-      themeBtn.addEventListener('click', () => {
-          const current = document.documentElement.getAttribute('data-theme');
-          const next = current === 'light' ? 'dark' : 'light';
-          
-          document.documentElement.setAttribute('data-theme', next);
-          localStorage.setItem('theme', next);
-          updateIcons(next);
-      });
-    </script>
-  </body>
+      </div><p class="mt-12 border-t border-slate-200 pt-6 text-sm dark:border-slate-800"><a class="text-indigo-700 underline decoration-indigo-300 underline-offset-2 hover:decoration-indigo-600 dark:text-indigo-300 dark:decoration-indigo-700" href="index.html">&larr; All posts</a> &middot; <a class="text-indigo-700 underline decoration-indigo-300 underline-offset-2 hover:decoration-indigo-600 dark:text-indigo-300 dark:decoration-indigo-700" href="../projects.html">Projects</a></p></article>
+</main>
+<footer class="border-t border-slate-200 dark:border-slate-800"><div class="mx-auto max-w-5xl px-4 py-8 text-sm text-slate-600 dark:text-slate-400"><p>&copy; 2026 Brijesh Yadav. Built with Tailwind CSS. Skill icons by <a class="text-indigo-700 underline decoration-indigo-300 underline-offset-2 hover:decoration-indigo-600 dark:text-indigo-300 dark:decoration-indigo-700" href="https://devicon.dev">Devicon</a> (MIT).</p><p class="mt-2"><a class="text-indigo-700 underline decoration-indigo-300 underline-offset-2 hover:decoration-indigo-600 dark:text-indigo-300 dark:decoration-indigo-700" href="https://github.com/recscse">GitHub</a> &middot; <a class="text-indigo-700 underline decoration-indigo-300 underline-offset-2 hover:decoration-indigo-600 dark:text-indigo-300 dark:decoration-indigo-700" href="https://www.linkedin.com/in/brijesh-yadav-">LinkedIn</a> &middot; <a class="text-indigo-700 underline decoration-indigo-300 underline-offset-2 hover:decoration-indigo-600 dark:text-indigo-300 dark:decoration-indigo-700" href="https://x.com/_brijeshyadav">X</a> &middot; <a class="text-indigo-700 underline decoration-indigo-300 underline-offset-2 hover:decoration-indigo-600 dark:text-indigo-300 dark:decoration-indigo-700" href="mailto:brijeshyadav30599@gmail.com">Email</a> &middot; <a class="text-indigo-700 underline decoration-indigo-300 underline-offset-2 hover:decoration-indigo-600 dark:text-indigo-300 dark:decoration-indigo-700" href="../sitemap.xml">Sitemap</a></p></div></footer>
+</body>
 </html>

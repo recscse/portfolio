@@ -1,0 +1,33 @@
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+@source "../*.html";
+@source "../blog/*.html";
+
+@theme {
+  --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+}
+
+/*
+ * Styles for the custom elements inside the original blog articles.
+ * These are deliberately NOT inside @layer: the typography plugin emits in the utilities layer, and
+ * unlayered rules are the only way for these overrides to win over it.
+ */
+.post .lead { @apply text-lg text-slate-600 dark:text-slate-300; }
+.post .formula-card { @apply my-4 rounded-lg border border-indigo-200 bg-indigo-50 px-4 py-3 text-center font-mono text-lg text-indigo-900 dark:border-indigo-900 dark:bg-indigo-950 dark:text-indigo-100; }
+.post .diagram-box { @apply my-6 overflow-hidden rounded-lg border border-slate-200 dark:border-slate-700; }
+.post .diagram-header { @apply flex items-center gap-3 border-b border-slate-200 bg-slate-100 px-3 py-2 dark:border-slate-700 dark:bg-slate-800; }
+.post .window-controls { @apply flex gap-1.5; }
+.post .control { @apply h-2.5 w-2.5 rounded-full bg-slate-400; }
+.post .diagram-title { @apply text-xs text-slate-500 dark:text-slate-400; }
+.post .diagram-content { @apply overflow-x-auto p-4; }
+.post table { @apply w-full text-sm; }
+.post .callout { @apply my-6 rounded-lg border-l-4 px-4 py-3 text-sm; }
+.post .callout-experimental { @apply border-violet-500 bg-violet-50 dark:bg-violet-950/40; }
+.post .callout-decision { @apply border-blue-500 bg-blue-50 dark:bg-blue-950/40; }
+.post .callout-limitation { @apply border-amber-500 bg-amber-50 dark:bg-amber-950/40; }
+.post .callout-security { @apply border-red-500 bg-red-50 dark:bg-red-950/40; }
+.post .callout-tradeoff { @apply border-emerald-500 bg-emerald-50 dark:bg-emerald-950/40; }
+.post .mermaid-wrapper, .post .architecture-diagram { @apply my-6 overflow-x-auto rounded-lg border border-slate-200 bg-white p-4 dark:border-slate-700 dark:bg-slate-900; }
+/* Mermaid blocks are <pre> elements; undo the typography plugin's dark code-block look for them. */
+.post .mermaid, .post pre.mermaid { @apply flex justify-center bg-transparent p-0 text-slate-800 dark:text-slate-200; }

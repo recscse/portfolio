@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Designing a Real-Time Market Data Pipeline for an Algorithmic Trading Platform | Brijesh Yadav</title>
+    <link rel="stylesheet" href="blog.css" />
+    <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml" />
+    <meta
+      name="description"
+      content="A system design case study on building a real-time market data pipeline using FastAPI, WebSockets, Protobuf decoding, and Redis Pub/Sub event bus."
+    />
+    
+    <!-- Structured Data for SEO -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "BlogPosting",
+      "headline": "Designing a Real-Time Market Data Pipeline for an Algorithmic Trading Platform",
+      "description": "A system design case study on building a real-time market data pipeline using FastAPI, WebSockets, and Redis Pub/Sub.",
+      "author": {
+        "@type": "Person",
+        "name": "Brijesh Yadav",
+        "url": "https://recscse.github.io"
+      },
+      "datePublished": "2026-02-18",
+      "image": "https://recscse.github.io/portfolio/assets/banner.svg"
+    }
+    </script>
+
+    <!-- Mermaid.js -->
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+          mermaid.initialize({
+            startOnLoad: true,
+            theme: 'dark',
+            securityLevel: 'loose',
+            fontFamily: 'JetBrains Mono, monospace'
+          });
+        });
+    </script>
+
+    <script>
+        const savedTheme = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+        document.documentElement.setAttribute('data-theme', savedTheme);
+    </script>
+      <meta property="og:type" content="article" />
+    <meta property="og:title" content="Designing a Real-Time Market Data Pipeline for an Algorithmic Trading Platform" />
+    <meta property="og:description" content="A system design case study on building a real-time market data pipeline using FastAPI, WebSockets, Protobuf decoding, and Redis Pub/Sub event bus." />
+    <meta property="og:image" content="https://recscse.github.io/portfolio/assets/banner.svg" />
+    <meta property="og:url" content="https://recscse.github.io/portfolio/blog/designing-real-time-market-data-pipeline-algorithmic-trading.html" />
+    <link rel="canonical" href="https://recscse.github.io/portfolio/blog/designing-real-time-market-data-pipeline-algorithmic-trading.html" />
+      <script defer data-domain="recscse.github.io" src="https://plausible.io/js/script.js"></script>
+  </head>
+  <body>
+    <!-- Navbar -->
+    <nav class="nav-bar">
+      <div class="nav-left">
+        <a href="../index.html" class="nav-brand">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+            </svg>
+            Brijesh Yadav
+        </a>
+      </div>
+      <div style="display: flex; gap: 12px; align-items: center;">
+          <a href="index.html" class="nav-link">← All Posts</a>
+          <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme">
+            <svg class="sun-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display: none;">
+                <circle cx="12" cy="12" r="5"></circle>
+                <line x1="12" y1="1" x2="12" y2="3"></line>
+                <line x1="12" y1="21" x2="12" y2="23"></line>
+                <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                <line x1="1" y1="12" x2="3" y2="12"></line>
+                <line x1="21" y1="12" x2="23" y2="12"></line>
+                <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+            </svg>
+            <svg class="moon-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+            </svg>
+          </button>
+      </div>
+    </nav>
+
+    <div class="layout">
+      <!-- Main Article -->
+      <article class="prose">
+        <header class="post-header">
+          <div class="post-meta">
+            <span>February 18, 2026</span>
+            <span>·</span>
+            <span>14 min read</span>
+          </div>
+          <h1 class="post-title">Designing a Real-Time Market Data Pipeline for an Algorithmic Trading Platform</h1>
+          <div class="tags-container">
+            <span class="tag">System Design</span>
+            <span class="tag">FastAPI</span>
+            <span class="tag">Redis Pub/Sub</span>
+            <span class="tag">WebSockets</span>
+            <span class="tag">Protobuf</span>
+          </div>
+        </header>
+
+        <!-- DECISION CALLOUT -->
+        <div class="callout callout-tradeoff">
+          <strong>[SYSTEM ARCHITECTURE DECISION: REDIS PUB/SUB DECOUPLING]</strong><br />
+          The ingestion worker acts as a single producer decoding binary Protobuf feeds into Redis Pub/Sub channels. This decouples tick ingestion from strategy evaluation and frontend WebSocket broadcasting.
+        </div>
+
+        <!-- INTRO -->
+        <h2 id="the-problem">1. The Challenge of Live Data Streaming</h2>
+        <p class="lead">
+          Algorithmic trading systems depend on real-time price feeds. Consuming raw broker WebSockets directly inside UI web applications creates tight coupling, duplicate connections, and potential main-thread lag during market volatility spikes.
+        </p>
+
+        <!-- DIAGRAM 1: FLOWCHART -->
+        <h2 id="pipeline-architecture">2. Data Pipeline Architecture</h2>
+
+        <div class="architecture-diagram">
+          <div class="diagram-header">
+            <div class="window-controls">
+              <div class="control red"></div>
+              <div class="control yellow"></div>
+              <div class="control green"></div>
+            </div>
+            <div class="diagram-title">Market Feed Decoupled Streaming Architecture</div>
+          </div>
+          <div class="mermaid-wrapper">
+            <pre class="mermaid">
+flowchart TD
+    A[Upstox V3 Market Feed] -->|Binary Protobuf WSS| B[FastAPI Feed Ingestion Service]
+    B -->|Decode FeedResponse| C[Normalize Price Ticks]
+    C -->|Publish Tick Event| D[Redis Pub/Sub Bus]
+    
+    D -->|Subscribe channel:ticks| E[Strategy Evaluation Engine]
+    D -->|Subscribe channel:ticks| F[Paper Trading PnL Tracker]
+    D -->|Subscribe channel:ticks| G[Frontend WebSocket Server]
+    
+    G -->|Socket.IO Broadcast| H[React Dashboard UI]
+            </pre>
+          </div>
+        </div>
+
+        <p>
+          <em>Diagram 1: Data flow from broker binary WebSocket feed to Redis Pub/Sub event bus and consumer microservices.</em>
+        </p>
+
+        <!-- DIAGRAM 2: STATE DIAGRAM -->
+        <h2 id="reconnection-state">3. Resilient Connection Lifecycle</h2>
+        <p>
+          Network interruptions on WebSocket feeds are inevitable. The connection manager enforces exponential backoff and dynamic channel resubscription:
+        </p>
+
+        <div class="architecture-diagram">
+          <div class="diagram-header">
+            <div class="window-controls">
+              <div class="control red"></div>
+              <div class="control yellow"></div>
+              <div class="control green"></div>
+            </div>
+            <div class="diagram-title">WebSocket Reconnection State Machine</div>
+          </div>
+          <div class="mermaid-wrapper">
+            <pre class="mermaid">
+stateDiagram-v2
+    [*] --> DISCONNECTED
+    DISCONNECTED --> CONNECTING: Obtain Authorized WSS URL
+    CONNECTING --> ACTIVE_FEED: Handshake & Subscription Ack
+    ACTIVE_FEED --> RECONNECTING: Connection Dropped / Heartbeat Timeout
+    RECONNECTING --> BACKOFF_WAIT: Exponential Backoff (1s, 2s, 4s...)
+    BACKOFF_WAIT --> CONNECTING: Retry Attempt
+    ACTIVE_FEED --> DISCONNECTED: Graceful Shutdown
+            </pre>
+          </div>
+        </div>
+
+        <p>
+          <em>Diagram 2: State transitions for connection recovery and exponential backoff retry handling.</em>
+        </p>
+
+        <!-- CODE IMPLEMENTATION -->
+        <h2 id="implementation">4. Protobuf Ingestion Worker</h2>
+
+        <pre><code class="language-python"># services/market_feed/websocket_consumer.py
+import asyncio
+import json
+import websockets
+import MarketDataFeed_pb2 as pb
+from redis.asyncio import Redis
+
+class UpstoxFeedConsumer:
+    def __init__(self, wss_url: str, redis_client: Redis):
+        self.wss_url = wss_url
+        self.redis = redis_client
+
+    async def start(self):
+        async with websockets.connect(self.wss_url) as ws:
+            while True:
+                message = await ws.recv()
+                feed_response = pb.FeedResponse()
+                feed_response.ParseFromString(message)
+                
+                # Normalize and publish to Redis
+                for key, feeds in feed_response.feeds.items():
+                    tick_payload = {
+                        "instrument_key": key,
+                        "ltp": feeds.ltp,
+                        "vtt": feeds.vtt
+                    }
+                    await self.redis.publish("market:ticks", json.dumps(tick_payload))
+        </code></pre>
+
+        <!-- DESIGN TRADEOFFS TABLE -->
+        <h2 id="engineering-decisions">5. Engineering Decisions & Tradeoffs</h2>
+
+        <div style="overflow-x: auto; margin: 24px 0;">
+          <table style="width: 100%; border-collapse: collapse; font-size: 0.88rem;">
+            <thead>
+              <tr style="background: rgba(255,255,255,0.04); border-bottom: 2px solid var(--glass-border); text-align: left;">
+                <th style="padding: 10px;">Decision</th>
+                <th style="padding: 10px;">Rationale</th>
+                <th style="padding: 10px;">Tradeoff</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr style="border-bottom: 1px solid var(--glass-border);">
+                <td style="padding: 10px;"><strong>Redis Pub/Sub Event Bus</strong></td>
+                <td style="padding: 10px;">Decouples feed ingestion from strategy evaluation and UI streaming.</td>
+                <td style="padding: 10px;">Pub/Sub does not persist historical messages (requires separate DB storage).</td>
+              </tr>
+              <tr style="border-bottom: 1px solid var(--glass-border);">
+                <td style="padding: 10px;"><strong>Protobuf Binary Decoding</strong></td>
+                <td style="padding: 10px;">Reduces network payload size compared to verbose JSON strings.</td>
+                <td style="padding: 10px;">Requires compiled `.proto` schema files in Python build pipelines.</td>
+              </tr>
+              <tr style="border-bottom: 1px solid var(--glass-border);">
+                <td style="padding: 10px;"><strong>5s Notification Deduplication</strong></td>
+                <td style="padding: 10px;">Prevents notification spam during rapid tick movements.</td>
+                <td style="padding: 10px;">Suppresses secondary alerts occurring within 5-second windows.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h2 id="related-articles">Related Engineering Articles</h2>
+        <ul>
+          <li><a href="building-production-ready-oauth2-automation-sdk-upstox.html">Building a Production-Ready OAuth2 Automation SDK for Upstox</a></li>
+          <li><a href="designing-an-ai-trading-system-without-model-control.html">Designing an AI Trading System Without Letting the Model Control Everything</a></li>
+        </ul>
+
+        <!-- REFERENCES -->
+        <h2 id="references">6. References</h2>
+        <ul>
+          <li><a href="https://upstox.com/developer/api-documentation/" target="_blank" rel="noopener noreferrer">Upstox WebSocket API Reference</a></li>
+          <li><a href="https://redis.io/docs/manual/pubsub/" target="_blank" rel="noopener noreferrer">Redis Pub/Sub Documentation</a></li>
+        </ul>
+      </article>
+
+      <!-- Sidebar Table of Contents -->
+      <aside class="toc">
+        <div class="toc-header">On this page</div>
+        <div class="toc-links">
+          <a href="#the-problem" class="toc-link">1. The Problem</a>
+          <a href="#pipeline-architecture" class="toc-link">2. Pipeline Architecture</a>
+          <a href="#reconnection-state" class="toc-link">3. Connection State Machine</a>
+          <a href="#implementation" class="toc-link">4. Code Implementation</a>
+          <a href="#engineering-decisions" class="toc-link">5. Design Tradeoffs</a>
+          <a href="#references" class="toc-link">6. References</a>
+        </div>
+      </aside>
+    </div>
+
+    <footer class="footer">
+      <p>© <span id="year"></span> Brijesh Yadav</p>
+    </footer>
+
+    <script>
+      document.getElementById('year').textContent = new Date().getFullYear();
+
+      const themeBtn = document.getElementById('theme-toggle');
+      const sunIcon = themeBtn.querySelector('.sun-icon');
+      const moonIcon = themeBtn.querySelector('.moon-icon');
+
+      function updateIcons(theme) {
+          if (theme === 'light') {
+              sunIcon.style.display = 'none';
+              moonIcon.style.display = 'block';
+          } else {
+              sunIcon.style.display = 'block';
+              moonIcon.style.display = 'none';
+          }
+      }
+
+      const currentTheme = document.documentElement.getAttribute('data-theme');
+      updateIcons(currentTheme);
+
+      themeBtn.addEventListener('click', () => {
+          const current = document.documentElement.getAttribute('data-theme');
+          const next = current === 'light' ? 'dark' : 'light';
+          document.documentElement.setAttribute('data-theme', next);
+          localStorage.setItem('theme', next);
+          updateIcons(next);
+      });
+    </script>
+  </body>
+</html>

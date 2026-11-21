@@ -10,7 +10,7 @@
 
 ## 🚀 About Me
 
-Hi, I’m **Brijesh Yadav**. I'm a **Backend Software Engineer** with **4+ years of experience** building scalable microservices, distributed systems, and real-time applications. I specialize in turning complex enterprise requirements into robust APIs, event-driven pipelines, and cloud-native backend systems using **Java, Spring Boot, Python, FastAPI, PostgreSQL, Redis, and WebSockets**.
+Hi, I’m **Brijesh Yadav**. I'm a **Backend Software Engineer** with **5+ years of experience** building scalable microservices, distributed systems, and real-time applications. I specialize in turning complex enterprise requirements into robust APIs, event-driven pipelines, and cloud-native backend systems using **Java, Spring Boot, Python, FastAPI, PostgreSQL, Redis, and WebSockets**.
 
 - **💼 Current Role:** Software Engineer @ ArisGlobal (Oct 2021 – Present)
 - **📍 Location:** Mysore, India
@@ -26,7 +26,6 @@ Hi, I’m **Brijesh Yadav**. I'm a **Backend Software Engineer** with **4+ years
 ![Spring Boot](https://img.shields.io/badge/Spring_Boot-6DB33F?style=for-the-badge&logo=spring-boot&logoColor=white)
 ![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white)
 ![FastAPI](https://img.shields.io/badge/FastAPI-009688?style=for-the-badge&logo=fastapi&logoColor=white)
-![Apache Kafka](https://img.shields.io/badge/Apache_Kafka-231F20?style=for-the-badge&logo=apache-kafka&logoColor=white)
 ![Redis](https://img.shields.io/badge/Redis-%23DD0031.svg?style=for-the-badge&logo=redis&logoColor=white)
 
 **Databases & Storage**
@@ -92,10 +91,10 @@ portfolio/
 * Features strongly-typed OAuth2 models and Spring Boot integration interfaces.
 * [GitHub Repository](https://github.com/growthquantix/upstox-auth-pro-java)
 
-### 4. [Prindox](https://github.com/recscse/prindox)
+### 4. [Prindox](https://prindox.com)
 **Stack:** Python, FastAPI, PostgreSQL, REST APIs
 * Online document processing platform supporting document uploads, print-order workflows, and async background validation.
-* [GitHub Repository](https://github.com/recscse/prindox)
+* [Live site](https://prindox.com) (source code is private)
 
 ---
 
@@ -117,3 +116,21 @@ I write in-depth case studies about backend software engineering, real-time data
   <img src="https://github-readme-stats.vercel.app/api?username=recscse&show_icons=true&theme=dark&hide_border=true&bg_color=0d1117" alt="GitHub stats" height="160"/>
   <img src="https://github-readme-stats.vercel.app/api/top-langs/?username=recscse&layout=compact&theme=dark&hide_border=true&bg_color=0d1117" alt="Top Languages" height="160"/>
 </p>
+
+---
+
+## Development
+
+The site is plain HTML styled with [Tailwind CSS](https://tailwindcss.com), compiled to `assets/site.css` and served by GitHub Pages. There is no runtime framework.
+
+```bash
+npm install                    # once: Tailwind v4 + typography plugin
+python scripts/generate.py     # regenerate pages from scripts/site_data.py and content/blog/
+npm run build                  # compile Tailwind to assets/site.css
+python scripts/validate.py --online   # links, anchors, images, canonical URLs, banned/unsupported claims
+```
+
+- Facts live in one place: `scripts/site_data.py`. If a claim is not evidenced there, it is not on the site.
+- Blog article bodies are in `content/blog/`; the generator wraps them in the shared layout.
+- Skill icons are bundled locally in `assets/icons/` (Devicon, MIT), so there are no third-party icon requests.
+- Older self-audit reports are kept in `docs/archive/` for reference only; see `docs/AUDIT_2026-11.md` for the current audit.

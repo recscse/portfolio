@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Designing an AI Trading System Without Letting the Model Control Everything | Brijesh Yadav</title>
+    <link rel="stylesheet" href="blog.css" />
+    <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml" />
+    <meta
+      name="description"
+      content="An architectural case study gating machine learning signal outputs behind deterministic risk filters, safety boundaries, paper-trading verification, and emergency kill switches."
+    />
+    
+    <!-- Structured Data for SEO -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "BlogPosting",
+      "headline": "Designing an AI Trading System Without Letting the Model Control Everything",
+      "description": "An architectural case study gating machine learning signal outputs behind deterministic risk filters and safety boundaries.",
+      "author": {
+        "@type": "Person",
+        "name": "Brijesh Yadav",
+        "url": "https://recscse.github.io"
+      },
+      "datePublished": "2026-02-24",
+      "image": "https://recscse.github.io/portfolio/assets/banner.svg"
+    }
+    </script>
+
+    <!-- Mermaid.js -->
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+          mermaid.initialize({
+            startOnLoad: true,
+            theme: 'dark',
+            securityLevel: 'loose',
+            fontFamily: 'JetBrains Mono, monospace'
+          });
+        });
+    </script>
+
+    <script>
+        const savedTheme = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+        document.documentElement.setAttribute('data-theme', savedTheme);
+    </script>
+      <meta property="og:type" content="article" />
+    <meta property="og:title" content="Designing an AI Trading System Without Letting the Model Control Everything" />
+    <meta property="og:description" content="An architectural case study gating machine learning signal outputs behind deterministic risk filters, safety boundaries, paper-trading verification, and emergency kill switches." />
+    <meta property="og:image" content="https://recscse.github.io/portfolio/assets/banner.svg" />
+    <meta property="og:url" content="https://recscse.github.io/portfolio/blog/designing-an-ai-trading-system-without-model-control.html" />
+    <link rel="canonical" href="https://recscse.github.io/portfolio/blog/designing-an-ai-trading-system-without-model-control.html" />
+      <script defer data-domain="recscse.github.io" src="https://plausible.io/js/script.js"></script>
+  </head>
+  <body>
+    <!-- Navbar -->
+    <nav class="nav-bar">
+      <div class="nav-left">
+        <a href="../index.html" class="nav-brand">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+            </svg>
+            Brijesh Yadav
+        </a>
+      </div>
+      <div style="display: flex; gap: 12px; align-items: center;">
+          <a href="index.html" class="nav-link">← All Posts</a>
+          <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme">
+            <svg class="sun-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display: none;">
+                <circle cx="12" cy="12" r="5"></circle>
+                <line x1="12" y1="1" x2="12" y2="3"></line>
+                <line x1="12" y1="21" x2="12" y2="23"></line>
+                <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                <line x1="1" y1="12" x2="3" y2="12"></line>
+                <line x1="21" y1="12" x2="23" y2="12"></line>
+                <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+            </svg>
+            <svg class="moon-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+            </svg>
+          </button>
+      </div>
+    </nav>
+
+    <div class="layout">
+      <!-- Main Article -->
+      <article class="prose">
+        <header class="post-header">
+          <div class="post-meta">
+            <span>February 24, 2026</span>
+            <span>·</span>
+            <span>14 min read</span>
+          </div>
+          <h1 class="post-title">Designing an AI Trading System Without Letting the Model Control Everything</h1>
+          <div class="tags-container">
+            <span class="tag">AI Systems Architecture</span>
+            <span class="tag">Risk Engine</span>
+            <span class="tag">Trading Safety</span>
+            <span class="tag">FastAPI</span>
+            <span class="tag">Deterministic Boundaries</span>
+          </div>
+        </header>
+
+        <!-- DISCLAIMER CALLOUT -->
+        <div class="callout callout-limitation">
+          <strong>[DISCLAIMER & RESEARCH NOTE]</strong><br />
+          This article discusses software architecture and system safety patterns. It does NOT constitute financial advice, trading signals, or investment recommendations.
+        </div>
+
+        <!-- INTRO -->
+        <h2 id="the-problem">1. The Problem with Direct Model Execution</h2>
+        <p class="lead">
+          When integrating machine learning into automated systems, a dangerous anti-pattern is connecting model inference outputs directly to execution endpoints. Promoters of "AI-driven trading" often imagine an end-to-end model that reads ticks, predicts price direction, and submits live broker orders autonomously.
+        </p>
+        <p>
+          In production software engineering, this design is unacceptably fragile. Machine learning models are probabilistic function approximators. They suffer from distribution drift, high-confidence invalid predictions during market shocks, and zero internal awareness of account drawdown limits or market session boundaries.
+        </p>
+
+        <!-- ARCHITECTURE DIAGRAM -->
+        <h2 id="safety-architecture">2. Deterministic Safety Architecture</h2>
+        <p>
+          The AITOS architecture establishes a strict boundary separating statistical AI prediction from execution authority:
+        </p>
+
+        <div class="architecture-diagram">
+          <div class="diagram-header">
+            <div class="window-controls">
+              <div class="control red"></div>
+              <div class="control yellow"></div>
+              <div class="control green"></div>
+            </div>
+            <div class="diagram-title">AI Signal Gating & Deterministic Execution Pipeline</div>
+          </div>
+          <div class="mermaid-wrapper">
+            <pre class="mermaid">
+flowchart TD
+    subgraph PROBABILISTIC_AI["AI Signal Scoring (Probabilistic)"]
+        A[Market Feed V3] --> B[Data Validation Engine<br/>Outliers & Stale Ticks]
+        B --> C[Feature Engineering Pipeline<br/>Technical Indicators]
+        C --> D[PyTorch / ONNX Model<br/>Candidate Signal Scoring]
+    end
+
+    subgraph DETERMINISTIC_SAFETY["DETERMINISTIC SAFETY BOUNDARY"]
+        D -->|Candidate Proposal Score| E[Risk Engine Gate]
+        E -->|Check 1| F{Emergency Kill Switch?}
+        F -->|Active| G[HALT & LOG REJECTION]
+        F -->|Inactive| H{Daily Drawdown Breached?}
+        H -->|Yes| G
+        H -->|No| I{Market Hours 09:15-15:25 IST?}
+        I -->|No| G
+        I -->|Valid| J[Approved Order Payload]
+    end
+
+    subgraph EXECUTION_GATEWAY["Execution Gateway"]
+        J --> K[Paper Trading Sandbox<br/>Simulated 0.05% Slippage]
+        J --> L[Broker API Gateway<br/>Upstox V3 Order API]
+    end
+            </pre>
+          </div>
+        </div>
+
+        <p>
+          <em>Diagram 1: Stage-gated execution pipeline enforcing a hard boundary between AI signal proposal scoring and deterministic risk checks.</em>
+        </p>
+
+        <!-- IMPLEMENTATION CODE -->
+        <h2 id="risk-guard-implementation">3. Risk Engine Implementation</h2>
+        <p>
+          The risk engine evaluates every model recommendation against hard rules. If any check fails, the trade proposal is dropped and logged:
+        </p>
+
+        <pre><code class="language-python"># services/trading_execution/safety_risk_engine.py
+class SystemKillSwitchException(Exception):
+    pass
+
+class SafetyRiskEngine:
+    def __init__(self, daily_pnl_limit: float, max_order_val: float):
+        self.daily_pnl_limit = daily_pnl_limit
+        self.max_order_val = max_order_val
+        self.kill_switch_active = False
+
+    def validate_proposal(self, proposal: TradeProposal, current_pnl: float) -> bool:
+        if self.kill_switch_active:
+            raise SystemKillSwitchException("Trading halted: Emergency Kill Switch is ACTIVE")
+
+        if current_pnl <= -self.daily_pnl_limit:
+            logger.error(f"Proposal rejected: Daily PnL {current_pnl} breached limit {-self.daily_pnl_limit}")
+            return False
+
+        now_ist = datetime.now(pytz.timezone("Asia/Kolkata")).time()
+        if not (time(9, 15) <= now_ist <= time(15, 25)):
+            logger.warning(f"Proposal rejected: Inactive market hours ({now_ist})")
+            return False
+
+        if proposal.estimated_cost > self.max_order_val:
+            logger.warning("Proposal rejected: Order value exceeds capital threshold")
+            return False
+
+        return True
+        </code></pre>
+
+        <!-- DESIGN TRADEOFFS TABLE -->
+        <h2 id="engineering-decisions">4. Engineering Decisions & Tradeoffs</h2>
+
+        <div style="overflow-x: auto; margin: 24px 0;">
+          <table style="width: 100%; border-collapse: collapse; font-size: 0.88rem;">
+            <thead>
+              <tr style="background: rgba(255,255,255,0.04); border-bottom: 2px solid var(--glass-border); text-align: left;">
+                <th style="padding: 10px;">Decision</th>
+                <th style="padding: 10px;">Rationale</th>
+                <th style="padding: 10px;">Tradeoff</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr style="border-bottom: 1px solid var(--glass-border);">
+                <td style="padding: 10px;"><strong>Deterministic Safety Boundary</strong></td>
+                <td style="padding: 10px;">Prevents probabilistic AI models from executing orders during market volatility shocks.</td>
+                <td style="padding: 10px;">Strict risk filters may drop candidate trades during rapid market breakouts.</td>
+              </tr>
+              <tr style="border-bottom: 1px solid var(--glass-border);">
+                <td style="padding: 10px;"><strong>Paper Trading Parity</strong></td>
+                <td style="padding: 10px;">Evaluates signals under simulated 0.05% slippage and brokerage charges before live routing.</td>
+                <td style="padding: 10px;">Requires real-time position state tracking synchronization in memory and DB.</td>
+              </tr>
+              <tr style="border-bottom: 1px solid var(--glass-border);">
+                <td style="padding: 10px;"><strong>Single Exit Authority</strong></td>
+                <td style="padding: 10px;">Centralized exit execution handler preventing concurrent duplicate order placement.</td>
+                <td style="padding: 10px;">Creates a single thread lock bottleneck requiring careful mutex scope management.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h2 id="related-articles">Related Engineering Articles</h2>
+        <ul>
+          <li><a href="from-pytorch-to-onnx-low-latency-inference-pipeline.html">From PyTorch to ONNX: Designing a Low-Latency Model Inference Pipeline</a></li>
+          <li><a href="designing-real-time-market-data-pipeline-algorithmic-trading.html">Designing a Real-Time Market Data Pipeline for Algorithmic Trading</a></li>
+        </ul>
+
+        <!-- REFERENCES -->
+        <h2 id="references">5. References</h2>
+        <ul>
+          <li><a href="https://upstox.com/developer/api-documentation/" target="_blank" rel="noopener noreferrer">Upstox Developer V3 API Specification</a></li>
+          <li><a href="https://pytz.sourceforge.net/" target="_blank" rel="noopener noreferrer">Python Timezone Handling with pytz</a></li>
+        </ul>
+      </article>
+
+      <!-- Sidebar Table of Contents -->
+      <aside class="toc">
+        <div class="toc-header">On this page</div>
+        <div class="toc-links">
+          <a href="#the-problem" class="toc-link">1. The Problem</a>
+          <a href="#safety-architecture" class="toc-link">2. Safety Architecture</a>
+          <a href="#risk-guard-implementation" class="toc-link">3. Risk Engine</a>
+          <a href="#engineering-decisions" class="toc-link">4. Design Tradeoffs</a>
+          <a href="#references" class="toc-link">5. References</a>
+        </div>
+      </aside>
+    </div>
+
+    <footer class="footer">
+      <p>© <span id="year"></span> Brijesh Yadav</p>
+    </footer>
+
+    <script>
+      document.getElementById('year').textContent = new Date().getFullYear();
+
+      const themeBtn = document.getElementById('theme-toggle');
+      const sunIcon = themeBtn.querySelector('.sun-icon');
+      const moonIcon = themeBtn.querySelector('.moon-icon');
+
+      function updateIcons(theme) {
+          if (theme === 'light') {
+              sunIcon.style.display = 'none';
+              moonIcon.style.display = 'block';
+          } else {
+              sunIcon.style.display = 'block';
+              moonIcon.style.display = 'none';
+          }
+      }
+
+      const currentTheme = document.documentElement.getAttribute('data-theme');
+      updateIcons(currentTheme);
+
+      themeBtn.addEventListener('click', () => {
+          const current = document.documentElement.getAttribute('data-theme');
+          const next = current === 'light' ? 'dark' : 'light';
+          document.documentElement.setAttribute('data-theme', next);
+          localStorage.setItem('theme', next);
+          updateIcons(next);
+      });
+    </script>
+  </body>
+</html>
