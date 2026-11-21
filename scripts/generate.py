@@ -38,7 +38,7 @@ def nav(depth: int, current: str) -> str:
         f'{"text-indigo-700 dark:text-indigo-300" if key == current else "text-slate-700 dark:text-slate-300"}"'
         f'{" aria-current=\"page\"" if key == current else ""}>{label}</a>'
         for label, href, key in items)
-    return (f'<header class="sticky top-0 z-10 border-b border-slate-200 bg-white/90 backdrop-blur dark:border-slate-800 dark:bg-slate-950/90">'
+    return (f'<header class="print:hidden sticky top-0 z-10 border-b border-slate-200 bg-white/90 backdrop-blur dark:border-slate-800 dark:bg-slate-950/90">'
             f'<div class="mx-auto flex max-w-5xl flex-wrap items-center justify-between gap-2 px-4 py-3">'
             f'<a href="{r}index.html" class="text-base font-semibold text-slate-900 dark:text-white">{E(PERSON["name"])}</a>'
             f'<nav aria-label="Main" class="flex flex-wrap gap-1">{links}</nav></div></header>')
@@ -46,7 +46,7 @@ def nav(depth: int, current: str) -> str:
 
 def footer(depth: int) -> str:
     r = rel(depth)
-    return (f'<footer class="border-t border-slate-200 dark:border-slate-800"><div class="mx-auto max-w-5xl px-4 py-8 text-sm text-slate-600 dark:text-slate-400">'
+    return (f'<footer class="print:hidden border-t border-slate-200 dark:border-slate-800"><div class="mx-auto max-w-5xl px-4 py-8 text-sm text-slate-600 dark:text-slate-400">'
             f'<p>&copy; 2026 {E(PERSON["name"])}. Built with Tailwind CSS. Skill icons by <a class="{LINK}" href="https://devicon.dev">Devicon</a> (MIT).</p>'
             f'<p class="mt-2"><a class="{LINK}" href="{PERSON["github"]}">GitHub</a> &middot; <a class="{LINK}" href="{PERSON["linkedin"]}">LinkedIn</a> '
             f'&middot; <a class="{LINK}" href="{PERSON["x"]}">X</a> &middot; <a class="{LINK}" href="mailto:{PERSON["email"]}">Email</a> '
@@ -279,7 +279,7 @@ def resume_page() -> str:
                    f'<p class="mt-1 text-xs text-slate-500">{E(", ".join(p["stack"]))}</p></div>' for p in PROJECTS)
     skills = "".join(f'<p class="text-sm"><span class="font-semibold">{E(n)}:</span> {E(", ".join(l for l, _ in i))}</p>' for n, i in SKILL_GROUPS)
     body = f"""<div class="py-10 print:py-0"><div class="flex flex-wrap items-baseline justify-between gap-2 print:hidden"><h1 class="text-3xl font-bold tracking-tight text-slate-900 dark:text-white">Resume</h1>
-<p class="text-sm text-slate-500">Use your browser's Print &rarr; Save as PDF for a PDF copy.</p></div>
+<p class="text-sm"><a class="{LINK}" href="assets/Brijesh_Yadav_Resume.pdf">Download PDF</a></p></div>
 <div class="{CARD} mt-6 print:border-0 print:p-0 print:shadow-none">
 <h2 class="text-2xl font-bold text-slate-900 dark:text-white print:text-black">{E(PERSON['name'])}</h2>
 <p class="text-slate-600 dark:text-slate-300">{E(PERSON['title'])} &middot; {E(PERSON['location'])} &middot; {E(PERSON['email'])}</p>

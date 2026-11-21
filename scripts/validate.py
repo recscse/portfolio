@@ -160,6 +160,21 @@ def main() -> int:
         data = (ROOT / "assets" / png).read_bytes()[:24]
         if data[:8] != b"\x89PNG\r\n\x1a\n" or tuple(int.from_bytes(data[i:i + 4], "big") for i in (16, 20)) != size:
             errors.append(f"assets/{png} is not a {size[0]}x{size[1]} PNG")
+    pdf = ROOT / "assets" / "Brijesh_Yadav_Resume.pdf"
+    if not pdf.exists() or pdf.read_bytes()[:5] != b"%PDF-":
+        errors.append("assets/Brijesh_Yadav_Resume.pdf is missing or not a PDF")
+    else:
+        try:
+            from pypdf import PdfReader
+        except ImportError:
+            print("  note: pypdf not installed, so the resume PDF text was not checked (uv run --with pypdf python scripts/validate.py)")
+        else:
+            pdf_text = "\n".join(pg.extract_text() or "" for pg in PdfReader(str(pdf)).pages)
+            if len(pdf_text) < 500:
+                errors.append("resume PDF has almost no extractable text")
+            for pat, why in BANNED.items():
+                if re.search(pat, pdf_text, re.I):
+                    errors.append(f"resume PDF: banned claim /{pat}/ - {why}")
     for svg in (ROOT / "assets" / "icons").glob("*.svg"):
         if b"<svg" not in svg.read_bytes()[:400]:
             errors.append(f"{svg.name} is not an SVG")

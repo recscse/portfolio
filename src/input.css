@@ -31,3 +31,10 @@
 .post .mermaid-wrapper, .post .architecture-diagram { @apply my-6 overflow-x-auto rounded-lg border border-slate-200 bg-white p-4 dark:border-slate-700 dark:bg-slate-900; }
 /* Mermaid blocks are <pre> elements; undo the typography plugin's dark code-block look for them. */
 .post .mermaid, .post pre.mermaid { @apply flex justify-center bg-transparent p-0 text-slate-800 dark:text-slate-200; }
+
+/* Printing (resume.html -> PDF): A4 page with sensible margins, no browser chrome colours. */
+@page { size: A4; margin: 13mm; }
+@media print {
+  html, body { background: #fff !important; color: #000 !important; }
+  a { text-decoration: none; color: inherit; }
+}
