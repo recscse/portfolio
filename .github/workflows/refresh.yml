@@ -1,0 +1,51 @@
+name: Refresh GitHub data
+
+# Keeps the portfolio's "live" facts (contribution calendar, repository stats, PyPI version) current.
+# It regenerates the site, validates it, and commits only if something changed. If validation fails,
+# nothing is committed, so a bad refresh can never reach the live site.
+on:
+  schedule:
+    - cron: "23 5 * * *" # daily
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: refresh-portfolio
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+      - run: npm ci
+      - name: Fetch GitHub and PyPI data
+        run: python scripts/fetch_github.py
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Regenerate pages and CSS
+        run: |
+          python scripts/generate.py
+          npm run build
+      - name: Validate (links, anchors, images, canonical URLs, unsupported claims)
+        run: python scripts/validate.py
+      - name: Commit if anything changed
+        run: |
+          if git diff --quiet && [ -z "$(git status --porcelain)" ]; then
+            echo "No changes."
+          else
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add -A
+            git commit -m "chore: refresh GitHub data"
+            git push
+          fi

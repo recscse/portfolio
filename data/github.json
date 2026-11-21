@@ -1,122 +1,2338 @@
 {
-  "generatedAt": "2026-07-25T13:05:53.026Z",
-  "owner": "Brijesh Yadav (recscse)",
-  "totalPublicRepos": 8,
-  "totalBytes": 542190,
-  "languages": [
-    {
-      "name": "Python",
-      "bytes": 245100,
-      "percentage": 45.2
-    },
-    {
-      "name": "Java",
-      "bytes": 185400,
-      "percentage": 34.2
-    },
-    {
-      "name": "JavaScript",
-      "bytes": 62400,
-      "percentage": 11.5
-    },
-    {
-      "name": "HTML",
-      "bytes": 28100,
-      "percentage": 5.18
-    },
-    {
-      "name": "CSS",
-      "bytes": 15300,
-      "percentage": 2.82
-    },
-    {
-      "name": "Shell",
-      "bytes": 5890,
-      "percentage": 1.1
-    }
-  ],
-  "featuredRepositories": [
-    {
-      "name": "upstox-auth-pro",
-      "fullName": "growthquantix/upstox-auth-pro",
-      "description": "Published open-source Python SDK automating Upstox OAuth2 login, Playwright TOTP 2FA, token storage, and diagnostic retries.",
-      "htmlUrl": "https://github.com/growthquantix/upstox-auth-pro",
-      "language": "Python",
-      "stargazersCount": 5,
-      "forksCount": 2,
-      "updatedAt": "2026-02-15T12:00:00Z",
-      "topics": [
-        "python-sdk",
-        "oauth2",
-        "playwright",
-        "totp",
-        "pypi"
-      ]
-    },
-    {
-      "name": "ai-model",
-      "fullName": "HNDS-HSCI/ai-model",
-      "description": "Hyper-Symbolic Cognitive Invention (HSCI) v0.1.0-alpha: Self-verifying cognitive architecture coupling neural search heuristics with Microsoft Z3 SMT logic solvers.",
-      "htmlUrl": "https://github.com/HNDS-HSCI/ai-model",
-      "language": "Python",
-      "stargazersCount": 8,
-      "forksCount": 3,
-      "updatedAt": "2026-02-22T10:00:00Z",
-      "topics": [
-        "cognitive-architecture",
-        "z3-prover",
-        "symbolic-reasoning",
-        "pytest"
-      ]
-    },
-    {
-      "name": "upstox-auth-pro-java",
-      "fullName": "growthquantix/upstox-auth-pro-java",
-      "description": "Open-source Java SDK automating Upstox OAuth2 authentication and token refresh handling.",
-      "htmlUrl": "https://github.com/growthquantix/upstox-auth-pro-java",
-      "language": "Java",
-      "stargazersCount": 3,
-      "forksCount": 1,
-      "updatedAt": "2026-02-14T09:00:00Z",
-      "topics": [
-        "java-sdk",
-        "oauth2",
-        "spring-boot",
-        "maven"
-      ]
-    },
-    {
-      "name": "prindox",
-      "fullName": "recscse/prindox",
-      "description": "Online document processing platform supporting order management and FastAPI REST backend automation.",
-      "htmlUrl": "https://github.com/recscse/prindox",
-      "language": "Python",
-      "stargazersCount": 2,
-      "forksCount": 1,
-      "updatedAt": "2025-11-10T14:00:00Z",
-      "topics": [
-        "fastapi",
-        "postgresql",
-        "python",
-        "rest-api"
-      ]
-    },
-    {
-      "name": "Document-Sharing-System",
-      "fullName": "recscse/Document-Sharing-System",
-      "description": "Microservice for physical-to-digital document handoffs using QR-code token verification and Spring Boot.",
-      "htmlUrl": "https://github.com/recscse/Document-Sharing-System",
-      "language": "Java",
-      "stargazersCount": 2,
-      "forksCount": 0,
-      "updatedAt": "2025-08-04T16:00:00Z",
-      "topics": [
-        "java",
-        "spring-boot",
-        "postgresql",
-        "rbac"
-      ]
-    }
-  ],
-  "allRepositories": []
+ "generated_at": "2026-11-21",
+ "user": "recscse",
+ "profile": {
+  "public_repos": 121,
+  "followers": 4,
+  "since": "2018"
+ },
+ "contributions": {
+  "total_last_year": 1578,
+  "days": [
+   {
+    "date": "2025-11-16",
+    "level": 1,
+    "count": 8
+   },
+   {
+    "date": "2025-11-17",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2025-11-18",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2025-11-19",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2025-11-20",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2025-11-21",
+    "level": 1,
+    "count": 3
+   },
+   {
+    "date": "2025-11-22",
+    "level": 1,
+    "count": 10
+   },
+   {
+    "date": "2025-11-23",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2025-11-24",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2025-11-25",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2025-11-26",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2025-11-27",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2025-11-28",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2025-11-29",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2025-11-30",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2025-12-01",
+    "level": 1,
+    "count": 2
+   },
+   {
+    "date": "2025-12-02",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2025-12-03",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2025-12-04",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2025-12-05",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2025-12-06",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2025-12-07",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2025-12-08",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2025-12-09",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2025-12-10",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2025-12-11",
+    "level": 1,
+    "count": 1
+   },
+   {
+    "date": "2025-12-12",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2025-12-13",
+    "level": 1,
+    "count": 13
+   },
+   {
+    "date": "2025-12-14",
+    "level": 1,
+    "count": 1
+   },
+   {
+    "date": "2025-12-15",
+    "level": 1,
+    "count": 3
+   },
+   {
+    "date": "2025-12-16",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2025-12-17",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2025-12-18",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2025-12-19",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2025-12-20",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2025-12-21",
+    "level": 1,
+    "count": 5
+   },
+   {
+    "date": "2025-12-22",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2025-12-23",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2025-12-24",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2025-12-25",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2025-12-26",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2025-12-27",
+    "level": 1,
+    "count": 6
+   },
+   {
+    "date": "2025-12-28",
+    "level": 1,
+    "count": 7
+   },
+   {
+    "date": "2025-12-29",
+    "level": 1,
+    "count": 11
+   },
+   {
+    "date": "2025-12-30",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2025-12-31",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2026-01-01",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2026-01-02",
+    "level": 4,
+    "count": 80
+   },
+   {
+    "date": "2026-01-03",
+    "level": 2,
+    "count": 22
+   },
+   {
+    "date": "2026-01-04",
+    "level": 1,
+    "count": 11
+   },
+   {
+    "date": "2026-01-05",
+    "level": 1,
+    "count": 8
+   },
+   {
+    "date": "2026-01-06",
+    "level": 1,
+    "count": 2
+   },
+   {
+    "date": "2026-01-07",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2026-01-08",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2026-01-09",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2026-01-10",
+    "level": 1,
+    "count": 9
+   },
+   {
+    "date": "2026-01-11",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2026-01-12",
+    "level": 1,
+    "count": 6
+   },
+   {
+    "date": "2026-01-13",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2026-01-14",
+    "level": 1,
+    "count": 10
+   },
+   {
+    "date": "2026-01-15",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2026-01-16",
+    "level": 2,
+    "count": 17
+   },
+   {
+    "date": "2026-01-17",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2026-01-18",
+    "level": 1,
+    "count": 6
+   },
+   {
+    "date": "2026-01-19",
+    "level": 1,
+    "count": 2
+   },
+   {
+    "date": "2026-01-20",
+    "level": 1,
+    "count": 3
+   },
+   {
+    "date": "2026-01-21",
+    "level": 1,
+    "count": 5
+   },
+   {
+    "date": "2026-01-22",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2026-01-23",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2026-01-24",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2026-01-25",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2026-01-26",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2026-01-27",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2026-01-28",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2026-01-29",
+    "level": 1,
+    "count": 6
+   },
+   {
+    "date": "2026-01-30",
+    "level": 1,
+    "count": 14
+   },
+   {
+    "date": "2026-01-31",
+    "level": 2,
+    "count": 18
+   },
+   {
+    "date": "2026-02-01",
+    "level": 1,
+    "count": 5
+   },
+   {
+    "date": "2026-02-02",
+    "level": 1,
+    "count": 7
+   },
+   {
+    "date": "2026-02-03",
+    "level": 2,
+    "count": 15
+   },
+   {
+    "date": "2026-02-04",
+    "level": 1,
+    "count": 2
+   },
+   {
+    "date": "2026-02-05",
+    "level": 1,
+    "count": 5
+   },
+   {
+    "date": "2026-02-06",
+    "level": 1,
+    "count": 8
+   },
+   {
+    "date": "2026-02-07",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2026-02-08",
+    "level": 1,
+    "count": 5
+   },
+   {
+    "date": "2026-02-09",
+    "level": 2,
+    "count": 17
+   },
+   {
+    "date": "2026-02-10",
+    "level": 1,
+    "count": 7
+   },
+   {
+    "date": "2026-02-11",
+    "level": 1,
+    "count": 5
+   },
+   {
+    "date": "2026-02-12",
+    "level": 1,
+    "count": 3
+   },
+   {
+    "date": "2026-02-13",
+    "level": 1,
+    "count": 13
+   },
+   {
+    "date": "2026-02-14",
+    "level": 2,
+    "count": 28
+   },
+   {
+    "date": "2026-02-15",
+    "level": 1,
+    "count": 1
+   },
+   {
+    "date": "2026-02-16",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2026-02-17",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2026-02-18",
+    "level": 1,
+    "count": 5
+   },
+   {
+    "date": "2026-02-19",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2026-02-20",
+    "level": 3,
+    "count": 31
+   },
+   {
+    "date": "2026-02-21",
+    "level": 2,
+    "count": 26
+   },
+   {
+    "date": "2026-02-22",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2026-02-23",
+    "level": 1,
+    "count": 8
+   },
+   {
+    "date": "2026-02-24",
+    "level": 2,
+    "count": 15
+   },
+   {
+    "date": "2026-02-25",
+    "level": 1,
+    "count": 11
+   },
+   {
+    "date": "2026-02-26",
+    "level": 1,
+    "count": 8
+   },
+   {
+    "date": "2026-02-27",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2026-02-28",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2026-03-01",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2026-03-02",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2026-03-03",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2026-03-04",
+    "level": 1,
+    "count": 10
+   },
+   {
+    "date": "2026-03-05",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2026-03-06",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2026-03-07",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2026-03-08",
+    "level": 2,
+    "count": 29
+   },
+   {
+    "date": "2026-03-09",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2026-03-10",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2026-03-11",
+    "level": 2,
+    "count": 23
+   },
+   {
+    "date": "2026-03-12",
+    "level": 3,
+    "count": 30
+   },
+   {
+    "date": "2026-03-13",
+    "level": 1,
+    "count": 1
+   },
+   {
+    "date": "2026-03-14",
+    "level": 2,
+    "count": 23
+   },
+   {
+    "date": "2026-03-15",
+    "level": 4,
+    "count": 46
+   },
+   {
+    "date": "2026-03-16",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2026-03-17",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2026-03-18",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2026-03-19",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2026-03-20",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2026-03-21",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2026-03-22",
+    "level": 1,
+    "count": 5
+   },
+   {
+    "date": "2026-03-23",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2026-03-24",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2026-03-25",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2026-03-26",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2026-03-27",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2026-03-28",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2026-03-29",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2026-03-30",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2026-03-31",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2026-04-01",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2026-04-02",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2026-04-03",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2026-04-04",
+    "level": 1,
+    "count": 4
+   },
+   {
+    "date": "2026-04-05",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2026-04-06",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2026-04-07",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2026-04-08",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2026-04-09",
+    "level": 1,
+    "count": 3
+   },
+   {
+    "date": "2026-04-10",
+    "level": 1,
+    "count": 4
+   },
+   {
+    "date": "2026-04-11",
+    "level": 1,
+    "count": 1
+   },
+   {
+    "date": "2026-04-12",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2026-04-13",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2026-04-14",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2026-04-15",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2026-04-16",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2026-04-17",
+    "level": 1,
+    "count": 6
+   },
+   {
+    "date": "2026-04-18",
+    "level": 1,
+    "count": 3
+   },
+   {
+    "date": "2026-04-19",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2026-04-20",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2026-04-21",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2026-04-22",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2026-04-23",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2026-04-24",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2026-04-25",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2026-04-26",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2026-04-27",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2026-04-28",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2026-04-29",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2026-04-30",
+    "level": 1,
+    "count": 1
+   },
+   {
+    "date": "2026-05-01",
+    "level": 1,
+    "count": 1
+   },
+   {
+    "date": "2026-05-02",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2026-05-03",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2026-05-04",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2026-05-05",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2026-05-06",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2026-05-07",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2026-05-08",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2026-05-09",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2026-05-10",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2026-05-11",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2026-05-12",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2026-05-13",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2026-05-14",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2026-05-15",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2026-05-16",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2026-05-17",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2026-05-18",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2026-05-19",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2026-05-20",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2026-05-21",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2026-05-22",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2026-05-23",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2026-05-24",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2026-05-25",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2026-05-26",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2026-05-27",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2026-05-28",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2026-05-29",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2026-05-30",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2026-05-31",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2026-06-01",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2026-06-02",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2026-06-03",
+    "level": 1,
+    "count": 1
+   },
+   {
+    "date": "2026-06-04",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2026-06-05",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2026-06-06",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2026-06-07",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2026-06-08",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2026-06-09",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2026-06-10",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2026-06-11",
+    "level": 1,
+    "count": 1
+   },
+   {
+    "date": "2026-06-12",
+    "level": 1,
+    "count": 2
+   },
+   {
+    "date": "2026-06-13",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2026-06-14",
+    "level": 1,
+    "count": 1
+   },
+   {
+    "date": "2026-06-15",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2026-06-16",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2026-06-17",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2026-06-18",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2026-06-19",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2026-06-20",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2026-06-21",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2026-06-22",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2026-06-23",
+    "level": 1,
+    "count": 3
+   },
+   {
+    "date": "2026-06-24",
+    "level": 1,
+    "count": 8
+   },
+   {
+    "date": "2026-06-25",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2026-06-26",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2026-06-27",
+    "level": 1,
+    "count": 5
+   },
+   {
+    "date": "2026-06-28",
+    "level": 1,
+    "count": 3
+   },
+   {
+    "date": "2026-06-29",
+    "level": 1,
+    "count": 1
+   },
+   {
+    "date": "2026-06-30",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2026-07-01",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2026-07-02",
+    "level": 1,
+    "count": 1
+   },
+   {
+    "date": "2026-07-03",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2026-07-04",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2026-07-05",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2026-07-06",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2026-07-07",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2026-07-08",
+    "level": 3,
+    "count": 30
+   },
+   {
+    "date": "2026-07-09",
+    "level": 1,
+    "count": 13
+   },
+   {
+    "date": "2026-07-10",
+    "level": 1,
+    "count": 14
+   },
+   {
+    "date": "2026-07-11",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2026-07-12",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2026-07-13",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2026-07-14",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2026-07-15",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2026-07-16",
+    "level": 2,
+    "count": 21
+   },
+   {
+    "date": "2026-07-17",
+    "level": 3,
+    "count": 36
+   },
+   {
+    "date": "2026-07-18",
+    "level": 3,
+    "count": 34
+   },
+   {
+    "date": "2026-07-19",
+    "level": 1,
+    "count": 12
+   },
+   {
+    "date": "2026-07-20",
+    "level": 1,
+    "count": 4
+   },
+   {
+    "date": "2026-07-21",
+    "level": 1,
+    "count": 4
+   },
+   {
+    "date": "2026-07-22",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2026-07-23",
+    "level": 1,
+    "count": 8
+   },
+   {
+    "date": "2026-07-24",
+    "level": 2,
+    "count": 29
+   },
+   {
+    "date": "2026-07-25",
+    "level": 1,
+    "count": 11
+   },
+   {
+    "date": "2026-07-26",
+    "level": 3,
+    "count": 37
+   },
+   {
+    "date": "2026-07-27",
+    "level": 1,
+    "count": 4
+   },
+   {
+    "date": "2026-07-28",
+    "level": 2,
+    "count": 20
+   },
+   {
+    "date": "2026-07-29",
+    "level": 1,
+    "count": 1
+   },
+   {
+    "date": "2026-07-30",
+    "level": 1,
+    "count": 8
+   },
+   {
+    "date": "2026-07-31",
+    "level": 1,
+    "count": 6
+   },
+   {
+    "date": "2026-08-01",
+    "level": 1,
+    "count": 8
+   },
+   {
+    "date": "2026-08-02",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2026-08-03",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2026-08-04",
+    "level": 1,
+    "count": 7
+   },
+   {
+    "date": "2026-08-05",
+    "level": 1,
+    "count": 4
+   },
+   {
+    "date": "2026-08-06",
+    "level": 1,
+    "count": 3
+   },
+   {
+    "date": "2026-08-07",
+    "level": 1,
+    "count": 6
+   },
+   {
+    "date": "2026-08-08",
+    "level": 1,
+    "count": 1
+   },
+   {
+    "date": "2026-08-09",
+    "level": 1,
+    "count": 4
+   },
+   {
+    "date": "2026-08-10",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2026-08-11",
+    "level": 1,
+    "count": 2
+   },
+   {
+    "date": "2026-08-12",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2026-08-13",
+    "level": 1,
+    "count": 1
+   },
+   {
+    "date": "2026-08-14",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2026-08-15",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2026-08-16",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2026-08-17",
+    "level": 2,
+    "count": 21
+   },
+   {
+    "date": "2026-08-18",
+    "level": 1,
+    "count": 3
+   },
+   {
+    "date": "2026-08-19",
+    "level": 1,
+    "count": 1
+   },
+   {
+    "date": "2026-08-20",
+    "level": 1,
+    "count": 9
+   },
+   {
+    "date": "2026-08-21",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2026-08-22",
+    "level": 1,
+    "count": 6
+   },
+   {
+    "date": "2026-08-23",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2026-08-24",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2026-08-25",
+    "level": 1,
+    "count": 4
+   },
+   {
+    "date": "2026-08-26",
+    "level": 2,
+    "count": 15
+   },
+   {
+    "date": "2026-08-27",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2026-08-28",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2026-08-29",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2026-08-30",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2026-08-31",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2026-09-01",
+    "level": 1,
+    "count": 2
+   },
+   {
+    "date": "2026-09-02",
+    "level": 1,
+    "count": 3
+   },
+   {
+    "date": "2026-09-03",
+    "level": 1,
+    "count": 5
+   },
+   {
+    "date": "2026-09-04",
+    "level": 1,
+    "count": 6
+   },
+   {
+    "date": "2026-09-05",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2026-09-06",
+    "level": 4,
+    "count": 52
+   },
+   {
+    "date": "2026-09-07",
+    "level": 3,
+    "count": 33
+   },
+   {
+    "date": "2026-09-08",
+    "level": 2,
+    "count": 18
+   },
+   {
+    "date": "2026-09-09",
+    "level": 1,
+    "count": 7
+   },
+   {
+    "date": "2026-09-10",
+    "level": 1,
+    "count": 5
+   },
+   {
+    "date": "2026-09-11",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2026-09-12",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2026-09-13",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2026-09-14",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2026-09-15",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2026-09-16",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2026-09-17",
+    "level": 1,
+    "count": 3
+   },
+   {
+    "date": "2026-09-18",
+    "level": 1,
+    "count": 4
+   },
+   {
+    "date": "2026-09-19",
+    "level": 1,
+    "count": 1
+   },
+   {
+    "date": "2026-09-20",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2026-09-21",
+    "level": 1,
+    "count": 6
+   },
+   {
+    "date": "2026-09-22",
+    "level": 1,
+    "count": 14
+   },
+   {
+    "date": "2026-09-23",
+    "level": 1,
+    "count": 7
+   },
+   {
+    "date": "2026-09-24",
+    "level": 2,
+    "count": 15
+   },
+   {
+    "date": "2026-09-25",
+    "level": 2,
+    "count": 15
+   },
+   {
+    "date": "2026-09-26",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2026-09-27",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2026-09-28",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2026-09-29",
+    "level": 2,
+    "count": 16
+   },
+   {
+    "date": "2026-09-30",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2026-10-01",
+    "level": 1,
+    "count": 1
+   },
+   {
+    "date": "2026-10-02",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2026-10-03",
+    "level": 1,
+    "count": 4
+   },
+   {
+    "date": "2026-10-04",
+    "level": 1,
+    "count": 2
+   },
+   {
+    "date": "2026-10-05",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2026-10-06",
+    "level": 2,
+    "count": 15
+   },
+   {
+    "date": "2026-10-07",
+    "level": 1,
+    "count": 11
+   },
+   {
+    "date": "2026-10-08",
+    "level": 1,
+    "count": 10
+   },
+   {
+    "date": "2026-10-09",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2026-10-10",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2026-10-11",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2026-10-12",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2026-10-13",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2026-10-14",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2026-10-15",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2026-10-16",
+    "level": 1,
+    "count": 3
+   },
+   {
+    "date": "2026-10-17",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2026-10-18",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2026-10-19",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2026-10-20",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2026-10-21",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2026-10-22",
+    "level": 1,
+    "count": 1
+   },
+   {
+    "date": "2026-10-23",
+    "level": 1,
+    "count": 12
+   },
+   {
+    "date": "2026-10-24",
+    "level": 1,
+    "count": 1
+   },
+   {
+    "date": "2026-10-25",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2026-10-26",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2026-10-27",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2026-10-28",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2026-10-29",
+    "level": 1,
+    "count": 1
+   },
+   {
+    "date": "2026-10-30",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2026-10-31",
+    "level": 1,
+    "count": 4
+   },
+   {
+    "date": "2026-11-01",
+    "level": 1,
+    "count": 7
+   },
+   {
+    "date": "2026-11-02",
+    "level": 1,
+    "count": 2
+   },
+   {
+    "date": "2026-11-03",
+    "level": 1,
+    "count": 3
+   },
+   {
+    "date": "2026-11-04",
+    "level": 1,
+    "count": 3
+   },
+   {
+    "date": "2026-11-05",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2026-11-06",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2026-11-07",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2026-11-08",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2026-11-09",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2026-11-10",
+    "level": 2,
+    "count": 15
+   },
+   {
+    "date": "2026-11-11",
+    "level": 1,
+    "count": 11
+   },
+   {
+    "date": "2026-11-12",
+    "level": 2,
+    "count": 19
+   },
+   {
+    "date": "2026-11-13",
+    "level": 1,
+    "count": 9
+   },
+   {
+    "date": "2026-11-14",
+    "level": 1,
+    "count": 2
+   },
+   {
+    "date": "2026-11-15",
+    "level": 0,
+    "count": 0
+   },
+   {
+    "date": "2026-11-16",
+    "level": 1,
+    "count": 2
+   },
+   {
+    "date": "2026-11-17",
+    "level": 4,
+    "count": 58
+   },
+   {
+    "date": "2026-11-18",
+    "level": 1,
+    "count": 6
+   },
+   {
+    "date": "2026-11-19",
+    "level": 1,
+    "count": 10
+   },
+   {
+    "date": "2026-11-20",
+    "level": 1,
+    "count": 6
+   },
+   {
+    "date": "2026-11-21",
+    "level": 3,
+    "count": 31
+   }
+  ]
+ },
+ "own_repos": {
+  "recscse/portfolio": {
+   "url": "https://github.com/recscse/portfolio",
+   "stars": 0,
+   "pushed_at": "2026-11-21",
+   "description": "personal portfolio",
+   "language": "HTML"
+  },
+  "recscse/recscse": {
+   "url": "https://github.com/recscse/recscse",
+   "stars": 0,
+   "pushed_at": "2026-11-21",
+   "description": "",
+   "language": null
+  },
+  "recscse/career-hub": {
+   "url": "https://github.com/recscse/career-hub",
+   "stars": 0,
+   "pushed_at": "2026-11-21",
+   "description": "",
+   "language": "Python"
+  },
+  "recscse/codive": {
+   "url": "https://github.com/recscse/codive",
+   "stars": 0,
+   "pushed_at": "2026-11-17",
+   "description": "⚡ Local-first AST context engine & Model Context Protocol (MCP) server for Claude Code, Cursor, Windsurf, & Antigravity. Cuts token costs by 80% with SQLite WAL & code symbol graphs.",
+   "language": "Go"
+  },
+  "recscse/funcode": {
+   "url": "https://github.com/recscse/funcode",
+   "stars": 0,
+   "pushed_at": "2026-03-12",
+   "description": "",
+   "language": null
+  },
+  "recscse/failfx": {
+   "url": "https://github.com/recscse/failfx",
+   "stars": 0,
+   "pushed_at": "2026-03-12",
+   "description": "",
+   "language": "Kotlin"
+  },
+  "recscse/whatsapp-scheduler": {
+   "url": "https://github.com/recscse/whatsapp-scheduler",
+   "stars": 0,
+   "pushed_at": "2026-01-10",
+   "description": "",
+   "language": "JavaScript"
+  },
+  "recscse/whatsapp-exporter": {
+   "url": "https://github.com/recscse/whatsapp-exporter",
+   "stars": 0,
+   "pushed_at": "2026-01-10",
+   "description": "",
+   "language": "JavaScript"
+  },
+  "recscse/whatsApp-auto-reply-bot": {
+   "url": "https://github.com/recscse/whatsApp-auto-reply-bot",
+   "stars": 0,
+   "pushed_at": "2026-01-06",
+   "description": "auto-reply-boat",
+   "language": "JavaScript"
+  },
+  "recscse/whatsapp-cloud-api-wraaper": {
+   "url": "https://github.com/recscse/whatsapp-cloud-api-wraaper",
+   "stars": 0,
+   "pushed_at": "2025-12-21",
+   "description": "",
+   "language": "JavaScript"
+  },
+  "recscse/Abctest": {
+   "url": "https://github.com/recscse/Abctest",
+   "stars": 0,
+   "pushed_at": "2025-05-19",
+   "description": "",
+   "language": null
+  },
+  "recscse/document": {
+   "url": "https://github.com/recscse/document",
+   "stars": 0,
+   "pushed_at": "2024-08-25",
+   "description": "",
+   "language": "Java"
+  },
+  "recscse/rating": {
+   "url": "https://github.com/recscse/rating",
+   "stars": 0,
+   "pushed_at": "2023-12-26",
+   "description": "",
+   "language": "JavaScript"
+  },
+  "recscse/reviewrating": {
+   "url": "https://github.com/recscse/reviewrating",
+   "stars": 0,
+   "pushed_at": "2023-12-26",
+   "description": "",
+   "language": "JavaScript"
+  },
+  "recscse/Last-Mile-Assignments---Paint-App-Colour-Picker---gipzlc49zk": {
+   "url": "https://github.com/recscse/Last-Mile-Assignments---Paint-App-Colour-Picker---gipzlc49zk",
+   "stars": 0,
+   "pushed_at": "2023-07-18",
+   "description": "",
+   "language": "JavaScript"
+  },
+  "recscse/user-profile": {
+   "url": "https://github.com/recscse/user-profile",
+   "stars": 0,
+   "pushed_at": "2023-05-24",
+   "description": "usser profile",
+   "language": "JavaScript"
+  },
+  "recscse/frustratedcoder": {
+   "url": "https://github.com/recscse/frustratedcoder",
+   "stars": 0,
+   "pushed_at": "2022-10-28",
+   "description": "",
+   "language": null
+  },
+  "recscse/asposeTest": {
+   "url": "https://github.com/recscse/asposeTest",
+   "stars": 0,
+   "pushed_at": "2022-10-24",
+   "description": "",
+   "language": null
+  },
+  "recscse/ArisGlobal-Jvava": {
+   "url": "https://github.com/recscse/ArisGlobal-Jvava",
+   "stars": 0,
+   "pushed_at": "2021-11-10",
+   "description": "",
+   "language": "Java"
+  },
+  "recscse/arisglobal-developer-track-practical-assesmentr": {
+   "url": "https://github.com/recscse/arisglobal-developer-track-practical-assesmentr",
+   "stars": 0,
+   "pushed_at": "2021-10-23",
+   "description": "",
+   "language": null
+  },
+  "recscse/arisglobalsome": {
+   "url": "https://github.com/recscse/arisglobalsome",
+   "stars": 0,
+   "pushed_at": "2021-10-09",
+   "description": "",
+   "language": null
+  },
+  "recscse/ArisGlobal": {
+   "url": "https://github.com/recscse/ArisGlobal",
+   "stars": 0,
+   "pushed_at": "2021-10-09",
+   "description": "",
+   "language": null
+  },
+  "recscse/brijesh-adani-digital-lab-test": {
+   "url": "https://github.com/recscse/brijesh-adani-digital-lab-test",
+   "stars": 0,
+   "pushed_at": "2021-09-24",
+   "description": "",
+   "language": "JavaScript"
+  },
+  "recscse/javascript": {
+   "url": "https://github.com/recscse/javascript",
+   "stars": 0,
+   "pushed_at": "2021-08-16",
+   "description": "JavaScript mini projects ",
+   "language": "HTML"
+  },
+  "recscse/DSA": {
+   "url": "https://github.com/recscse/DSA",
+   "stars": 0,
+   "pushed_at": "2021-08-15",
+   "description": "DSA",
+   "language": "C++"
+  },
+  "recscse/Last-Mile-Assignments---Button-Action-with-Functional-Component": {
+   "url": "https://github.com/recscse/Last-Mile-Assignments---Button-Action-with-Functional-Component",
+   "stars": 0,
+   "pushed_at": "2021-07-29",
+   "description": "",
+   "language": "JavaScript"
+  },
+  "recscse/Last-Mile-Assignments---Button-Action-with-Class-Component": {
+   "url": "https://github.com/recscse/Last-Mile-Assignments---Button-Action-with-Class-Component",
+   "stars": 0,
+   "pushed_at": "2021-07-27",
+   "description": "",
+   "language": "JavaScript"
+  },
+  "recscse/image-search-app": {
+   "url": "https://github.com/recscse/image-search-app",
+   "stars": 0,
+   "pushed_at": "2021-07-23",
+   "description": "Created with CodeSandbox",
+   "language": "JavaScript"
+  },
+  "recscse/movie-app": {
+   "url": "https://github.com/recscse/movie-app",
+   "stars": 0,
+   "pushed_at": "2021-04-18",
+   "description": "",
+   "language": "JavaScript"
+  },
+  "recscse/ecomercewebapplication": {
+   "url": "https://github.com/recscse/ecomercewebapplication",
+   "stars": 0,
+   "pushed_at": "2021-04-14",
+   "description": "",
+   "language": "JavaScript"
+  },
+  "recscse/oni-technical-evaluation-": {
+   "url": "https://github.com/recscse/oni-technical-evaluation-",
+   "stars": 0,
+   "pushed_at": "2021-03-15",
+   "description": "",
+   "language": "JavaScript"
+  },
+  "recscse/maze-game": {
+   "url": "https://github.com/recscse/maze-game",
+   "stars": 0,
+   "pushed_at": "2021-01-27",
+   "description": "Maze-Game Generator",
+   "language": "JavaScript"
+  },
+  "recscse/blog-fullstack-project": {
+   "url": "https://github.com/recscse/blog-fullstack-project",
+   "stars": 1,
+   "pushed_at": "2020-12-12",
+   "description": "",
+   "language": "JavaScript"
+  },
+  "recscse/draggeImage": {
+   "url": "https://github.com/recscse/draggeImage",
+   "stars": 0,
+   "pushed_at": "2020-10-21",
+   "description": "",
+   "language": "HTML"
+  },
+  "recscse/Dr.A.P.J.-Abdul-Kalam-Tribute-Page": {
+   "url": "https://github.com/recscse/Dr.A.P.J.-Abdul-Kalam-Tribute-Page",
+   "stars": 1,
+   "pushed_at": "2020-10-01",
+   "description": "Dr.A.P.J. Abdul Kalam Tribute Page",
+   "language": "HTML"
+  },
+  "recscse/github-upload": {
+   "url": "https://github.com/recscse/github-upload",
+   "stars": 0,
+   "pushed_at": "2020-10-01",
+   "description": "",
+   "language": null
+  },
+  "recscse/markdown-portfolio": {
+   "url": "https://github.com/recscse/markdown-portfolio",
+   "stars": 0,
+   "pushed_at": "2020-10-01",
+   "description": "",
+   "language": null
+  },
+  "recscse/github-slideshow": {
+   "url": "https://github.com/recscse/github-slideshow",
+   "stars": 0,
+   "pushed_at": "2020-10-01",
+   "description": "A robot powered training repository :robot:",
+   "language": "Ruby"
+  },
+  "recscse/newton-school-github-issues": {
+   "url": "https://github.com/recscse/newton-school-github-issues",
+   "stars": 0,
+   "pushed_at": "2020-08-30",
+   "description": "",
+   "language": null
+  },
+  "recscse/exam100": {
+   "url": "https://github.com/recscse/exam100",
+   "stars": 0,
+   "pushed_at": "2020-07-10",
+   "description": "",
+   "language": "HTML"
+  },
+  "recscse/color-to-me-": {
+   "url": "https://github.com/recscse/color-to-me-",
+   "stars": 0,
+   "pushed_at": "2020-07-06",
+   "description": "when give the number between 1 to 9 and click on the color to me it will color the grid background  ",
+   "language": "HTML"
+  },
+  "recscse/color-flipper": {
+   "url": "https://github.com/recscse/color-flipper",
+   "stars": 0,
+   "pushed_at": "2020-07-04",
+   "description": "",
+   "language": "CSS"
+  },
+  "recscse/newtonschool": {
+   "url": "https://github.com/recscse/newtonschool",
+   "stars": 0,
+   "pushed_at": "2020-06-24",
+   "description": "daily task",
+   "language": "HTML"
+  },
+  "recscse/Build-a-Technical-Documentation-Page": {
+   "url": "https://github.com/recscse/Build-a-Technical-Documentation-Page",
+   "stars": 0,
+   "pushed_at": "2020-05-29",
+   "description": "Build a Technical Documentation Page",
+   "language": "HTML"
+  },
+  "recscse/survey-form": {
+   "url": "https://github.com/recscse/survey-form",
+   "stars": 0,
+   "pushed_at": "2020-05-29",
+   "description": "survey form",
+   "language": "HTML"
+  },
+  "recscse/coursera-test": {
+   "url": "https://github.com/recscse/coursera-test",
+   "stars": 0,
+   "pushed_at": "2020-05-07",
+   "description": "coursera test repository",
+   "language": "HTML"
+  },
+  "recscse/coursera-html": {
+   "url": "https://github.com/recscse/coursera-html",
+   "stars": 0,
+   "pushed_at": "2020-05-07",
+   "description": "html web development",
+   "language": null
+  },
+  "recscse/c-prograam": {
+   "url": "https://github.com/recscse/c-prograam",
+   "stars": 0,
+   "pushed_at": "2019-04-01",
+   "description": "c programming",
+   "language": "C"
+  },
+  "recscse/hotel-booking-": {
+   "url": "https://github.com/recscse/hotel-booking-",
+   "stars": 1,
+   "pushed_at": "2019-04-01",
+   "description": "project online hotel booking system",
+   "language": "HTML"
+  },
+  "recscse/online_cab-booking": {
+   "url": "https://github.com/recscse/online_cab-booking",
+   "stars": 0,
+   "pushed_at": "2019-04-01",
+   "description": "online cab booking project  ",
+   "language": null
+  },
+  "recscse/brijesh-yadav": {
+   "url": "https://github.com/recscse/brijesh-yadav",
+   "stars": 0,
+   "pushed_at": "2018-02-19",
+   "description": "",
+   "language": null
+  }
+ },
+ "pypi": {
+  "upstox-auth-pro": {
+   "version": "1.1.3",
+   "released": "2026-03-07"
+  }
+ },
+ "repos": [
+  {
+   "full_name": "recscse/codive",
+   "url": "https://github.com/recscse/codive",
+   "language": "Go",
+   "description": "⚡ Local-first AST context engine & Model Context Protocol (MCP) server for Claude Code, Cursor, Windsurf, & Antigravity. Cuts token costs by 80% with SQLite WAL & code symbol graphs.",
+   "stars": 0,
+   "pushed_at": "2026-11-17",
+   "languages": {
+    "Go": 826993,
+    "HTML": 253029,
+    "Python": 13670,
+    "PowerShell": 6483,
+    "Shell": 5209,
+    "CSS": 4132,
+    "Batchfile": 3874,
+    "Makefile": 1195
+   },
+   "my_commits": 110
+  },
+  {
+   "full_name": "growthquantix/tradingbot",
+   "url": "https://github.com/growthquantix/tradingbot",
+   "language": "Python",
+   "description": "",
+   "stars": 1,
+   "pushed_at": "2026-11-21",
+   "languages": {
+    "Python": 4841240,
+    "JavaScript": 2363245,
+    "CSS": 17962,
+    "HTML": 15148,
+    "Shell": 2693,
+    "Makefile": 2392,
+    "Dockerfile": 1857,
+    "Mako": 635,
+    "Batchfile": 314,
+    "Procfile": 77
+   },
+   "my_commits": 766
+  },
+  {
+   "full_name": "growthquantix/upstox-auth-pro",
+   "url": "https://github.com/growthquantix/upstox-auth-pro",
+   "language": "Python",
+   "description": " A high-performance Python SDK to automate Upstox OAuth2 login with Playwright, TOTP, and smart token management.",
+   "stars": 2,
+   "pushed_at": "2026-03-07",
+   "languages": {
+    "Python": 24331
+   },
+   "my_commits": 29
+  },
+  {
+   "full_name": "growthquantix/upstox-auth-pro-java",
+   "url": "https://github.com/growthquantix/upstox-auth-pro-java",
+   "language": "HTML",
+   "description": "",
+   "stars": 0,
+   "pushed_at": "2026-11-17",
+   "languages": {
+    "HTML": 226910,
+    "JavaScript": 37458,
+    "CSS": 30650,
+    "Java": 13031,
+    "Shell": 1701,
+    "PowerShell": 1673,
+    "Python": 1192
+   },
+   "my_commits": 11
+  },
+  {
+   "full_name": "HNDS-HSCI/ai-model",
+   "url": "https://github.com/HNDS-HSCI/ai-model",
+   "language": "Python",
+   "description": "Hyper-Symbolic Cognitive Intelligence.",
+   "stars": 0,
+   "pushed_at": "2026-09-09",
+   "languages": {
+    "Python": 1456378,
+    "HTML": 75538,
+    "TeX": 10045,
+    "Rust": 6040,
+    "Shell": 1039,
+    "Dockerfile": 923,
+    "PowerShell": 824,
+    "Makefile": 799
+   },
+   "my_commits": 92
+  },
+  {
+   "full_name": "recscse/career-hub",
+   "url": "https://github.com/recscse/career-hub",
+   "language": "Python",
+   "description": "",
+   "stars": 0,
+   "pushed_at": "2026-11-21",
+   "languages": {
+    "Python": 182318,
+    "Dockerfile": 625
+   },
+   "my_commits": 13
+  }
+ ]
 }

@@ -25,6 +25,7 @@ BANNED = {  # claims that were found to be unsupported and must not come back
     r"2,600": "download count could not be verified",
     r"<\s*2\s*ms|&lt;\s*2\s*ms": "'< 2ms' is not backed by the codive benchmark report",
     r"github\.com/recscse/prindox": "that repository does not exist (private)",
+    r"prindox\.com": "prindox.com is a parked domain; the live site is prindox.netlify.app",
     r"AWS Certified|Oracle Certified|Docker Certified|Kafka Developer": "certifications are not held",
     r"Medium\.com/@brijeshyadav/": "the Medium articles never existed",
 }
@@ -105,6 +106,11 @@ def check_page(p: pathlib.Path, ext: set[str]) -> None:
     for pat, why in BANNED.items():
         if re.search(pat, text, re.I):
             errors.append(f"{rel}: banned claim /{pat}/ - {why}")
+    if 'target="_blank"' in text:
+        errors.append(f"{rel}: links must open in the same tab (found target=_blank)")
+    for m in re.finditer(r"<img [^>]*>", text):
+        if "width=" not in m.group(0) or "height=" not in m.group(0):
+            errors.append(f"{rel}: <img> without width/height (causes layout shift): {m.group(0)[:70]}")
     for ref in s.links + s.assets:
         if ref.startswith(("mailto:", "tel:", "javascript:", "data:")):
             continue
@@ -156,6 +162,14 @@ def main() -> int:
     for u in re.findall(r"<loc>([^<]+)</loc>", (ROOT / "sitemap.xml").read_text(encoding="utf-8")):
         if not u.startswith(BASE) or not (ROOT / u[len(BASE):]).exists():
             errors.append(f"sitemap entry has no file: {u}")
+    gh = ROOT / "data" / "github.json"
+    if not gh.exists():
+        errors.append("data/github.json is missing (run scripts/fetch_github.py)")
+    else:
+        import datetime, json
+        age = (datetime.date.today() - datetime.date.fromisoformat(json.loads(gh.read_text(encoding="utf-8"))["generated_at"])).days
+        if age > 100:
+            errors.append(f"data/github.json is {age} days old; refresh it")
     for png, size in (("og.png", (1200, 630)), ("icon-192.png", (192, 192)), ("icon-512.png", (512, 512))):
         data = (ROOT / "assets" / png).read_bytes()[:24]
         if data[:8] != b"\x89PNG\r\n\x1a\n" or tuple(int.from_bytes(data[i:i + 4], "big") for i in (16, 20)) != size:

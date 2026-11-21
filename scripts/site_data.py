@@ -13,10 +13,16 @@ PERSON = {
     "github": "https://github.com/recscse",
     "linkedin": "https://www.linkedin.com/in/brijesh-yadav-",
     "x": "https://x.com/_brijeshyadav",  # kept as in the original site; handle not independently verified
+    "headline": "I build trading infrastructure and tools for AI coding agents.",
+    "hero_sub": (
+        "Backend engineer with 5+ years in Java / Spring Boot and Python / FastAPI. I work on enterprise "
+        "microservices at ArisGlobal, and in my own time I build Growth Quantix, codive and Graylane."
+    ),
+    "open": "Open to opportunities",
     "summary": (
         "I build backend systems in Java / Spring Boot and Python / FastAPI. For the past five years I have "
-        "worked on enterprise microservices at ArisGlobal. Outside work I build Growth Quantix, an algorithmic "
-        "trading platform, and open-source developer tools."
+        "worked on enterprise microservices at ArisGlobal. Outside work I build Growth Quantix (algorithmic "
+        "trading), codive (developer tooling for AI agents) and Graylane (an Android wellbeing app)."
     ),
     "available": "Available for select freelance and contract projects.",
 }
@@ -43,7 +49,9 @@ SKILL_GROUPS = [
     ("Languages", [("Java", "java"), ("Python", "python"), ("JavaScript", "javascript"), ("Go", "go"), ("SQL", None)]),
     ("Frameworks", [("Spring Boot", "springboot"), ("Hibernate / JPA", "hibernate"), ("FastAPI", "fastapi"), ("React", "react")]),
     ("Data", [("PostgreSQL", "postgresql"), ("MySQL", "mysql"), ("MongoDB", "mongodb"), ("Redis", "redis")]),
-    ("Infrastructure & tools", [("Docker", "docker"), ("AWS (S3)", "aws"), ("Git", "git"), ("GitHub Actions", "github"), ("Maven", "maven")]),
+    ("Infrastructure & tools", [("Docker", "docker"), ("AWS (S3)", "aws"), ("Git", "git"), ("GitHub Actions", "github"), ("Maven", "maven"),
+                                     ("Prometheus", "prometheus"), ("Grafana", "grafana")]),
+    ("Tooling & automation", [("MCP servers", None), ("CLI tools", None), ("Playwright", None)]),
 ]
 CONCEPTS = ["REST APIs", "Microservices", "WebSockets", "Event-driven architecture", "Caching", "CI/CD",
             "System design", "Concurrency", "Data structures & algorithms"]
@@ -51,15 +59,20 @@ CONCEPTS = ["REST APIs", "Microservices", "WebSockets", "Event-driven architectu
 PROJECTS = [
     {
         "slug": "growth-quantix",
+        "repos": ['growthquantix/tradingbot'],
+        "resume": True,
         "name": "Growth Quantix",
         "tagline": "Multi-broker algorithmic trading platform",
         "status": "In development",
+        "featured": True,
+        "image": None,  # architecture diagram is drawn by the generator (it mirrors the real pipeline)
         "stack": ["Python", "FastAPI", "PostgreSQL", "Redis", "WebSockets", "React"],
         "bullets": [
             "Integrations with Upstox, Dhan and Fyers brokers, including the Upstox Market Feed V3 WebSocket for live prices.",
             "Paper trading, backtesting, portfolio and broker-account management modules, exposed through REST APIs.",
             "AITOS: a stage-gated pipeline that keeps AI signals separate from execution authority. Orders pass deterministic risk checks, including Kelly-fraction position sizing, before they are placed.",
             "Real-time market-data ingestion over binary WebSocket feeds with reconnection and backoff, fanned out to services through Redis Pub/Sub.",
+            "Monitoring with Prometheus metrics and a provisioned Grafana dashboard.",
         ],
         "links": [
             ("Source code", "https://github.com/growthquantix/tradingbot"),
@@ -69,13 +82,77 @@ PROJECTS = [
                     "designing-safe-ai-assisted-trading-system", "designing-an-ai-trading-system-without-model-control"],
     },
     {
+        "slug": "graylane",
+        "repos": [],
+        "resume": True,
+        "name": "Graylane",
+        "tagline": "Calm Android launcher and digital-wellbeing app",
+        "status": "Coming soon on Google Play",
+        "featured": True,
+        "image": ("assets/img/graylane.webp", 960, 442, "The Graylane home screen and focus timer on Android, shown on its website"),
+        "stack": ["Android"],
+        "bullets": [
+            "A calm home screen that shows only the apps you choose, in plain text, so nothing pulls you in just because it glows.",
+            "Screen-time insights by day, week and month: which apps take the time and how often you wake the screen.",
+            "Pause, daily limits and blocking for distracting apps (phone, messages, banking and emergency apps are never restricted), plus a focus timer with an optional strict mode.",
+            "Private by design: no ads, no account, and nothing leaves the phone.",
+        ],
+        "links": [("Website", "https://graylane.netlify.app/")],
+        "writing": [],
+    },
+    {
+        "slug": "prindox",
+        "repos": [],
+        "resume": True,
+        "name": "Prindox",
+        "tagline": "Document printing at nearby print shops, started with a QR code",
+        "status": "Live",
+        "featured": True,
+        "image": ("assets/img/prindox.webp", 960, 480, "The Prindox home page: print anything everywhere, scan, upload and print"),
+        "stack": ["Python", "FastAPI", "PostgreSQL"],
+        "bullets": [
+            "Upload documents from a phone and print them at a participating print shop by scanning a QR code.",
+            "Backend services and REST APIs for document upload, print-order management and workflow automation.",
+            "PostgreSQL schemas and optimized queries for document storage and retrieval; asynchronous background processing for validation and order handling.",
+            "Source code is private.",
+        ],
+        "links": [("Live site", "https://prindox.netlify.app/")],
+        "writing": [],
+    },
+    {
+        "slug": "codive",
+        "repos": ['recscse/codive'],
+        "resume": True,
+        "name": "codive",
+        "tagline": "Local-first code-intelligence server for AI coding agents",
+        "status": "Active",
+        "featured": True,
+        "image": ("assets/img/codive.webp", 960, 510, "The codive website: know what breaks before your AI agent edits your code"),
+        "stack": ["Go", "SQLite", "MCP"],
+        "bullets": [
+            "Maps a project on your own machine and shows the callers, affected files and tests to run for any change. One binary, no account.",
+            "Indexes syntax trees, symbols and call graphs into an embedded SQLite database and serves them to AI coding tools over the Model Context Protocol.",
+            "In its own benchmark (one repository, tokens estimated as characters / 4) output was 92.4% smaller across five operations; plain git grep still wins on simple lookups.",
+        ],
+        "links": [
+            ("Project site", "https://recscse.github.io/codive/"),
+            ("Source code", "https://github.com/recscse/codive"),
+            ("Benchmark report", "https://github.com/recscse/codive/blob/main/docs/BENCHMARK_REPORT.md"),
+        ],
+        "writing": [],
+    },
+    {
         "slug": "upstox-auth-pro",
+        "repos": ['growthquantix/upstox-auth-pro', 'growthquantix/upstox-auth-pro-java'],
+        "resume": True,
         "name": "Upstox Auth Pro",
         "tagline": "Open-source SDKs that automate Upstox OAuth2 login",
         "status": "Published",
+        "featured": False,
+        "image": None,
         "stack": ["Python", "Playwright", "OAuth2", "TOTP", "Java", "GitHub Actions"],
         "bullets": [
-            "Python SDK published on PyPI (v1.1.3) that automates the daily Upstox login: browser automation with Playwright and TOTP two-factor codes.",
+            "Python SDK published on PyPI (v{PYPI_VERSION}) that automates the daily Upstox login: browser automation with Playwright and TOTP two-factor codes.",
             "Pluggable token storage, automatic token refresh, retries and diagnostic logging, plus a command-line tool.",
             "A separate Java SDK covers the same authentication workflow for JVM applications.",
         ],
@@ -87,27 +164,55 @@ PROJECTS = [
         "writing": ["building-production-ready-oauth2-automation-sdk-upstox"],
     },
     {
-        "slug": "codive",
-        "name": "codive",
-        "tagline": "Local-first code-intelligence server for AI coding agents",
-        "status": "Active",
-        "stack": ["Go", "SQLite", "MCP"],
+        "slug": "whatsapp-tools",
+        "name": "WhatsApp Cloud API tools",
+        "repos": ["recscse/whatsapp-scheduler", "recscse/whatsapp-exporter", "recscse/whatsApp-auto-reply-bot", "recscse/whatsapp-cloud-api-wraaper"],
+        "resume": False,
+        "tagline": "Four small Node.js services built on the WhatsApp Cloud API",
+        "status": "Open source",
+        "featured": False,
+        "image": None,
+        "stack": ["Node.js", "WhatsApp Cloud API", "Docker"],
         "bullets": [
-            "Indexes a repository's syntax trees, symbols and call graphs into an embedded SQLite database and serves them to AI coding tools over the Model Context Protocol.",
-            "Returns file outlines and focused context instead of whole files. In its own benchmark (one repository, tokens estimated as characters / 4) output was 92.4% smaller across five operations; plain git grep still wins on simple lookups.",
+            "Message scheduler: schedule, list and cancel WhatsApp messages, with a background worker and a simple web UI.",
+            "Webhook exporter: stores incoming messages and exports them as Excel or CSV behind basic authentication.",
+            "Auto-reply bot with an admin dashboard and a JSON rule engine.",
+            "Messaging and contacts service: sends text, image and document messages, handles webhooks, and ships with Docker Compose.",
         ],
         "links": [
-            ("Source code", "https://github.com/recscse/codive"),
-            ("Project site", "https://recscse.github.io/codive/"),
-            ("Benchmark report", "https://github.com/recscse/codive/blob/main/docs/BENCHMARK_REPORT.md"),
+            ("Scheduler", "https://github.com/recscse/whatsapp-scheduler"),
+            ("Exporter", "https://github.com/recscse/whatsapp-exporter"),
+            ("Auto-reply bot", "https://github.com/recscse/whatsApp-auto-reply-bot"),
+            ("Messaging service", "https://github.com/recscse/whatsapp-cloud-api-wraaper"),
         ],
         "writing": [],
     },
     {
+        "slug": "career-hub",
+        "name": "Career Context Hub",
+        "repos": ["recscse/career-hub"],
+        "resume": False,
+        "tagline": "Local-first MCP server that keeps a developer's career context for AI tools",
+        "status": "Early",
+        "featured": False,
+        "image": None,
+        "stack": ["Python", "MCP", "SQLite"],
+        "bullets": [
+            "Keeps a developer's profile, skills, resume versions, jobs and applications in one local SQLite database and serves them to AI tools over the Model Context Protocol.",
+            "Imports resumes, searches public job boards (Greenhouse, Lever, Ashby), tracks applications and builds tailored resumes without adding skills you do not have. Tested on Linux and Windows.",
+        ],
+        "links": [("Source code", "https://github.com/recscse/career-hub")],
+        "writing": [],
+    },
+    {
         "slug": "hsci",
+        "repos": ['HNDS-HSCI/ai-model'],
+        "resume": False,
         "name": "HSCI",
         "tagline": "Research prototype: symbolic reasoning with formal verification",
         "status": "Research / alpha",
+        "featured": False,
+        "image": None,
         "stack": ["Python", "Z3 SMT solver", "SQLite", "PyTorch"],
         "bullets": [
             "Experimental cognitive architecture (v0.1.0-alpha) that checks reasoning steps with the Microsoft Z3 SMT solver instead of trusting model output.",
@@ -116,20 +221,6 @@ PROJECTS = [
         ],
         "links": [("Source code", "https://github.com/HNDS-HSCI/ai-model")],
         "writing": ["building-self-verifying-cognitive-architecture-hsci"],
-    },
-    {
-        "slug": "prindox",
-        "name": "Prindox",
-        "tagline": "Online document printing platform",
-        "status": "Live",
-        "stack": ["Python", "FastAPI", "PostgreSQL"],
-        "bullets": [
-            "Backend services and REST APIs for document upload, print-order management and workflow automation.",
-            "PostgreSQL schemas and optimized queries for document storage and retrieval; asynchronous background processing for validation and order handling.",
-            "Source code is private.",
-        ],
-        "links": [("Live site", "https://prindox.com")],
-        "writing": [],
     },
 ]
 
@@ -165,3 +256,14 @@ POST_EDITS = [
      "Slightly increases authentication execution time by 500ms.",
      "Adds browser start-up time to each authentication run."),
 ]
+
+# Curated one-liners and labels for the GitHub section (GitHub's own language label can mislead,
+# e.g. the Java SDK repo commits generated Javadoc HTML, so it reports "HTML").
+GITHUB_REPOS = {
+    "recscse/codive": ("Local-first code-intelligence MCP server for AI coding agents", ["Go", "MCP"]),
+    "growthquantix/tradingbot": ("Growth Quantix: algorithmic trading platform", ["Python", "FastAPI", "React"]),
+    "growthquantix/upstox-auth-pro": ("Python SDK on PyPI that automates the Upstox OAuth2 login", ["Python", "Playwright"]),
+    "growthquantix/upstox-auth-pro-java": ("Java SDK for the same Upstox authentication workflow", ["Java"]),
+    "HNDS-HSCI/ai-model": ("HSCI: research prototype for verified symbolic reasoning", ["Python", "Z3"]),
+    "recscse/career-hub": ("Local-first MCP server that keeps a developer's career context for AI tools", ["Python", "MCP"]),
+}
