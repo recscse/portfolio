@@ -9,7 +9,7 @@ on:
       - master
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   validate:
@@ -31,3 +31,15 @@ jobs:
         run: npm run build
       - name: Validate pages, links, sitemap and structured data
         run: python scripts/validate.py
+      - name: Commit regenerated static pages on branch pushes
+        if: github.event_name == 'push'
+        run: |
+          if git diff --quiet && [ -z "$(git status --porcelain)" ]; then
+            echo "Generated site is already up to date."
+          else
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add -A
+            git commit -m "chore(seo): regenerate static portfolio pages"
+            git push
+          fi
