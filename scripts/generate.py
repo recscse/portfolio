@@ -62,6 +62,7 @@ def page(title: str, desc: str, path: str, body: str, *, depth: int = 0, current
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="google-site-verification" content="i4A8fXjF7aIYC8xr4j-CAUJTmwKbcxV-g15hPii0Ttw">
 <title>{E(title)}</title>
 <meta name="description" content="{E(desc)}">
 <link rel="canonical" href="{url}">
