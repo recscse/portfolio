@@ -6,6 +6,7 @@
 from __future__ import annotations
 
 import concurrent.futures as cf
+import json
 import pathlib
 import re
 import sys
@@ -103,7 +104,7 @@ def check_page(p: pathlib.Path, ext: set[str]) -> None:
     # Validate structured data emitted by the page generator, not just its presence.
     schemas = []
     for block in re.findall(
-        r'<script\\b[^>]*type=["\\']application/ld\\+json["\\'][^>]*>(.*?)</script>',
+        r'<script\b[^>]*type=["\']application/ld\+json["\'][^>]*>(.*?)</script>',
         text, re.I | re.S
     ):
         try:
@@ -117,7 +118,7 @@ def check_page(p: pathlib.Path, ext: set[str]) -> None:
             errors.append(f"{rel}: expected exactly one Person JSON-LD entity")
         elif people[0].get("@id") != BASE + "#person":
             errors.append(f"{rel}: Person JSON-LD @id is not stable")
-        if not re.search(r"<h1\\b[^>]*>\\s*Brijesh Yadav\\s*</h1>", text):
+        if not re.search(r"<h1\b[^>]*>\s*Brijesh Yadav\s*</h1>", text):
             errors.append(f"{rel}: homepage H1 should contain the person's full name")
     elif rel.startswith("blog/") and rel.endswith(".html") and rel != "blog/index.html":
         articles = [item for item in schemas if item.get("@type") == "BlogPosting"]
