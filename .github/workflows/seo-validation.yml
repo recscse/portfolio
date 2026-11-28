@@ -1,0 +1,33 @@
+name: SEO validation
+
+on:
+  push:
+    branches:
+      - "seo/**"
+  pull_request:
+    branches:
+      - master
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+      - name: Install frontend dependencies
+        run: npm ci
+      - name: Generate portfolio pages
+        run: python scripts/generate.py
+      - name: Build CSS
+        run: npm run build
+      - name: Validate pages, links, sitemap and structured data
+        run: python scripts/validate.py
