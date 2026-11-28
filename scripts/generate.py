@@ -534,7 +534,7 @@ def blog_post_schema(p: dict) -> str:
         except ValueError:
             continue
 
-    return '<script type="application/ld+json">' + json.dumps(article) + '</script>\\n'
+    return '<script type="application/ld+json">' + json.dumps(article) + '</script>\n'
 
 
 def blog_post(p: dict) -> str:
