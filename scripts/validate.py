@@ -99,6 +99,32 @@ def check_page(p: pathlib.Path, ext: set[str]) -> None:
     expect = BASE + ("index.html" if rel == "index.html" else rel)
     if s.canonical != expect:
         errors.append(f"{rel}: canonical is {s.canonical!r}, expected {expect!r}")
+
+    # Validate structured data emitted by the page generator, not just its presence.
+    schemas = []
+    for block in re.findall(
+        r'<script\\b[^>]*type=["\\']application/ld\\+json["\\'][^>]*>(.*?)</script>',
+        text, re.I | re.S
+    ):
+        try:
+            schemas.append(json.loads(block))
+        except json.JSONDecodeError as exc:
+            errors.append(f"{rel}: invalid JSON-LD: {exc}")
+
+    if rel == "index.html":
+        people = [item for item in schemas if item.get("@type") == "Person"]
+        if len(people) != 1:
+            errors.append(f"{rel}: expected exactly one Person JSON-LD entity")
+        elif people[0].get("@id") != BASE + "#person":
+            errors.append(f"{rel}: Person JSON-LD @id is not stable")
+        if not re.search(r"<h1\\b[^>]*>\\s*Brijesh Yadav\\s*</h1>", text):
+            errors.append(f"{rel}: homepage H1 should contain the person's full name")
+    elif rel.startswith("blog/") and rel.endswith(".html") and rel != "blog/index.html":
+        articles = [item for item in schemas if item.get("@type") == "BlogPosting"]
+        if len(articles) != 1:
+            errors.append(f"{rel}: expected exactly one BlogPosting JSON-LD entity")
+        elif articles[0].get("author", {}).get("@id") != BASE + "#person":
+            errors.append(f"{rel}: BlogPosting author must reference the homepage Person entity")
     if "mermaid" in text and "mermaid@" not in text and 'class="mermaid"' in text:
         errors.append(f"{rel}: has diagrams but no pinned Mermaid script")
     if "mermaid@" in text and not re.search(r"mermaid@\d+\.\d+\.\d+", text):
