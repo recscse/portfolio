@@ -351,9 +351,22 @@ def github_section() -> str:
 
 def index_page() -> str:
     exp = EXPERIENCE[0]
-    ld = {"@context": "https://schema.org", "@type": "Person", "name": PERSON["name"], "jobTitle": PERSON["title"],
-          "url": BASE, "email": f"mailto:{PERSON['email']}", "address": {"@type": "PostalAddress", "addressLocality": "Mysore", "addressCountry": "IN"},
-          "worksFor": {"@type": "Organization", "name": exp["company"]}, "sameAs": [PERSON["github"], PERSON["linkedin"], PERSON["x"]]}
+    ld = {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "@id": BASE + "#person",
+        "name": PERSON["name"],
+        "url": BASE + "index.html",
+        "description": PERSON["summary"],
+        "jobTitle": PERSON["title"],
+        "email": f"mailto:{PERSON['email']}",
+        "worksFor": {"@type": "Organization", "name": exp["company"]},
+        "sameAs": [PERSON["github"], PERSON["linkedin"]],
+        "knowsAbout": [
+            "Java", "Spring Boot", "Python", "FastAPI", "Backend Engineering",
+            "System Design", "Algorithmic Trading", "AI Developer Tools"
+        ]
+    }
     featured = [p for p in PROJECTS if p.get("featured")]
     more = [p for p in PROJECTS if not p.get("featured")]
     proof = [("5+ years", "Java and Python backends"), ("Growth Quantix", "public trading-platform repo"),
@@ -364,8 +377,9 @@ def index_page() -> str:
   <div class="rounded-3xl bg-gradient-to-br from-indigo-50 via-white to-sky-50 p-8 ring-1 ring-slate-200 sm:p-12 dark:from-slate-900 dark:via-slate-950 dark:to-indigo-950/40 dark:ring-slate-800">
     <p class="inline-flex items-center gap-2 rounded-full bg-emerald-50 px-3 py-1 text-xs font-medium text-emerald-800 ring-1 ring-emerald-200 dark:bg-emerald-950/50 dark:text-emerald-300 dark:ring-emerald-900"><span class="h-2 w-2 rounded-full bg-emerald-500" aria-hidden="true"></span>{E(PERSON['open'])}</p>
     <p class="mt-5 text-base font-medium text-slate-600 dark:text-slate-400">{E(PERSON['name'])} &middot; {E(PERSON['title'])} &middot; {E(PERSON['location'])}</p>
-    <h1 id="hero" class="mt-2 max-w-3xl text-3xl font-bold tracking-tight text-slate-900 sm:text-5xl dark:text-white">{E(PERSON['headline'])}</h1>
-    <p class="mt-5 max-w-2xl text-lg text-slate-600 dark:text-slate-300">{E(PERSON['hero_sub'])}</p>
+    <h1 id="hero" class="mt-2 max-w-3xl text-3xl font-bold tracking-tight text-slate-900 sm:text-5xl dark:text-white">{E(PERSON['name'])}</h1>
+    <p class="mt-3 max-w-3xl text-lg font-semibold text-slate-700 dark:text-slate-300">{E(PERSON['headline'])}</p>
+    <p class="mt-3 max-w-2xl text-lg text-slate-600 dark:text-slate-300">{E(PERSON['hero_sub'])}</p>
     <div class="mt-8 flex flex-wrap gap-3">
       <a class="{BTN_PRIMARY}" href="mailto:{PERSON['email']}">Email me</a>
       <a class="{BTN}" href="projects.html">See my work</a>
@@ -493,6 +507,36 @@ def blog_index() -> str:
                 "blog/index.html", body, depth=1, current="blog")
 
 
+def blog_post_schema(p: dict) -> str:
+    """Build structured data for an article from the same metadata shown on the page."""
+    from datetime import datetime
+
+    article_url = BASE + f"blog/{p['slug']}.html"
+    article = {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "@id": article_url + "#article",
+        "headline": p["title"],
+        "description": p["excerpt"] or p["title"],
+        "url": article_url,
+        "mainEntityOfPage": {"@type": "WebPage", "@id": article_url},
+        "author": {"@id": BASE + "#person"},
+        "image": BASE + "assets/og.png",
+        "keywords": p["tags"]
+    }
+
+    for date_format in ("%b %d, %Y", "%B %d, %Y"):
+        try:
+            article["datePublished"] = datetime.strptime(
+                p["date"], date_format
+            ).date().isoformat()
+            break
+        except ValueError:
+            continue
+
+    return '<script type="application/ld+json">' + json.dumps(article) + '</script>\\n'
+
+
 def blog_post(p: dict) -> str:
     body = (f'<article class="mx-auto max-w-3xl py-12"><p class="text-sm"><a class="{LINK}" href="index.html">&larr; All posts</a></p>'
             f'<h1 class="mt-4 text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl dark:text-white">{E(p["title"])}</h1>'
@@ -508,8 +552,9 @@ def blog_post(p: dict) -> str:
                    'const dark = window.matchMedia("(prefers-color-scheme: dark)").matches;\n'
                    'mermaid.initialize({ startOnLoad: true, securityLevel: "strict", theme: dark ? "dark" : "default" });\n'
                    '</script>\n')
+    schema = blog_post_schema(p)
     return page(f"{p['title']} | {PERSON['name']}", p["excerpt"] or p["title"], f"blog/{p['slug']}.html", body, depth=1,
-                current="blog", og_type="article", extra_head=mermaid)
+                current="blog", og_type="article", extra_head=mermaid + schema)
 
 
 def not_found() -> str:
